@@ -61,6 +61,11 @@ button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid color-mix(
 button:hover{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 14%, var(--panel))}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.hi{border:2px solid var(--accent);color:var(--fg);font-weight:600;background:color-mix(in srgb, var(--accent) 10%, var(--panel))}
+button.hi:hover{background:color-mix(in srgb, var(--accent) 22%, var(--panel))}
+button.hi2{border:2px solid #e5484d;font-weight:600;background:color-mix(in srgb, #e5484d 10%, var(--panel))}
+button.hi2:hover{border-color:#e5484d;background:color-mix(in srgb, #e5484d 22%, var(--panel))}
+.aicfull{margin-top:16px}
 button:disabled{opacity:.45;cursor:not-allowed}
 
 .drop{border:2px dashed var(--line);border-radius:12px;padding:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;background:var(--panel);transition:border-color .15s,background .15s}
@@ -185,8 +190,6 @@ header{position:relative}
 .aic .knob .top{font-size:13px;color:var(--muted);font-weight:600}
 .aic > b{font-size:16px}
 .aic .row{gap:8px 10px}
-.vidgrid:has(#aiBox:not([hidden])){grid-template-columns:1fr}
-.vidgrid:has(#aiBox:not([hidden])) .vidprev{display:none}
 .covxside .knob{max-width:340px}
 .aithumbs img{width:96px;height:96px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .aithumbs img.sel{border-color:var(--accent)}
@@ -309,7 +312,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.6</p>
+      <p class="by">Mix · Master · Release · v12.7</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -486,9 +489,17 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
         <div class="knob"><span class="top">Format</span><div class="chips" id="vAspect"><button data-v="v" aria-pressed="true">9:16 Reels/TikTok</button><button data-v="s" aria-pressed="false">1:1 Feed</button><button data-v="w" aria-pressed="false">16:9 YouTube</button></div></div>
         <label class="knob"><span class="top">Titel</span><input type="text" id="vTitle" placeholder="Songtitel"></label>
         <label class="knob"><span class="top">Artist</span><input type="text" id="vArtist" value="DANVIEL"></label>
-        <div class="knob"><span class="top">Cover-Bild</span><div class="row"><button id="vCoverBtn">Bild wählen</button><button id="vCoverClr" hidden>Entfernen</button><small id="vCoverName" class="tnote">optional, sonst dreht sich eine Platte</small></div><input type="file" id="vCover" accept="image/*" hidden>
-          <button id="aiCoverBtn" style="margin-top:8px">Cover-Studio: mit KI erstellen und mit Schrift exportieren</button></div>
-        <div class="aic" id="aiBox" hidden>
+        <div class="knob"><span class="top">Cover-Bild</span><div class="row"><button id="vCoverBtn" class="hi2">Bild wählen</button><button id="vCoverClr" hidden>Entfernen</button><small id="vCoverName" class="tnote">optional, sonst dreht sich eine Platte</small></div><input type="file" id="vCover" accept="image/*" hidden>
+          <button id="aiCoverBtn" class="hi" style="margin-top:8px">Cover-Studio: mit KI erstellen und mit Schrift exportieren</button></div>
+        <div class="row"><label><input type="checkbox" id="vLyr" checked> Lyrics im Video</label><label><input type="checkbox" id="vBrand" checked> DANVIEL-Branding (Name + Logo)</label></div>
+        <div class="row brandrow"><label class="knob"><span class="top">Eigenes Branding</span><input type="text" id="vBrandTxt" placeholder="z. B. dein Name, Label oder @handle"></label>
+          <div class="knob"><span class="top">Logo</span><div class="row"><button id="vLogoBtn" class="hi2">Logo wählen</button><button id="vLogoClr" hidden>Entfernen</button><small id="vLogoName" class="tnote">optional, PNG mit transparentem Hintergrund passt am besten</small></div><input type="file" id="vLogo" accept="image/*" hidden></div></div>
+        <div class="row"><button class="primary" id="vMake" disabled>Video erstellen (MP4)</button><button id="vCancel" hidden>Abbrechen</button></div>
+        <small class="tnote" id="vNote">Tipp: Setz oben einen Ausschnitt und hak beim Export „Nur Ausschnitt“ an, dann wird nur dieser Teil zum Video, perfekt für Snippets.</small>
+      </div>
+      <div class="vidprev"><canvas id="vPrev" width="540" height="960" aria-label="Video-Vorschau"></canvas></div>
+    </div>
+    <div class="aic aicfull" id="aiBox" hidden>
           <b>Cover-Studio</b>
           <div class="row">
             <label class="knob" style="flex:1 1 200px"><span class="top">Cover-Style</span><select id="aiStyleSel" aria-label="Cover-Style"></select></label>
@@ -539,14 +550,6 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
             </div>
           </div>
         </div>
-        <div class="row"><label><input type="checkbox" id="vLyr" checked> Lyrics im Video</label><label><input type="checkbox" id="vBrand" checked> DANVIEL-Branding (Name + Logo)</label></div>
-        <div class="row brandrow"><label class="knob"><span class="top">Eigenes Branding</span><input type="text" id="vBrandTxt" placeholder="z. B. dein Name, Label oder @handle"></label>
-          <div class="knob"><span class="top">Logo</span><div class="row"><button id="vLogoBtn">Logo wählen</button><button id="vLogoClr" hidden>Entfernen</button><small id="vLogoName" class="tnote">optional, PNG mit transparentem Hintergrund passt am besten</small></div><input type="file" id="vLogo" accept="image/*" hidden></div></div>
-        <div class="row"><button class="primary" id="vMake" disabled>Video erstellen (MP4)</button><button id="vCancel" hidden>Abbrechen</button></div>
-        <small class="tnote" id="vNote">Tipp: Setz oben einen Ausschnitt und hak beim Export „Nur Ausschnitt“ an, dann wird nur dieser Teil zum Video, perfekt für Snippets.</small>
-      </div>
-      <div class="vidprev"><canvas id="vPrev" width="540" height="960" aria-label="Video-Vorschau"></canvas></div>
-    </div>
     <div class="lyr">
       <div class="row">
         <span class="label">Lyrics</span>
@@ -658,11 +661,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.6</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.7</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.6</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.7</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -674,6 +677,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.7</h3>
+  <ul>
+    <li>Cover-Studio öffnet sich unter der Video-Vorschau über die ganze Breite</li>
+    <li>„Cover-Studio“, „Bild wählen“ und „Logo wählen“ farbig umrandet, damit man sie sofort findet</li>
+  </ul>
   <h3>Neu in v12.6</h3>
   <ul>
     <li>Alle Knöpfe sind besser zu sehen</li>
@@ -1137,7 +1145,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.6"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v12.7"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -2770,7 +2778,7 @@ function aiEngineUi(){
     : man ? "1. „Prompt kopieren“ klicken. 2. In ChatGPT (oder Gemini …) einfügen und das Bild erstellen lassen. 3. Bild speichern und hier mit „Fertiges Bild laden“ öffnen. Titel und Name setzt das Programm danach exakt."
     : "Kostenlos, ohne Anmeldung. Etwa ein Bild alle 15 Sekunden. Wenn der Server ausgelastet ist, hilft ein kostenloser Schlüssel von enter.pollinations.ai oder der Weg über ChatGPT.";
 }
-$("aiCoverBtn").onclick = ()=>{ const b = $("aiBox"); b.hidden = !b.hidden; if(!b.hidden){ renderStyles(); $("aiMeta").value = META_PROMPT;
+$("aiCoverBtn").onclick = ()=>{ const b = $("aiBox"); b.hidden = !b.hidden; if(!b.hidden){ setTimeout(()=>b.scrollIntoView({behavior:"smooth", block:"start"}), 50); renderStyles(); $("aiMeta").value = META_PROMPT;
   try{ const pk = localStorage.getItem("stemmixer:pkey"); if(pk) $("aiPkey").value = pk; }catch(e){}
   try{ const k = localStorage.getItem("stemmixer:aiKey"); if(k){ $("aiKey").value = k; $("aiKeySave").checked = true; $("aiEngine").value = "openai"; } }catch(e){} aiEngineUi(); drawCoverPrev(); } };
 $("aiClose").onclick = ()=>{ $("aiBox").hidden = true; };
@@ -3711,9 +3719,9 @@ function sepAnalysis(res, L, R){
 $("logBtn").onclick = ()=>saveLog();
 $("hudX").onclick = ()=>{ $("hud").hidden = true; };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.6"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.7"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.6") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.7") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
