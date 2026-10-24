@@ -338,7 +338,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v13.1</p>
+      <p class="by">Mix · Master · Release · v13.2</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -569,7 +569,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
             <canvas id="coverPrev" width="600" height="600" aria-label="Cover-Vorschau mit Schrift"></canvas>
             <div class="covxside">
               <b>Fertiges Cover mit Schrift</b>
-              <small class="tnote cxhint">Tipp: Titel und Artist kannst du im Bild mit der Maus (oder dem Finger) frei verschieben.</small>
+              <small class="tnote cxhint">Tipp: Titel und Artist kannst du im Bild mit der Maus (oder dem Finger) frei verschieben. Ein Bild aus ChatGPT kannst du einfach hier reinziehen oder kopieren und mit Strg+V einfügen.</small>
               <div class="cxgrid">
                 <label class="knob"><span class="top">Position</span><select id="cxPos"><option value="bottom">Unten</option><option value="top">Oben</option><option value="center">Mitte</option><option value="bottomleft">Unten links</option><option value="topleft">Oben links</option><option value="free">Frei (selbst verschoben)</option><option value="none">Ohne Schrift</option></select></label>
                 <label class="knob"><span class="top">Schriftart</span><select id="cxFont"><option value="auto">Automatisch (nach Stimmung)</option><option value="serif">Elegant (Serif)</option><option value="playfair">Elegant kursiv</option><option value="cinzel">Klassisch (Cinzel)</option><option value="narrow">Markant (Schmal)</option><option value="bebas">Plakat (Bebas)</option><option value="anton">Fett (Anton)</option><option value="unbounded">Modern breit</option><option value="clean">Klar (Sans)</option><option value="marker">Handschrift (Marker)</option><option value="caveat">Handschrift (fein)</option><option value="gothic">Gotisch (Drill / Rap)</option></select></label>
@@ -704,11 +704,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.1</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.2</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v13.1</h2>
+  <h2 id="helpTitle">DANVIEL Studio v13.2</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -720,6 +720,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v13.2</h3>
+  <ul>
+    <li>Cover per Drag & Drop: Bild aus ChatGPT (oder vom Rechner) einfach reinziehen, oder „Bild kopieren“ und Strg+V</li>
+    <li>Ganze Ordner mit Stems reinziehen, auch mit Unterordnern; ZIPs werden noch gründlicher durchsucht</li>
+  </ul>
   <h3>Neu in v13.1</h3>
   <ul>
     <li>Cover-Editor: Titel und Artist im Bild frei hinziehen, wohin du willst (passt sich automatisch an den Rand an)</li>
@@ -901,7 +906,7 @@ async function handleFiles(list){
   const files = [...list];
   if(!files.length) return;
   stop(); setStatus("Lade Dateien …"); setProg(0);
-  const items = []; let projJson = null;
+  const items = []; let projJson = null; const ZIPSEEN = [];
   for(const f of files){
     if(/\.json$/i.test(f.name)){ try{ projJson = JSON.parse(await f.text()); }catch(e){} continue; }
     if(/\.zip$/i.test(f.name)){
@@ -913,7 +918,10 @@ async function handleFiles(list){
         const pjEntry = all.find(e => /\.json$/i.test(e.name));
         if(pjEntry && !projJson){ try{ projJson = JSON.parse(await pjEntry.async("string")); }catch(e){} }
         for(const e of all){
+          ZIPSEEN.push(e.name);
           if(AUDIO_RE.test(e.name)) items.push({name: e.name.split("/").pop(), get:()=>e.async("arraybuffer")});
+          else if(!/\.(json|txt|md|pdf|png|jpe?g|gif|webp|bmp|svg|docx?|xlsx?|xml|html?|lrc|srt|mid|midi|ds_store|ini|db|url|lnk|exe|dll|nfo)$/i.test(e.name) && !/\.zip$/i.test(e.name) && ((e._data && e._data.uncompressedSize) || 1e6) > 20000)
+            items.push({name: e.name.split("/").pop(), get:()=>e.async("arraybuffer"), maybe: true});
           else if(/\.zip$/i.test(e.name) && depth < 2){ try{ await walk(await JSZip.loadAsync(await e.async("arraybuffer")), depth+1); }catch(err){ console.warn("ZIP in ZIP", e.name, err); } }
         }
       };
@@ -927,13 +935,13 @@ async function handleFiles(list){
   if(!items.length) for(const f of files){ if(!/\.(zip|json|txt|pdf|png|jpe?g|gif|doc|docx|exe)$/i.test(f.name)) items.push({name:f.name, get:()=>f.arrayBuffer()}); }
   if(!items.length){
     if(projJson && tracks.length){ applyProject(projJson); setStatus("Projekt geladen."); return; }
-    setStatus("Keine Audiodateien gefunden. Unterstützt werden MP3, WAV, FLAC, OGG, M4A und ZIPs mit solchen Dateien drin.", true); return; }
+    log("Keine Audiodateien. ZIP-Inhalt:", ZIPSEEN.slice(0,40).join(" | ")); setStatus("Keine Audiodateien gefunden." + (ZIPSEEN.length ? ` In der ZIP liegen: ${ZIPSEEN.slice(0,6).map(n=>n.split("/").pop()).join(", ")}${ZIPSEEN.length>6?" …":""}.` : "") + " Unterstützt werden MP3, WAV, FLAC, OGG, M4A und ZIPs oder Ordner mit solchen Dateien.", true); return; }
   items.sort((a,b)=>a.name.localeCompare(b.name, undefined, {numeric:true}));
   const c = ac(); const out = [];
   for(let i=0;i<items.length;i++){
     setStatus(`Dekodiere ${i+1}/${items.length}: ${cleanName(items[i].name)}`); setProg(i/items.length);
     try{ const ab = await items[i].get(), raw = ab.slice(0); const buf = await c.decodeAudioData(ab); out.push({name:cleanName(items[i].name), file:items[i].name, buffer:buf, raw}); }
-    catch(e){ console.warn(e); setStatus(`„${items[i].name}“ konnte nicht gelesen werden. Das Format wird von diesem Browser nicht unterstützt, wandle die Datei am besten in MP3 oder WAV um.`, true); }
+    catch(e){ console.warn(e); if(items[i].maybe) continue; setStatus(`„${items[i].name}“ konnte nicht gelesen werden. Das Format wird von diesem Browser nicht unterstützt, wandle die Datei am besten in MP3 oder WAV um.`, true); }
   }
   setProg(1);
   if(out.length){
@@ -1206,7 +1214,48 @@ $("file").onchange = e=>{ handleFiles(e.target.files); e.target.value=""; };
 const drop = $("drop");
 ["dragenter","dragover"].forEach(ev=>document.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add("over"); }));
 ["dragleave","drop"].forEach(ev=>document.addEventListener(ev, e=>{ e.preventDefault(); if(ev==="drop"||e.target===document.documentElement) drop.classList.remove("over"); }));
-document.addEventListener("drop", e=>{ drop.classList.remove("over"); if(e.dataTransfer && e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
+// Dropped folders are read recursively; images go to the Cover-Studio (also images dragged straight out of ChatGPT)
+function filesFromDrop(dt){
+  const ents = [...(dt.items || [])].map(it => it.kind === "file" && it.webkitGetAsEntry ? it.webkitGetAsEntry() : null).filter(Boolean);
+  const plain = [...(dt.files || [])];
+  if(!ents.length || !ents.some(en => en.isDirectory)) return Promise.resolve(plain);
+  const out = [];
+  const readAll = dir => new Promise(res=>{ const r = dir.createReader(), acc = []; const step = ()=>r.readEntries(b=>{ if(!b.length) return res(acc); acc.push(...b); step(); }, ()=>res(acc)); step(); });
+  const walk = async (en, depth) => { if(en.isFile){ const f = await new Promise((res,rej)=>en.file(res,rej)).catch(()=>null); if(f) out.push(f); } else if(en.isDirectory && depth < 5){ for(const c of await readAll(en)) await walk(c, depth+1); } };
+  return (async ()=>{ for(const en of ents) await walk(en, 0); log("Ordner reingezogen:", out.length, "Dateien"); return out; })();
+}
+const isImg = f => /^image\//.test(f.type || "") || /\.(png|jpe?g|webp|gif|avif|bmp)$/i.test(f.name || "");
+async function coverFromFile(f){
+  if($("aiBox").hidden) $("aiCoverBtn").click();
+  try{ await addCoverThumb(f, $("aiUsed").value, "Eigenes Cover"); $("aiNote").textContent = "Bild übernommen. Unten siehst du das fertige Cover mit Schrift."; log("Cover per Drag & Drop / Einfügen:", f.name || "Bild", Math.round(f.size/1024)+" KB"); }
+  catch(err){ $("aiNote").textContent = "Dieses Bild konnte nicht geöffnet werden."; }
+}
+async function coverFromUrl(url){
+  if($("aiBox").hidden) $("aiCoverBtn").click();
+  $("aiNote").textContent = "Hole das Bild …";
+  try{ const r = await fetch(url); const b = await r.blob(); if(!r.ok || !/^image\//.test(b.type)) throw new Error(r.status); await coverFromFile(new File([b], "Cover", {type: b.type})); }
+  catch(err){ log("Cover-URL nicht ladbar:", url.slice(0,120), err); $("aiNote").textContent = "Die Seite erlaubt nicht, das Bild direkt zu übernehmen. So geht's trotzdem: In ChatGPT Rechtsklick auf das Bild → „Bild kopieren“ und hier Strg+V drücken. Oder das Bild speichern und die Datei reinziehen."; }
+}
+document.addEventListener("drop", async e=>{
+  drop.classList.remove("over"); const dt = e.dataTransfer; if(!dt) return;
+  const inCover = !$("aiBox").hidden && e.target && e.target.closest && !!e.target.closest("#aiBox");
+  const html = dt.getData("text/html") || "", uri = (dt.getData("text/uri-list") || "").split("\n").find(l=>/^https?:/.test(l.trim())) || "";
+  const files = await filesFromDrop(dt);
+  const imgs = files.filter(isImg);
+  if(imgs.length && (inCover || imgs.length === files.length)) return coverFromFile(imgs[0]);
+  if(!files.length){
+    const m = html.match(/<img[^>]+src="([^"]+)"/i), src = m ? m[1].replace(/&amp;/g,"&") : uri;
+    if(src && (inCover || /\.(png|jpe?g|webp)|oaiusercontent|openai|image/i.test(src))) return coverFromUrl(src);
+    return;
+  }
+  handleFiles(files.filter(f=>!isImg(f)));
+});
+// paste an image (e.g. "Bild kopieren" in ChatGPT, then Ctrl+V) → cover
+document.addEventListener("paste", e=>{
+  const it = [...((e.clipboardData && e.clipboardData.items) || [])].find(i => i.kind === "file" && /^image\//.test(i.type));
+  if(!it) return; const f = it.getAsFile(); if(!f) return;
+  e.preventDefault(); coverFromFile(f);
+});
 
 /* ---------- Export ---------- */
 $("export").onclick = async ()=>{
@@ -1246,7 +1295,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v13.1"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v13.2"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -3961,9 +4010,9 @@ $("newProj").onclick = ()=>{
   location.reload();
 };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.1"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.2"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "13.1") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "13.2") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
