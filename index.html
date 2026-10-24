@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=DM+Serif+Display&family=Permanent+Marker&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=DM+Serif+Display&family=Permanent+Marker&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Bebas+Neue&family=Anton&family=Cinzel:wght@700&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@700&family=Unbounded:wght@700&family=UnifrakturMaguntia&display=swap">
 <script>
 /*!
 
@@ -197,7 +197,15 @@ header{position:relative}
 .aic details summary{cursor:pointer;color:var(--muted);font-size:14px}
 .aic input[type=text]{width:100%}
 .covx{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;border-top:1px solid var(--line);padding-top:12px}
-.covx canvas{width:min(300px,100%);height:auto;aspect-ratio:1;border-radius:8px;background:var(--bg)}
+.covx canvas{width:min(420px,100%);height:auto;aspect-ratio:1;border-radius:8px;background:var(--bg);touch-action:none;cursor:default}
+.covx canvas.grab{cursor:grab}.covx canvas.grabbing{cursor:grabbing}
+.cxgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 14px}
+.cxgrid .knob input[type=range]{width:100%}
+.cxfx summary{cursor:pointer;font-weight:600;margin-bottom:8px}
+.cxhint{color:var(--accent)}
+.aic .knob input[type=checkbox]{width:auto;flex:none}
+.cxgrid .row{gap:6px 14px}
+.cxgrid .row label{flex-direction:row;align-items:center}
 .covxside{display:flex;flex-direction:column;gap:10px;flex:1 1 220px;min-width:0}
 /* Cover-Studio layout: labels left, normal-height fields, more room while it is open */
 .row label.knob,.aic .knob{align-items:stretch;text-align:left}
@@ -205,7 +213,7 @@ header{position:relative}
 .aic .knob .top{font-size:13px;color:var(--muted);font-weight:600}
 .aic > b{font-size:16px}
 .aic .row{gap:8px 10px}
-.covxside .knob{max-width:340px}
+
 .aithumbs img{width:96px;height:96px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .aithumbs img.sel{border-color:var(--accent)}
 .brandrow .knob{flex:1 1 220px}
@@ -330,7 +338,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v13.0</p>
+      <p class="by">Mix · Master · Release · v13.1</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -558,11 +566,28 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
           <div class="aithumbs" id="aiThumbs"></div>
           <details id="aiUsedBox" hidden><summary>Verwendeter Bild-Prompt</summary><textarea id="aiUsed" rows="5" readonly></textarea></details>
           <div class="covx">
-            <canvas id="coverPrev" width="300" height="300" aria-label="Cover-Vorschau mit Schrift"></canvas>
+            <canvas id="coverPrev" width="600" height="600" aria-label="Cover-Vorschau mit Schrift"></canvas>
             <div class="covxside">
               <b>Fertiges Cover mit Schrift</b>
-              <label class="knob"><span class="top">Schrift-Position</span><select id="cxPos"><option value="bottom">Unten</option><option value="top">Oben</option><option value="center">Mitte</option><option value="none">Ohne Schrift</option></select></label>
-              <label class="knob"><span class="top">Schriftart</span><select id="cxFont"><option value="auto">Automatisch (nach Stimmung)</option><option value="serif">Elegant (Serif)</option><option value="narrow">Markant (Schmal)</option><option value="marker">Handschrift (Marker)</option><option value="clean">Klar (Sans)</option></select></label>
+              <small class="tnote cxhint">Tipp: Titel und Artist kannst du im Bild mit der Maus (oder dem Finger) frei verschieben.</small>
+              <div class="cxgrid">
+                <label class="knob"><span class="top">Position</span><select id="cxPos"><option value="bottom">Unten</option><option value="top">Oben</option><option value="center">Mitte</option><option value="bottomleft">Unten links</option><option value="topleft">Oben links</option><option value="free">Frei (selbst verschoben)</option><option value="none">Ohne Schrift</option></select></label>
+                <label class="knob"><span class="top">Schriftart</span><select id="cxFont"><option value="auto">Automatisch (nach Stimmung)</option><option value="serif">Elegant (Serif)</option><option value="playfair">Elegant kursiv</option><option value="cinzel">Klassisch (Cinzel)</option><option value="narrow">Markant (Schmal)</option><option value="bebas">Plakat (Bebas)</option><option value="anton">Fett (Anton)</option><option value="unbounded">Modern breit</option><option value="clean">Klar (Sans)</option><option value="marker">Handschrift (Marker)</option><option value="caveat">Handschrift (fein)</option><option value="gothic">Gotisch (Drill / Rap)</option></select></label>
+                <label class="knob"><span class="top">Titel-Größe <span id="vcxTs">100 %</span></span><input type="range" id="cxTs" min="50" max="200" step="5" value="100"></label>
+                <label class="knob"><span class="top">Artist-Größe <span id="vcxAs">100 %</span></span><input type="range" id="cxAs" min="50" max="250" step="5" value="100"></label>
+                <label class="knob"><span class="top">Schriftfarbe</span><select id="cxColor"><option value="auto">Automatisch</option><option value="white">Weiß</option><option value="black">Schwarz</option><option value="accent">Farbe aus dem Cover</option><option value="gold">Gold</option></select></label>
+                <div class="knob"><span class="top">Schrift-Effekte</span><div class="row"><label><input type="checkbox" id="cxShadow" checked> Schatten</label><label><input type="checkbox" id="cxBand" checked> Dunkler Verlauf dahinter</label></div></div>
+              </div>
+              <details class="cxfx" open><summary>Bild-Filter</summary>
+                <div class="cxgrid">
+                  <label class="knob"><span class="top">Rand <span id="vcxVign">aus</span></span><input type="range" id="cxVign" min="-100" max="100" step="5" value="0"><small>links heller · rechts dunkler</small></label>
+                  <label class="knob"><span class="top">Helligkeit <span id="vcxBright">0</span></span><input type="range" id="cxBright" min="-50" max="50" step="1" value="0"></label>
+                  <label class="knob"><span class="top">Kontrast <span id="vcxContrast">0</span></span><input type="range" id="cxContrast" min="-50" max="50" step="1" value="0"></label>
+                  <label class="knob"><span class="top">Farbe <span id="vcxSat">0</span></span><input type="range" id="cxSat" min="-100" max="100" step="5" value="0"><small>links blasser · rechts kräftiger</small></label>
+                  <label class="knob"><span class="top">Körnung (Film) <span id="vcxGrain">aus</span></span><input type="range" id="cxGrain" min="0" max="100" step="5" value="0"></label>
+                  <div class="knob"><span class="top">Look</span><div class="row"><label><input type="checkbox" id="cxBw"> Schwarz-Weiß</label><button id="cxReset" type="button">Alles zurücksetzen</button></div></div>
+                </div>
+              </details>
               <button class="primary" id="cxExport" disabled>Cover als PNG speichern (3000×3000)</button>
               <small class="tnote" id="cxNote">Titel, Künstler und Widmung werden exakt so gesetzt, wie du sie eingetippt hast.</small>
             </div>
@@ -679,11 +704,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.0</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.1</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v13.0</h2>
+  <h2 id="helpTitle">DANVIEL Studio v13.1</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -695,6 +720,13 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v13.1</h3>
+  <ul>
+    <li>Cover-Editor: Titel und Artist im Bild frei hinziehen, wohin du willst (passt sich automatisch an den Rand an)</li>
+    <li>12 Schriftarten, Größe für Titel und Artist, Schriftfarbe (auch Gold oder Farbe aus dem Cover), Schatten und Verlauf an/aus</li>
+    <li>Bild-Filter: Rand dunkler oder heller, Helligkeit, Kontrast, Farbe, Film-Körnung, Schwarz-Weiß</li>
+    <li>Alle Cover-Einstellungen werden im Projekt mitgespeichert</li>
+  </ul>
   <h3>Neu in v13.0</h3>
   <ul>
     <li>Mini-Player unten: Sobald du runterscrollst, erscheint eine Leiste mit Play/Pause, Zeitleiste und Vorher/Nachher. Kein Hoch- und Runterscrollen mehr. Der Pfeil ↑ bringt dich zurück zum großen Player.</li>
@@ -1214,7 +1246,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v13.0"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v13.1"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -2944,51 +2976,166 @@ $("aiGo").onclick = async ()=>{
 };
 
 /* ---- finished cover: image + exactly typed title / artist / dedication, 3000 × 3000 PNG ---- */
+// cover editor: fonts, freely placed title / artist, image filters
 const CX_FONTS = {serif:'"DM Serif Display", Georgia, serif', narrow:'"Big Shoulders Display", Impact, sans-serif', marker:'"Permanent Marker", "Comic Sans MS", cursive', clean:'"Instrument Sans", system-ui, sans-serif'};
+const CXF = {
+  serif:{fam:CX_FONTS.serif, w:"400"}, playfair:{fam:'"Playfair Display", Georgia, serif', w:"italic 700"}, cinzel:{fam:'"Cinzel", Georgia, serif', w:"700", up:true},
+  narrow:{fam:CX_FONTS.narrow, w:"800", up:true, big:true}, bebas:{fam:'"Bebas Neue", Impact, sans-serif', w:"400", up:true, big:true}, anton:{fam:'"Anton", Impact, sans-serif', w:"400", up:true, big:true},
+  unbounded:{fam:'"Unbounded", system-ui, sans-serif', w:"700"}, clean:{fam:CX_FONTS.clean, w:"700"}, marker:{fam:CX_FONTS.marker, w:"400"},
+  caveat:{fam:'"Caveat", cursive', w:"700", big:true}, gothic:{fam:'"UnifrakturMaguntia", serif', w:"400"}
+};
+const CX_DEF = {pos:"bottom", font:"auto", ts:100, as:100, color:"auto", shadow:true, band:true, vign:0, bright:0, contrast:0, sat:0, grain:0, bw:false, t:{x:.5, y:.8}, a:{x:.5, y:.9}};
+const CX = JSON.parse(JSON.stringify(CX_DEF));
+let CXBOX = {};
 function cxFontKey(){
-  const f = $("cxFont").value; if(f !== "auto") return f;
+  const f = CX.font; if(f !== "auto" && CXF[f]) return f;
   const g = ($("aiGenre").value + " " + (song && song.minor ? "minor" : "")).toLowerCase();
   if(/soul|r&b|rnb|love|romant|ballad|wedding|hochzeit/.test(g)) return "serif";
+  if(/drill|gangsta|street|hood/.test(g)) return "gothic";
   if(/90|nostalg|cd|tape|kassette|retro|y2k/.test(g)) return "marker";
-  if(/synth|night|nacht|club|edm|techno|trap|drill/.test(g)) return "narrow";
+  if(/synth|night|nacht|club|edm|techno|trap/.test(g)) return "narrow";
   return song && song.minor ? "clean" : "narrow";
 }
-function drawCoverTo(g, S){
-  g.fillStyle = "#111"; g.fillRect(0,0,S,S);
-  if(VID.cover){ g.imageSmoothingQuality = "high"; const sc = Math.max(S/VID.cover.width, S/VID.cover.height), w = VID.cover.width*sc, h = VID.cover.height*sc; g.drawImage(VID.cover, (S-w)/2, (S-h)/2, w, h); }
-  const pos = $("cxPos").value; if(pos === "none") return;
-  const fk = cxFontKey(), fam = CX_FONTS[fk], title = $("vTitle").value || $("fname").value || "", artist = $("vArtist").value || "", ded = $("aiDedic").value.trim();
-  const pad = S*0.07, maxW = S - 2*pad;
-  let ts = S*(fk==="narrow" ? 0.13 : 0.1);
-  const wrap = (txt, size)=>{ g.font = `${fk==="narrow"?"800 ":fk==="clean"?"700 ":""}${size}px ${fam}`; return wrapText(g, fk==="narrow" ? txt.toUpperCase() : txt, maxW); };
-  let rows = wrap(title, ts); while((rows.length > 2 || rows.some(r=>g.measureText(r).width > maxW)) && ts > S*0.04){ ts *= 0.92; rows = wrap(title, ts); }
-  const as = Math.max(S*0.035, ts*0.38), ds = S*0.026, lh = ts*1.05;
-  const block = rows.length*lh + as*1.6 + (ded ? ds*1.8 : 0);
-  const y0 = pos==="top" ? pad + ts*0.85 : pos==="center" ? (S-block)/2 + ts*0.85 : S - pad - block + ts*0.85;
-  // pick white or black text from the brightness behind the text block
-  let lum = 0.3; try{ const d = g.getImageData(pad, Math.max(0, y0-ts), maxW, Math.min(S, block+ts*0.3)).data; let s=0, n=0; for(let i=0;i<d.length;i+=4*97){ s += 0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2]; n++; } lum = s/n/255; }catch(e){}
-  const light = lum < 0.55, col = light ? "#f7f4ee" : "#141414";
-  const grad = g.createLinearGradient(0, y0-ts*1.4, 0, y0-ts+block+ts*0.6);
-  const sh = light ? "rgba(0,0,0," : "rgba(255,255,255,";
-  if(pos==="center"){ grad.addColorStop(0, sh+"0)"); grad.addColorStop(0.5, sh+".35)"); grad.addColorStop(1, sh+"0)"); }
-  else if(pos==="top"){ grad.addColorStop(0, sh+".45)"); grad.addColorStop(1, sh+"0)"); }
-  else { grad.addColorStop(0, sh+"0)"); grad.addColorStop(1, sh+".5)"); }
-  g.fillStyle = grad; g.fillRect(0, y0-ts*1.4, S, block+ts*2);
-  g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = col;
-  g.shadowColor = light ? "rgba(0,0,0,.45)" : "rgba(255,255,255,.35)"; g.shadowBlur = S*0.012;
-  rows = wrap(title, ts); rows.forEach((r,i)=>g.fillText(r, S/2, y0 + i*lh));
-  let y = y0 + (rows.length-1)*lh + as*1.5;
-  g.font = `600 ${as}px ${fk==="serif" ? CX_FONTS.serif : CX_FONTS.clean}`; g.fillText(artist, S/2, y);
-  if(ded){ y += ds*1.8; g.font = `italic ${ds}px ${CX_FONTS.serif}`; g.globalAlpha = 0.85; g.fillText(ded, S/2, y); g.globalAlpha = 1; }
-  g.shadowBlur = 0;
+let CX_GRAIN = null;
+function cxGrainTile(){
+  if(CX_GRAIN) return CX_GRAIN;
+  const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d"), d = g.createImageData(256, 256);
+  for(let i=0;i<d.data.length;i+=4){ const v = 128 + (Math.random()-0.5)*255; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+  g.putImageData(d, 0, 0); return CX_GRAIN = c;
 }
-function drawCoverPrev(){ const cv = $("coverPrev"), g = cv.getContext("2d"); g.setTransform(300/3000, 0, 0, 300/3000, 0, 0); drawCoverTo(g, 3000); g.setTransform(1,0,0,1,0,0); $("cxExport").disabled = !VID.cover; }
-["cxPos","cxFont"].forEach(id=>$(id).addEventListener("change", drawCoverPrev));
-["aiDedic","aiGenre","vTitle","vArtist"].forEach(id=>$(id).addEventListener("input", ()=>{ if(!$("aiBox").hidden) drawCoverPrev(); }));
+function drawCoverTo(g, S){
+  g.save(); g.fillStyle = "#111"; g.fillRect(0,0,S,S);
+  // 1) image with filters
+  if(VID.cover){
+    g.imageSmoothingQuality = "high";
+    const f = [];
+    if(CX.bright) f.push(`brightness(${1 + CX.bright/100})`); if(CX.contrast) f.push(`contrast(${1 + CX.contrast/100})`);
+    if(CX.sat) f.push(`saturate(${1 + CX.sat/100})`); if(CX.bw) f.push("grayscale(1)");
+    if(f.length && "filter" in g) g.filter = f.join(" ");
+    const sc = Math.max(S/VID.cover.width, S/VID.cover.height), w = VID.cover.width*sc, h = VID.cover.height*sc; g.drawImage(VID.cover, (S-w)/2, (S-h)/2, w, h);
+    g.filter = "none";
+  }
+  // 2) edges darker (+) or lighter (−)
+  if(CX.vign){
+    const k = Math.abs(CX.vign)/100, rg = g.createRadialGradient(S/2, S/2, S*0.25, S/2, S/2, S*0.75);
+    const col = CX.vign > 0 ? "0,0,0" : "255,255,255";
+    rg.addColorStop(0, `rgba(${col},0)`); rg.addColorStop(1, `rgba(${col},${(CX.vign > 0 ? 0.9 : 0.65)*k})`);
+    g.fillStyle = rg; g.fillRect(0, 0, S, S);
+  }
+  // 3) film grain
+  if(CX.grain){
+    const tile = cxGrainTile(), pat = g.createPattern(tile, "repeat"), m = new DOMMatrix().scale(S/1500);
+    try{ pat.setTransform(m); }catch(e){}
+    g.globalAlpha = CX.grain/100*0.35; g.globalCompositeOperation = "overlay"; g.fillStyle = pat; g.fillRect(0, 0, S, S);
+    g.globalAlpha = 1; g.globalCompositeOperation = "source-over";
+  }
+  CXBOX = {};
+  if(CX.pos === "none"){ g.restore(); return; }
+  // 4) text
+  const fk = cxFontKey(), F = CXF[fk], title = $("vTitle").value || $("fname").value || "", artist = $("vArtist").value || "", ded = $("aiDedic").value.trim();
+  const pad = S*0.06, maxW = S - 2*pad;
+  const tfont = sz => `${F.w} ${sz}px ${F.fam}`;
+  const afam = ["serif","playfair","cinzel"].includes(fk) ? CXF[fk].fam : CX_FONTS.clean, aw = fk === "playfair" ? "italic 700" : "600";
+  const ttxt = F.up ? title.toUpperCase() : title;
+  let ts = S*(F.big ? 0.13 : 0.1)*CX.ts/100;
+  g.font = tfont(ts); let rows = wrapText(g, ttxt, maxW);
+  while((rows.length > 3 || rows.some(r=>g.measureText(r).width > maxW)) && ts > S*0.03){ ts *= 0.92; g.font = tfont(ts); rows = wrapText(g, ttxt, maxW); }
+  const lh = ts*1.05, as = Math.max(S*0.022, S*0.04*CX.as/100), ds = S*0.026;
+  const tW = Math.max(...rows.map(r=>g.measureText(r).width), 1), dW = ded ? (g.font = `italic ${ds}px ${CX_FONTS.serif}`, g.measureText(ded).width) : 0;
+  g.font = `${aw} ${as}px ${afam}`; const aW = artist ? g.measureText(artist).width : 0;
+  const preset = CX.pos !== "free", left = CX.pos === "bottomleft" || CX.pos === "topleft";
+  // title block: rows (+ dedication when the artist is placed separately)
+  const tH = rows.length*lh + (ded && !preset ? ds*1.8 : 0), blockW = Math.max(tW, preset ? 0 : dW);
+  if(preset){
+    // classic layout: title, artist and dedication stacked
+    const full = rows.length*lh + as*1.6 + (ded ? ds*1.8 : 0);
+    const top = CX.pos.startsWith("top") ? pad : CX.pos === "center" ? (S-full)/2 : S - pad - full;
+    const bw = Math.max(tW, aW, dW);
+    const cxp = left ? (pad + bw/2)/S : 0.5;
+    CX.t = {x: left ? (pad + tW/2)/S : 0.5, y: (top + rows.length*lh/2)/S};
+    CX.a = {x: left ? (pad + aW/2)/S : 0.5, y: (top + rows.length*lh + as*0.8)/S};
+    CX._ded = {x: left ? (pad + dW/2)/S : cxp, y: (top + rows.length*lh + as*1.6 + ds*0.9)/S};
+  }
+  const clampBox = (cx, cy, w, h) => { const x0 = Math.min(Math.max(cx*S - w/2, pad*0.5), S - pad*0.5 - w), y0 = Math.min(Math.max(cy*S - h/2, pad*0.5), S - pad*0.5 - h); return [x0, y0, w, h]; };
+  const alignOf = (cx) => left ? "left" : (preset ? "center" : cx < 0.36 ? "left" : cx > 0.64 ? "right" : "center");
+  const tb = clampBox(CX.t.x, CX.t.y, Math.min(blockW, maxW), tH), ab = artist ? clampBox(CX.a.x, CX.a.y, aW, as*1.2) : null;
+  // text colour: auto picks white or black from the brightness behind the title
+  const lumAt = b => { try{ const d = g.getImageData(b[0], b[1], Math.max(1,b[2]), Math.max(1,b[3])).data; let s=0, n=0; for(let i=0;i<d.length;i+=4*97){ s += 0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2]; n++; } return n ? s/n/255 : 0.3; }catch(e){ return 0.3; } };
+  const pal = VID.pal || {}, col = b => { const c = CX.color; if(c === "white") return "#f7f4ee"; if(c === "black") return "#141414"; if(c === "gold") return "#e8c47a"; if(c === "accent") return pal.accent || "#f2a83b"; return lumAt(b) < 0.55 ? "#f7f4ee" : "#141414"; };
+  const isLight = c => { const h = c.replace("#",""); const r = parseInt(h.slice(0,2),16), gg = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16); return (0.2126*r+0.7152*gg+0.0722*b)/255 > 0.5; };
+  // soft band behind the text for readability
+  if(CX.band){
+    const bands = [tb]; if(ab) bands.push(ab);
+    for(const b of bands){
+      const light = isLight(col(b)), sh = light ? "0,0,0" : "255,255,255", y0 = b[1] - b[3]*0.9 - S*0.04, y1 = b[1] + b[3]*1.9 + S*0.04;
+      const gr = g.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, `rgba(${sh},0)`); gr.addColorStop(0.5, `rgba(${sh},${b === tb ? .42 : .3})`); gr.addColorStop(1, `rgba(${sh},0)`);
+      g.fillStyle = gr; g.fillRect(0, y0, S, y1 - y0);
+    }
+  }
+  const shadowFor = c => { if(!CX.shadow){ g.shadowBlur = 0; return; } g.shadowColor = isLight(c) ? "rgba(0,0,0,.55)" : "rgba(255,255,255,.4)"; g.shadowBlur = S*0.012; };
+  g.textBaseline = "alphabetic";
+  // title
+  const ta = alignOf(CX.t.x), tc = col(tb), tx = ta === "left" ? tb[0] : ta === "right" ? tb[0] + tb[2] : tb[0] + tb[2]/2;
+  g.fillStyle = tc; shadowFor(tc); g.textAlign = ta; g.font = tfont(ts);
+  rows.forEach((r,i)=>g.fillText(r, tx, tb[1] + ts*0.85 + i*lh));
+  CXBOX.t = tb;
+  // artist
+  if(ab){ const aa = alignOf(CX.a.x), ac = col(ab); g.fillStyle = ac; shadowFor(ac); g.textAlign = aa; g.font = `${aw} ${as}px ${afam}`;
+    g.fillText(artist, aa === "left" ? ab[0] : aa === "right" ? ab[0] + ab[2] : ab[0] + ab[2]/2, ab[1] + as*0.9); CXBOX.a = ab; }
+  // dedication
+  if(ded){ g.font = `italic ${ds}px ${CX_FONTS.serif}`; g.globalAlpha = 0.85; g.fillStyle = tc;
+    if(preset){ const dx = left ? pad : S/2; g.textAlign = left ? "left" : "center"; g.fillText(ded, dx, CX._ded.y*S + ds*0.35); }
+    else { g.textAlign = ta; g.fillText(ded, tx, tb[1] + rows.length*lh + ds*1.2); }
+    g.globalAlpha = 1; }
+  g.shadowBlur = 0; g.restore();
+}
+const CX_PREV = 600;
+function drawCoverPrev(){ const cv = $("coverPrev"), g = cv.getContext("2d"); g.setTransform(CX_PREV/3000, 0, 0, CX_PREV/3000, 0, 0); drawCoverTo(g, 3000); g.setTransform(1,0,0,1,0,0); $("cxExport").disabled = !VID.cover; }
+let cxRaf = 0; const cxRedraw = ()=>{ if(cxRaf) return; cxRaf = requestAnimationFrame(()=>{ cxRaf = 0; drawCoverPrev(); }); };
+const cxFontSpec = k => `${CXF[k].w} 100px ${CXF[k].fam}`;
+function cxSyncUi(){
+  $("cxPos").value = CX.pos; $("cxFont").value = CX.font; $("cxColor").value = CX.color; $("cxShadow").checked = CX.shadow; $("cxBand").checked = CX.band; $("cxBw").checked = CX.bw;
+  [["cxTs","ts",v=>v+" %"],["cxAs","as",v=>v+" %"],["cxVign","vign",v=>v===0?"aus":v>0?"dunkler "+v:"heller "+(-v)],["cxBright","bright",v=>(v>0?"+":"")+v],["cxContrast","contrast",v=>(v>0?"+":"")+v],["cxSat","sat",v=>(v>0?"+":"")+v],["cxGrain","grain",v=>v?v+" %":"aus"]]
+    .forEach(([id,k,f])=>{ $(id).value = CX[k]; $("v"+id).textContent = f(CX[k]); });
+}
+function cxChanged(){ cxSyncUi(); cxRedraw(); saveSoon(); }
+$("cxPos").onchange = e=>{ CX.pos = e.target.value; cxChanged(); };
+$("cxFont").onchange = e=>{ CX.font = e.target.value; const k = cxFontKey(); try{ document.fonts.load(cxFontSpec(k)).then(cxRedraw); }catch(err){} cxChanged(); };
+$("cxColor").onchange = e=>{ CX.color = e.target.value; cxChanged(); };
+$("cxShadow").onchange = e=>{ CX.shadow = e.target.checked; cxChanged(); };
+$("cxBand").onchange = e=>{ CX.band = e.target.checked; cxChanged(); };
+$("cxBw").onchange = e=>{ CX.bw = e.target.checked; cxChanged(); };
+[["cxTs","ts"],["cxAs","as"],["cxVign","vign"],["cxBright","bright"],["cxContrast","contrast"],["cxSat","sat"],["cxGrain","grain"]].forEach(([id,k])=>{ $(id).oninput = e=>{ CX[k] = +e.target.value; cxChanged(); }; });
+$("cxReset").onclick = ()=>{ Object.assign(CX, JSON.parse(JSON.stringify(CX_DEF))); cxChanged(); };
+["aiDedic","aiGenre","vTitle","vArtist"].forEach(id=>$(id).addEventListener("input", ()=>{ if(!$("aiBox").hidden) cxRedraw(); }));
 if(document.fonts) document.fonts.ready.then(()=>{ if(!$("aiBox").hidden) drawCoverPrev(); });
+// drag title / artist directly on the preview
+(function(){
+  const cv = $("coverPrev"); let drag = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left)/r.width*3000, (e.clientY - r.top)/r.height*3000]; };
+  const hit = ([x,y]) => { for(const k of ["a","t"]){ const b = CXBOX[k]; if(b && x >= b[0]-60 && x <= b[0]+b[2]+60 && y >= b[1]-60 && y <= b[1]+b[3]+60) return k; } return null; };
+  cv.addEventListener("pointermove", e=>{
+    const p = pt(e);
+    if(!drag){ cv.classList.toggle("grab", !!hit(p)); return; }
+    const k = drag.k, dx = (p[0]-drag.p[0])/3000, dy = (p[1]-drag.p[1])/3000;
+    CX[k] = {x: Math.min(1, Math.max(0, drag.o.x + dx)), y: Math.min(1, Math.max(0, drag.o.y + dy))};
+    if(CX.pos !== "free"){ CX.pos = "free"; $("cxPos").value = "free"; }
+    cxRedraw();
+  });
+  cv.addEventListener("pointerdown", e=>{
+    const p = pt(e), k = hit(p); if(!k) return;
+    e.preventDefault(); cv.setPointerCapture(e.pointerId); cv.classList.add("grabbing");
+    // start from where the box really is (it may have been pushed back inside the edges)
+    const b = CXBOX[k]; CX[k] = {x: (b[0]+b[2]/2)/3000, y: (b[1]+b[3]/2)/3000};
+    drag = {k, p, o: {...CX[k]}};
+  });
+  const end = ()=>{ if(!drag) return; drag = null; cv.classList.remove("grabbing"); saveSoon(); };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+})();
+cxSyncUi();
 $("cxExport").onclick = async ()=>{
   if(!VID.cover) return;
-  try{ await Promise.all(['400 100px "DM Serif Display"','400 100px "Permanent Marker"','800 100px "Big Shoulders Display"','700 100px "Instrument Sans"'].map(f=>document.fonts.load(f))); }catch(e){}
+  try{ await Promise.all([cxFontSpec(cxFontKey()), '400 100px "DM Serif Display"', '600 100px "Instrument Sans"', '700 100px "Instrument Sans"'].map(f=>document.fonts.load(f))); }catch(e){}
   const S = 3000, c = document.createElement("canvas"); c.width = c.height = S; drawCoverTo(c.getContext("2d"), S);
   const blob = await new Promise(r=>c.toBlob(r, "image/png"));
   const native = Math.min(VID.cover.width, VID.cover.height);
@@ -3518,7 +3665,7 @@ function getProject(){
     master: {on:M.on, preset:M.preset, intensity:M.intensity, style:M.style, tone:M.tone, target:M.target, warm:M.warm, air:M.air, glue:M.glue, sat:M.sat, width:M.width, mb:M.mb},
     tempo: {mode:P.mode, tempo:P.tempo, semis:P.semis, keepVox:P.keepVox},
     section: (AB.a!==null && AB.b!==null && duration) ? [AB.a/duration, AB.b/duration] : null, onlyAB: $("onlyAB").checked,
-    video: {aspect:VID.aspect, title:$("vTitle").value, artist:$("vArtist").value, lyrics:$("lText").value, lyrOn:$("vLyr").checked, brand:$("vBrand").checked, brandTxt:$("vBrandTxt").value, cover:VID.coverUrl||"", coverName:VID.coverName||"", logo:VID.logoUrl||""},
+    video: {aspect:VID.aspect, title:$("vTitle").value, artist:$("vArtist").value, lyrics:$("lText").value, lyrOn:$("vLyr").checked, brand:$("vBrand").checked, brandTxt:$("vBrandTxt").value, cover:VID.coverUrl||"", coverName:VID.coverName||"", logo:VID.logoUrl||"", cx: JSON.parse(JSON.stringify(CX))},
     hook: SEC.hook, sectionLen: SEC.len,
     fadeIn: +$("fadeIn").value||0, fadeOut: +$("fadeOut").value||0, name: $("fname").value, nameManual: fnameManual, format: $("fmt").value,
   };
@@ -3545,6 +3692,7 @@ function applyProject(pj){
   if(pj.section){ AB.a = pj.section[0]*duration; AB.b = pj.section[1]*duration; }
   if(pj.video){ const v = pj.video; if(ASPECTS[v.aspect]) VID.aspect = v.aspect; $("vTitle").value = v.title||""; $("vArtist").value = v.artist ?? "DANVIEL"; $("lText").value = v.lyrics||""; $("vLyr").checked = v.lyrOn!==false; $("vBrand").checked = v.brand!==false;
     $("vBrandTxt").value = v.brandTxt || "";
+    if(v.cx && typeof v.cx === "object"){ Object.assign(CX, JSON.parse(JSON.stringify(CX_DEF)), v.cx); cxSyncUi(); }
     document.querySelectorAll("#vAspect button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===VID.aspect)); $("lSrt").disabled = !$("lText").value.trim(); renderLyricView(); previewSoon();
     if(v.cover){ dataUrlToBitmap(v.cover).then(bm=>{ VID.cover = bm; VID.coverUrl = v.cover; VID.coverName = v.coverName||"Cover"; VID.pal = coverPalette(bm); $("vCoverName").textContent = VID.coverName + " · Farben übernommen"; $("vCoverClr").hidden = false; previewSoon(); }).catch(()=>{}); }
     else { VID.cover = null; VID.coverUrl = ""; VID.pal = null; $("vCoverClr").hidden = true; $("vCoverName").textContent = "optional, sonst dreht sich eine Platte"; }
@@ -3813,9 +3961,9 @@ $("newProj").onclick = ()=>{
   location.reload();
 };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.0"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.1"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "13.0") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "13.1") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
