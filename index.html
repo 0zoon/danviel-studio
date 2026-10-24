@@ -299,7 +299,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.3</p>
+      <p class="by">Mix · Master · Release · v12.4</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -631,11 +631,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
       <button id="exportVers" disabled>Versionen exportieren (ZIP)</button>
     </div>
     <div class="projrow">
-      <button class="primary" id="projZip" disabled title="Alle Spuren, Einstellungen, Cover, Logo, Lyrics und Hook in einer Datei">Projekt speichern</button>
+      <button class="primary" id="projZip" disabled title="Alle Spuren, Einstellungen, Cover, Logo, Lyrics und Hook in einer ZIP-Datei">Projekt speichern (ZIP)</button>
       <button id="projLoad">Projekt laden</button>
-      <button id="projSave" disabled title="Nur die Einstellungen ohne Audio, kleine Datei">Nur Einstellungen (.json)</button>
+      <button id="projSave" hidden disabled title="Nur die Einstellungen ohne Audio, kleine Datei">Nur Einstellungen (.json)</button>
       <input type="file" id="projFile" accept=".zip,.json,application/zip,application/json" hidden>
-      <small>„Projekt speichern“ packt alles in eine Datei: Spuren, Einstellungen, Cover, Logo, Lyrics und Hook. Mit „Projekt laden“ (oder einfach reinziehen) ist alles wieder da, auch auf einem anderen Computer.</small>
+      <small>„Projekt speichern“ packt alles in eine ZIP-Datei: Spuren, Einstellungen, Cover, Logo, Lyrics und Hook. Genau diese ZIP weiterschicken. Mit „Projekt laden“ (oder einfach reinziehen) ist beim Empfänger alles wieder da.</small>
     </div>
     <div class="bar"><i id="prog"></i></div>
     <div class="status" id="status"></div>
@@ -646,11 +646,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.3</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.4</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.3</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.4</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -662,6 +662,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.4</h3>
+  <ul>
+    <li>Projekt weitergeben ist jetzt eindeutig: Es gibt nur noch „Projekt speichern (ZIP)“, das alles enthält (Spuren, Einstellungen, Lyrics, Cover, Logo, Hook). Die alte Einstellungs-Datei (.json) ohne Spuren gibt es nicht mehr, sie lässt sich aber weiterhin laden.</li>
+    <li>Umlaute werden überall richtig angezeigt, und am Handy passt die Größe</li>
+  </ul>
   <h3>Neu in v12.3</h3>
   <ul>
     <li>Fehler-Log: ganz unten „Fehler-Log speichern“. Die Textdatei zeigt Schritt für Schritt, was passiert ist (Browser, Grafikkarte, jede Meldung, beim Zerlegen eine genaue Analyse). Ideal zum Weiterschicken, wenn etwas nicht klappt. Es enthält keine Audiodaten.</li>
@@ -1109,7 +1114,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.3"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v12.4"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -3432,7 +3437,8 @@ $("projZip").onclick = async ()=>{
     }
     setStatus("Packe ZIP …"); setProg(1);
     const z = await zip.generateAsync({type:"blob", compression:"STORE"});
-    await deliver(z, fileName(["Projekt"], "zip"));
+    const zn = fileName(["Projekt"], "zip"); await deliver(z, zn);
+    setStatus(`Projekt gespeichert: ${zn} (${(z.size/1048576).toFixed(1)} MB). Genau diese ZIP-Datei weiterschicken, der Empfänger lädt sie mit „Projekt laden“ und hat alles.`);
   } catch(e){ console.error(e); setStatus("Projekt-Paket fehlgeschlagen: " + (e.message||e), true); }
   finally { $("projZip").disabled = false; setTimeout(()=>setProg(0), 800); }
 };
@@ -3443,7 +3449,7 @@ $("projFile").onchange = async e=>{
     const pj = JSON.parse(await f.text());
     if(!tracks.length){                                                     // settings only, no audio yet: keep them for the next load
       PENDING_PROJECT = pj;
-      setStatus("Diese Datei enthält nur Einstellungen, keine Spuren. Lad jetzt die passenden Stems, dann werden die Einstellungen automatisch übernommen. Tipp: „Projekt speichern“ speichert ab jetzt alles in einer Datei.");
+      setStatus("Das ist eine alte Einstellungs-Datei (.json) ohne Spuren, damit kann man das Projekt nicht komplett öffnen. Bitte den Absender, das Projekt nochmal mit „Projekt speichern (ZIP)“ zu speichern und die ZIP-Datei zu schicken. Alternativ: jetzt die passenden Stems laden, dann werden die Einstellungen übernommen.", true);
       return;
     }
     setStatus("Projekt geladen."); applyProject(pj);
@@ -3646,9 +3652,9 @@ function sepAnalysis(res, L, R){
 $("logBtn").onclick = ()=>saveLog();
 $("hudX").onclick = ()=>{ $("hud").hidden = true; };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.3"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.4"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.3") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.4") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
