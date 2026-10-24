@@ -1,3 +1,5 @@
+<img src="logo.png" width="120" alt="DANVIEL Logo">
+
 # DANVIEL Studio
 
 Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. Keine Installation, kein Upload: deine Songs bleiben auf deinem Rechner.
