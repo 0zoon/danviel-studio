@@ -299,7 +299,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.4</p>
+      <p class="by">Mix · Master · Release · v12.5</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -508,7 +508,9 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
             <small class="tnote">Platzhalter: {titel} {artist} {stimmung} {tempo} {tonart} {lyrics} {bildidee} {musikstil} {widmung}</small>
           </details>
           <div class="row">
-            <select id="aiEngine" aria-label="Bild-KI"><option value="poll">Kostenlos (Pollinations, Flux)</option><option value="openai">OpenAI mit eigenem API-Schlüssel</option></select>
+            <select id="aiEngine" aria-label="Bild-KI"><option value="poll">Kostenlos (Pollinations, Flux)</option><option value="manual">ChatGPT / eigene KI (Prompt kopieren, Bild hier laden)</option><option value="openai">OpenAI mit eigenem API-Schlüssel</option></select>
+            <input type="password" id="aiPkey" placeholder="Pollinations-Schlüssel (optional, kostenlos auf enter.pollinations.ai)" autocomplete="off">
+            <button id="aiOwn" hidden>Fertiges Bild laden</button><input type="file" id="aiOwnFile" accept="image/*" hidden>
             <input type="password" id="aiKey" placeholder="sk-… (OpenAI API-Schlüssel)" hidden autocomplete="off">
             <select id="aiQual" aria-label="Qualität" hidden><option value="low">Schnell · ~1 Cent</option><option value="medium" selected>Gut · ~3 Cent</option><option value="high">Beste · ~13 Cent</option></select>
             <label id="aiKeySaveL" hidden><input type="checkbox" id="aiKeySave"> Schlüssel in diesem Browser merken</label>
@@ -646,11 +648,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.4</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.5</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.4</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.5</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -662,6 +664,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.5</h3>
+  <ul>
+    <li>Cover über ChatGPT: Bild-KI auf „ChatGPT / eigene KI“ stellen, Prompt kopieren, Bild in ChatGPT erstellen lassen und mit „Fertiges Bild laden“ übernehmen. Titel und Name setzt das Programm exakt.</li>
+    <li>Kostenloser Bild-Server: neue Adresse, automatische weitere Versuche, optional ein kostenloser eigener Schlüssel</li>
+  </ul>
   <h3>Neu in v12.4</h3>
   <ul>
     <li>Projekt weitergeben ist jetzt eindeutig: Es gibt nur noch „Projekt speichern (ZIP)“, das alles enthält (Spuren, Einstellungen, Lyrics, Cover, Logo, Hook). Die alte Einstellungs-Datei (.json) ohne Spuren gibt es nicht mehr, sie lässt sich aber weiterhin laden.</li>
@@ -1114,7 +1121,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.4"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v12.5"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -2739,10 +2746,16 @@ function fillPrompt(t){
 }
 function aiEngineUi(){
   const oa = $("aiEngine").value === "openai";
+  const eng = $("aiEngine").value, man = eng === "manual";
   ["aiKey","aiQual","aiKeySaveL"].forEach(id=>$(id).hidden = !oa);
-  $("aiNote").textContent = oa ? "Kostet bei OpenAI je nach Qualität ca. 1–13 Cent pro Bild, abgerechnet über deinen OpenAI-Account." : "Kostenlos, ohne Anmeldung. Etwa ein Bild alle 15 Sekunden, manchmal mit kleinem Wasserzeichen.";
+  $("aiPkey").hidden = eng !== "poll"; $("aiOwn").hidden = !man;
+  $("aiGo").textContent = man ? "Prompt kopieren" : "Cover erstellen";
+  $("aiNote").textContent = oa ? "Kostet bei OpenAI je nach Qualität ca. 1–13 Cent pro Bild, abgerechnet über deinen OpenAI-Account."
+    : man ? "1. „Prompt kopieren“ klicken. 2. In ChatGPT (oder Gemini …) einfügen und das Bild erstellen lassen. 3. Bild speichern und hier mit „Fertiges Bild laden“ öffnen. Titel und Name setzt das Programm danach exakt."
+    : "Kostenlos, ohne Anmeldung. Etwa ein Bild alle 15 Sekunden. Wenn der Server ausgelastet ist, hilft ein kostenloser Schlüssel von enter.pollinations.ai oder der Weg über ChatGPT.";
 }
 $("aiCoverBtn").onclick = ()=>{ const b = $("aiBox"); b.hidden = !b.hidden; if(!b.hidden){ renderStyles(); $("aiMeta").value = META_PROMPT;
+  try{ const pk = localStorage.getItem("stemmixer:pkey"); if(pk) $("aiPkey").value = pk; }catch(e){}
   try{ const k = localStorage.getItem("stemmixer:aiKey"); if(k){ $("aiKey").value = k; $("aiKeySave").checked = true; $("aiEngine").value = "openai"; } }catch(e){} aiEngineUi(); drawCoverPrev(); } };
 $("aiClose").onclick = ()=>{ $("aiBox").hidden = true; };
 $("aiEngine").onchange = aiEngineUi;
@@ -2763,8 +2776,26 @@ async function useCoverBlob(blob, label){
   VID.cover = bm; VID.coverUrl = await imageToDataUrl(bm, 1024, "image/jpeg"); VID.coverName = label; VID.pal = coverPalette(bm);
   $("vCoverName").textContent = label + " · Farben übernommen"; $("vCoverClr").hidden = false; previewSoon(); saveSoon(); drawCoverPrev();
 }
+function addCoverThumb(blob, prompt, label){
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(blob); img.alt = label; img.title = prompt || label;
+  img.onclick = async ()=>{ document.querySelectorAll("#aiThumbs img").forEach(x=>x.classList.toggle("sel", x===img)); if(prompt) $("aiUsed").value = prompt; await useCoverBlob(blob, label); };
+  $("aiThumbs").prepend(img); while($("aiThumbs").children.length > 6) $("aiThumbs").lastChild.remove();
+  img.click();
+}
+$("aiOwn").onclick = ()=>$("aiOwnFile").click();
+$("aiOwnFile").onchange = async e=>{ const f = e.target.files[0]; e.target.value = ""; if(!f) return;
+  try{ await addCoverThumb(f, $("aiUsed").value, "Eigenes Cover"); $("aiNote").textContent = "Bild übernommen. Unten siehst du das fertige Cover mit Schrift, „Cover als PNG speichern“ exportiert es in 3000 × 3000."; log("Cover: eigenes Bild geladen", f.name, Math.round(f.size/1024)+" KB"); }
+  catch(err){ $("aiNote").textContent = "Dieses Bild konnte nicht geöffnet werden."; } };
 $("aiGo").onclick = async ()=>{
   const prompt = fillPrompt($("aiPrompt").value || AI_NEUTRAL), eng = $("aiEngine").value;
+  if(eng === "manual"){
+    $("aiUsed").value = prompt; $("aiUsedBox").hidden = false;
+    let ok = false; try{ await navigator.clipboard.writeText(prompt); ok = true; }catch(e){}
+    if(!ok){ $("aiUsedBox").open = true; $("aiUsed").select(); }
+    $("aiNote").textContent = ok ? "Prompt kopiert. Jetzt in ChatGPT einfügen, Bild erstellen lassen, speichern und hier mit „Fertiges Bild laden“ öffnen." : "Kopieren ging nicht automatisch. Der Prompt ist unten markiert, kopier ihn mit Strg+C.";
+    return;
+  }
   $("aiGo").disabled = true; $("aiNote").textContent = "Erstelle Cover … das dauert meist 10–40 Sekunden.";
   $("aiUsed").value = prompt; $("aiUsedBox").hidden = false;
   try{
@@ -2779,16 +2810,28 @@ $("aiGo").onclick = async ()=>{
       const b64 = j.data && j.data[0] && j.data[0].b64_json; if(!b64) throw new Error("OpenAI hat kein Bild geliefert.");
       blob = await (await fetch("data:image/png;base64," + b64)).blob();
     } else {
-      const seed = Math.floor(Math.random()*1e9);
-      const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt.slice(0, 1800)) + `?width=1024&height=1024&model=flux&seed=${seed}&nologo=true`;
-      const r = await fetch(url); if(!r.ok) throw new Error(r.status===429 ? "Zu viele Anfragen. Warte 15 Sekunden und versuch es nochmal." : "Bild-Server antwortet nicht (" + r.status + ").");
-      blob = await r.blob(); if(!/^image\//.test(blob.type)) throw new Error("Der Bild-Server hat kein Bild geliefert.");
+      const seed = Math.floor(Math.random()*1e9), enc = encodeURIComponent;
+      const p = prompt.replace(/\s+/g, " ").trim(), short = p.slice(0, 1000), tiny = p.slice(0, 450);
+      const pk = $("aiPkey").value.trim(); try{ if(pk) localStorage.setItem("stemmixer:pkey", pk); else localStorage.removeItem("stemmixer:pkey"); }catch(e){}
+      const q = `width=1024&height=1024&model=flux&seed=${seed}&nologo=true`;
+      const tries = [
+        "https://gen.pollinations.ai/image/" + enc(short) + "?" + q + (pk ? "&key=" + enc(pk) : ""),
+        "https://image.pollinations.ai/prompt/" + enc(short) + "?" + q,
+        "https://image.pollinations.ai/prompt/" + enc(tiny) + "?width=1024&height=1024&seed=" + (seed+1) + "&nologo=true",
+      ];
+      let last = "";
+      for(let i=0; i<tries.length && !blob; i++){
+        if(i) $("aiNote").textContent = `Bild-Server ausgelastet (${last}), Versuch ${i+1} von ${tries.length} …`;
+        try{
+          const r = await fetch(tries[i]);
+          log("Cover: Server", new URL(tries[i]).host, "Antwort", r.status, "· Prompt", (i===2 ? tiny : short).length, "Zeichen");
+          if(r.ok){ const b = await r.blob(); if(/^image\//.test(b.type)) blob = b; else last = "kein Bild"; }
+          else { last = r.status; if(r.status === 401 || r.status === 403) last += pk ? " Schlüssel abgelehnt" : " Schlüssel nötig"; if(i < tries.length-1) await new Promise(res=>setTimeout(res, r.status===429 ? 15000 : 2500)); }
+        }catch(err){ last = "keine Verbindung"; log("Cover: Server", new URL(tries[i]).host, "Fehler", err); }
+      }
+      if(!blob) throw new Error(`Die kostenlosen Bild-Server sind gerade ausgelastet oder verlangen einen Schlüssel (${last}). Lösung: Bei „Bild-KI“ auf „ChatGPT / eigene KI“ stellen, Prompt kopieren und das fertige Bild hier laden. Oder einen kostenlosen Schlüssel auf enter.pollinations.ai holen und eintragen.`);
     }
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(blob); img.alt = "KI-Cover"; img.title = prompt;
-    img.onclick = async ()=>{ document.querySelectorAll("#aiThumbs img").forEach(x=>x.classList.toggle("sel", x===img)); $("aiUsed").value = img.title; await useCoverBlob(blob, "KI-Cover"); };
-    $("aiThumbs").prepend(img); while($("aiThumbs").children.length > 6) $("aiThumbs").lastChild.remove();
-    img.click();
+    addCoverThumb(blob, prompt, "KI-Cover");
     $("aiNote").textContent = "Fertig. Klick auf ein Bild, um es zu nehmen. „Cover erstellen“ macht eine neue Variante. Bitte prüf das Bild selbst, eine automatische Bildprüfung findet nicht statt.";
   } catch(e){
     console.error(e);
@@ -3652,9 +3695,9 @@ function sepAnalysis(res, L, R){
 $("logBtn").onclick = ()=>saveLog();
 $("hudX").onclick = ()=>{ $("hud").hidden = true; };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.4"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.5"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.4") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.5") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
