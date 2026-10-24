@@ -683,6 +683,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
   </ol>
   <h3>Neu in v12.8</h3>
   <ul>
+    <li>Stem-ZIPs werden komplett entpackt, auch mit Unterordnern und ZIPs in der ZIP (typisch nach WhatsApp, Drive oder WeTransfer)</li>
     <li>„Projekt löschen“ ganz oben (rot): zweimal klicken, dann ist alles leer und du startest ein neues Projekt. Deine Cover-Styles und die Hör-Lautstärke bleiben erhalten.</li>
   </ul>
   <h3>Neu in v12.7</h3>
@@ -842,11 +843,19 @@ async function handleFiles(list){
     if(/\.json$/i.test(f.name)){ try{ projJson = JSON.parse(await f.text()); }catch(e){} continue; }
     if(/\.zip$/i.test(f.name)){
       if(!window.JSZip){ setStatus("ZIP-Unterstützung konnte nicht geladen werden. Entpack die ZIP und zieh die Einzeldateien rein.", true); continue; }
-      const zip = await JSZip.loadAsync(f);
-      const entries = Object.values(zip.files).filter(e => !e.dir && AUDIO_RE.test(e.name) && !/__MACOSX|\/\._/.test(e.name));
-      const pjEntry = Object.values(zip.files).find(e => !e.dir && /\.json$/i.test(e.name) && !/__MACOSX/.test(e.name));
-      if(pjEntry){ try{ projJson = JSON.parse(await pjEntry.async("string")); }catch(e){} }
-      for(const e of entries) items.push({name:e.name, get:()=>e.async("arraybuffer")});
+      // unpack the ZIP (and ZIPs inside it, e.g. from WhatsApp / Drive / WeTransfer) and take every audio file in any folder
+      setStatus(`Entpacke ${f.name} …`); await sleep0();
+      const walk = async (zip, depth) => {
+        const all = Object.values(zip.files).filter(e => !e.dir && !/(^|\/)__MACOSX\/|(^|\/)\._/.test(e.name));
+        const pjEntry = all.find(e => /\.json$/i.test(e.name));
+        if(pjEntry && !projJson){ try{ projJson = JSON.parse(await pjEntry.async("string")); }catch(e){} }
+        for(const e of all){
+          if(AUDIO_RE.test(e.name)) items.push({name: e.name.split("/").pop(), get:()=>e.async("arraybuffer")});
+          else if(/\.zip$/i.test(e.name) && depth < 2){ try{ await walk(await JSZip.loadAsync(await e.async("arraybuffer")), depth+1); }catch(err){ console.warn("ZIP in ZIP", e.name, err); } }
+        }
+      };
+      try{ await walk(await JSZip.loadAsync(f), 0); log("ZIP entpackt:", f.name, items.length, "Audiodateien"); }
+      catch(err){ console.error(err); setStatus(`„${f.name}“ ließ sich nicht entpacken. Ist die ZIP vollständig heruntergeladen?`, true); continue; }
     } else if(AUDIO_RE.test(f.name) || /^(audio|video)\//.test(f.type||"") || !/\.[a-z0-9]{1,5}$/i.test(f.name)){
       items.push({name:f.name, get:()=>f.arrayBuffer()});
     }
@@ -855,7 +864,7 @@ async function handleFiles(list){
   if(!items.length) for(const f of files){ if(!/\.(zip|json|txt|pdf|png|jpe?g|gif|doc|docx|exe)$/i.test(f.name)) items.push({name:f.name, get:()=>f.arrayBuffer()}); }
   if(!items.length){
     if(projJson && tracks.length){ applyProject(projJson); setStatus("Projekt geladen."); return; }
-    setStatus("Keine Audiodateien gefunden.", true); return; }
+    setStatus("Keine Audiodateien gefunden. Unterstützt werden MP3, WAV, FLAC, OGG, M4A und ZIPs mit solchen Dateien drin.", true); return; }
   items.sort((a,b)=>a.name.localeCompare(b.name, undefined, {numeric:true}));
   const c = ac(); const out = [];
   for(let i=0;i<items.length;i++){
