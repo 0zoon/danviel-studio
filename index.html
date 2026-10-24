@@ -273,7 +273,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.1</p>
+      <p class="by">Mix · Master · Release · v12.2</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -620,11 +620,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><span class="credit">DANVIEL Studio <b>v12.1</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><span class="credit">DANVIEL Studio <b>v12.2</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.1</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.2</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -636,6 +636,10 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.2</h3>
+  <ul>
+    <li>Song in Stems zerlegen: rechnet jetzt über den Prozessor statt über die Grafikkarte, weil die Grafikkarten-Berechnung bei diesem KI-Modell fehlerhafte Ergebnisse liefert. Dauert länger, ist aber zuverlässig.</li>
+  </ul>
   <h3>Neu in v12.1</h3>
   <ul>
     <li>Neuer Name: aus dem Stem Mixer wird <b>DANVIEL Studio</b>, weil er längst mehr kann als mischen. Deine Einstellungen, Styles und Projekte bleiben erhalten.</li>
@@ -1024,7 +1028,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.1";
+const CREDIT = "DANVIEL Studio v12.2";
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -3500,9 +3504,9 @@ function checkSeparation(res, L, R){
 }
 $("hudX").onclick = ()=>{ $("hud").hidden = true; };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.1"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.2"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.1") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.2") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
@@ -3516,40 +3520,59 @@ async function fetchModel(url){
   try{ if(cache) await cache.put(url, new Response(buf.slice().buffer)); }catch(e){}
   return buf.buffer;
 }
+let SPLIT_MODE = "cpu"; try{ if(localStorage.getItem("stemmixer:splitmode") === "gpu") SPLIT_MODE = "gpu"; }catch(e){}
+let DEMUCS_EP = null, SPLIT_IN = null;
+async function runDemucs(useGpu, t0, L, R){
+  if(L) SPLIT_IN = [L, R]; else [L, R] = SPLIT_IN;
+  const ep = useGpu ? "gpu" : "cpu";
+  if(!DEMUCS || DEMUCS_EP !== ep){
+    DEMUCS = null;
+    setStatus("Lade die Trenn-KI (einmalig, ca. 170 MB) …");
+    const {ort, mod} = await loadDemucs();
+    const proc = new mod.DemucsProcessor({ ort,
+      sessionOptions: { executionProviders: useGpu ? ["webgpu", "wasm"] : ["wasm"] },
+      onProgress: p => { const v = typeof p === "number" ? p : (p && p.progress) || 0; setProg(v); const sec = (performance.now()-t0)/1000;
+        setStatus(`Zerlege in Stems${useGpu ? "" : " (Prozessor)"} … ${Math.round(v*100)} %` + (v>0.03 ? ` · noch ca. ${Math.max(1, Math.round(sec/v*(1-v)/60))} Min.` : "")); },
+      onLog: (ph, msg) => console.log("[demucs]", ph, msg) });
+    const url = (mod.CONSTANTS && mod.CONSTANTS.DEFAULT_MODEL_URL) || "https://huggingface.co/timcsy/demucs-web-onnx/resolve/main/htdemucs_embedded.onnx";
+    let model; try{ model = await fetchModel(url); }catch(e){ model = url; }
+    setStatus("Starte die Trenn-KI …"); setProg(0.01); await sleep0();
+    await proc.loadModel(model);
+    DEMUCS = proc; DEMUCS_EP = ep;
+  }
+  setStatus(useGpu ? "Zerlege in Stems …" : "Zerlege in Stems über den Prozessor … das kann je nach Rechner und Songlänge 10–30 Minuten dauern. Lass den Tab dabei offen."); await sleep0();
+  return await DEMUCS.separate(L, R);
+}
 $("splitFile").onchange = async e=>{
   const f = e.target.files[0]; e.target.value = ""; if(!f) return;
   stop(); $("splitBtn").disabled = true; $("splitBtn").textContent = "Zerlege …"; setProg(0.01);
   let gpu = false; try{ gpu = !!(navigator.gpu && await navigator.gpu.requestAdapter()); }catch(e){}
-  if(!gpu) setStatus("Hinweis: Keine Grafikkarten-Beschleunigung verfügbar, das Zerlegen läuft über den Prozessor und kann 10–20 Minuten dauern.");
   const t0 = performance.now();
   try{
     setStatus("Lese den Song …");
     const src = await ac().decodeAudioData(await f.arrayBuffer());
     const L0 = src.getChannelData(0), R0 = src.numberOfChannels>1 ? src.getChannelData(1) : L0;
     const [L, R] = await resample(L0, R0, src.sampleRate, 44100);          // the model works at 44.1 kHz stereo
-    if(!DEMUCS){
-      setStatus("Lade die Trenn-KI (einmalig, ca. 170 MB) …");
-      const {ort, mod} = await loadDemucs();
-      const proc = new mod.DemucsProcessor({ ort,
-        onProgress: p => { const v = typeof p === "number" ? p : (p && p.progress) || 0; setProg(v); const sec = (performance.now()-t0)/1000;
-          setStatus(`Zerlege in Stems … ${Math.round(v*100)} %` + (v>0.03 ? ` · noch ca. ${Math.max(1, Math.round(sec/v*(1-v)/60))} Min.` : "")); },
-        onLog: (ph, msg) => console.log("[demucs]", ph, msg) });
-      const url = (mod.CONSTANTS && mod.CONSTANTS.DEFAULT_MODEL_URL) || "https://huggingface.co/timcsy/demucs-web-onnx/resolve/main/htdemucs_embedded.onnx";
-      let model; try{ model = await fetchModel(url); }catch(e){ model = url; }
-      setStatus("Starte die Trenn-KI …"); setProg(0.01); await sleep0();
-      await proc.loadModel(model);
-      DEMUCS = proc;
-    }
-    setStatus("Zerlege in Stems … das dauert je nach Rechner ein paar Minuten."); await sleep0();
-    const res = await DEMUCS.separate(L, R);
+    // The library's WebGPU path is known to produce broken output for this model (limited Conv1d support),
+    // so: use the processor (WASM) by default; WebGPU only as an opt-in fast try with automatic fallback.
+    let useGpu = gpu && SPLIT_MODE === "gpu";
+    let res = await runDemucs(useGpu, t0, L, R);
+    setStatus("Prüfe das Ergebnis der KI …"); await sleep0();
     // SAFETY CHECK before anything can be heard: the separated stems must add up to the original song.
     // Broken output (noise, wrong layout, wrong scaling) fails this check and is never played.
-    setStatus("Prüfe das Ergebnis der KI …"); await sleep0();
-    const verdict = checkSeparation(res, L, R);
-    console.log("[demucs] check", verdict);
+    let verdict = checkSeparation(res, L, R);
+    console.log("[demucs] check", useGpu ? "gpu" : "cpu", verdict);
+    if(!verdict.ok && useGpu){
+      setStatus("Die Grafikkarten-Berechnung hat ein fehlerhaftes Ergebnis geliefert (nichts abgespielt). Zweiter Versuch über den Prozessor, das dauert länger, ist aber zuverlässig …");
+      res = null; useGpu = false; await sleep0();
+      res = await runDemucs(false, performance.now(), L, R);
+      verdict = checkSeparation(res, L, R);
+      console.log("[demucs] check cpu", verdict);
+      if(verdict.ok){ SPLIT_MODE = "cpu"; try{ localStorage.setItem("stemmixer:splitmode", "cpu"); }catch(e){} }
+    }
     if(!verdict.ok){
-      SPLIT_DIAG = verdict.diag;
-      throw new Error("Sicherheitsprüfung nicht bestanden, die KI-Ausgabe war fehlerhaft. Es wurde nichts abgespielt. Diagnose: " + verdict.diag);
+      SPLIT_DIAG = verdict.diag + (useGpu ? ", Grafikkarte" : ", Prozessor");
+      throw new Error("Sicherheitsprüfung nicht bestanden, die KI-Ausgabe war fehlerhaft. Es wurde nichts abgespielt. Diagnose: " + SPLIT_DIAG);
     }
     const c = ac(), list = [];
     for(const st of verdict.stems){
