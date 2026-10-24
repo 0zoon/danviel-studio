@@ -65,7 +65,8 @@ button.hi{border:2px solid var(--accent);color:var(--fg);font-weight:600;backgro
 button.hi:hover{background:color-mix(in srgb, var(--accent) 22%, var(--panel))}
 button.hi2{border:2px solid #e5484d;font-weight:600;background:color-mix(in srgb, #e5484d 10%, var(--panel))}
 button.hi2:hover{border-color:#e5484d;background:color-mix(in srgb, #e5484d 22%, var(--panel))}
-.aicfull{margin-top:16px}
+.aicfull{margin-top:12px}
+.covbtn{display:block;width:100%;margin-top:16px;padding:12px 16px;font-size:15px}
 button:disabled{opacity:.45;cursor:not-allowed}
 
 .drop{border:2px dashed var(--line);border-radius:12px;padding:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;background:var(--panel);transition:border-color .15s,background .15s}
@@ -489,8 +490,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
         <div class="knob"><span class="top">Format</span><div class="chips" id="vAspect"><button data-v="v" aria-pressed="true">9:16 Reels/TikTok</button><button data-v="s" aria-pressed="false">1:1 Feed</button><button data-v="w" aria-pressed="false">16:9 YouTube</button></div></div>
         <label class="knob"><span class="top">Titel</span><input type="text" id="vTitle" placeholder="Songtitel"></label>
         <label class="knob"><span class="top">Artist</span><input type="text" id="vArtist" value="DANVIEL"></label>
-        <div class="knob"><span class="top">Cover-Bild</span><div class="row"><button id="vCoverBtn" class="hi2">Bild wählen</button><button id="vCoverClr" hidden>Entfernen</button><small id="vCoverName" class="tnote">optional, sonst dreht sich eine Platte</small></div><input type="file" id="vCover" accept="image/*" hidden>
-          <button id="aiCoverBtn" class="hi" style="margin-top:8px">Cover-Studio: mit KI erstellen und mit Schrift exportieren</button></div>
+        <div class="knob"><span class="top">Cover-Bild</span><div class="row"><button id="vCoverBtn" class="hi2">Bild wählen</button><button id="vCoverClr" hidden>Entfernen</button><small id="vCoverName" class="tnote">optional, sonst dreht sich eine Platte</small></div><input type="file" id="vCover" accept="image/*" hidden></div>
         <div class="row"><label><input type="checkbox" id="vLyr" checked> Lyrics im Video</label><label><input type="checkbox" id="vBrand" checked> DANVIEL-Branding (Name + Logo)</label></div>
         <div class="row brandrow"><label class="knob"><span class="top">Eigenes Branding</span><input type="text" id="vBrandTxt" placeholder="z. B. dein Name, Label oder @handle"></label>
           <div class="knob"><span class="top">Logo</span><div class="row"><button id="vLogoBtn" class="hi2">Logo wählen</button><button id="vLogoClr" hidden>Entfernen</button><small id="vLogoName" class="tnote">optional, PNG mit transparentem Hintergrund passt am besten</small></div><input type="file" id="vLogo" accept="image/*" hidden></div></div>
@@ -499,6 +499,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
       </div>
       <div class="vidprev"><canvas id="vPrev" width="540" height="960" aria-label="Video-Vorschau"></canvas></div>
     </div>
+    <button id="aiCoverBtn" class="hi covbtn">Cover-Studio: Cover mit KI erstellen und mit Schrift exportieren</button>
     <div class="aic aicfull" id="aiBox" hidden>
           <b>Cover-Studio</b>
           <div class="row">
