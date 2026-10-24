@@ -81,6 +81,16 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .drop .btns{display:flex;gap:8px;flex-wrap:wrap}
 
 .transport{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mini{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;padding:10px max(16px, calc((100% - 1100px)/2)) calc(10px + env(safe-area-inset-bottom, 0px));background:color-mix(in srgb, var(--panel) 94%, transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(0,0,0,.35)}
+.mini .play{width:42px;height:42px;flex:none}
+.minimid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.minititle{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#miniSeek{width:100%;flex:none;margin:0}
+.mini .time{font-family:var(--f-mono);font-size:13px;color:var(--muted);white-space:nowrap}
+.mini button:not(.play){flex:none}
+body.hasmini{padding-bottom:78px}
+body.hasmini .hud{bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
+@media (max-width:560px){.mini .time{display:none}.mini{gap:8px}}
 .play{width:46px;height:46px;border-radius:50%;padding:0;display:grid;place-items:center;background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .play svg{width:18px;height:18px;fill:currentColor}
 .time{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);white-space:nowrap}
@@ -320,7 +330,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.9</p>
+      <p class="by">Mix · Master · Release · v13.0</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -669,11 +679,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.9</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.0</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.9</h2>
+  <h2 id="helpTitle">DANVIEL Studio v13.0</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -685,6 +695,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v13.0</h3>
+  <ul>
+    <li>Mini-Player unten: Sobald du runterscrollst, erscheint eine Leiste mit Play/Pause, Zeitleiste und Vorher/Nachher. Kein Hoch- und Runterscrollen mehr. Der Pfeil ↑ bringt dich zurück zum großen Player.</li>
+    <li>Tipp: Die Leertaste startet und stoppt überall</li>
+  </ul>
   <h3>Neu in v12.9</h3>
   <ul>
     <li>„Vorher hören“ spielt den Song im Original, ohne Mix und ohne Mastering. Nochmal klicken für Nachher, so hörst du sofort den Unterschied.</li>
@@ -743,6 +758,13 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
   </ul>
   <div class="row"><button class="primary" id="helpClose">Los geht's</button></div>
 </dialog>
+<div class="mini" id="mini" hidden>
+  <button class="play" id="miniPlay" aria-label="Abspielen"><svg viewBox="0 0 24 24" id="miniIcon"><path d="M7 4l13 8-13 8z"/></svg></button>
+  <div class="minimid"><div class="minititle" id="miniTitle"></div><input type="range" class="seek" id="miniSeek" min="0" max="1000" value="0" aria-label="Position"></div>
+  <span class="time" id="miniTime">0:00 / 0:00</span>
+  <button class="ab" id="miniAB" aria-pressed="false" title="Original ohne Mix und Mastering hören">Vorher</button>
+  <button id="miniTop" title="Nach oben zum Player" aria-label="Nach oben zum Player">↑</button>
+</div>
 <div id="hud" class="hud" role="status" aria-live="polite" hidden><span id="hudTxt"></span><i><b id="hudBar"></b></i><button id="hudX" aria-label="Meldung schließen">✕</button></div>
 <script>
 /* =====================================================================
@@ -895,7 +917,7 @@ async function handleFiles(list){
 }
 
 let restoredNote = "", PENDING_PROJECT = null;
-function setTracks(list){
+function setTracks(list){ setTimeout(miniCheck, 50);
   tracks = list.map(t => ({...t, on:true, solo:false, vol:1, pan:0, hpf:0, low:0, high:0, pf:2000, pg:0, rev:0, dly:0, comp:0, deess:0, why:"", gain:null, src:null, chain:null, peaks:computePeaks(t.buffer, 400)}));
   duration = Math.max(...tracks.map(t=>t.buffer.duration));
   P.tempo = 1; P.semis = 0; P.ver++; rate = 1; AB.a = AB.b = null; $("rate").value = 100; $("semi").value = 0;
@@ -1109,17 +1131,37 @@ function stop(){
 function setIcon(){
   $("playIcon").innerHTML = playing ? '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' : '<path d="M7 4l13 8-13 8z"/>';
   $("play").setAttribute("aria-label", playing ? "Pause" : "Abspielen");
+  $("miniIcon").innerHTML = $("playIcon").innerHTML; $("miniPlay").setAttribute("aria-label", playing ? "Pause" : "Abspielen"); miniSync();
 }
 function tick(){
   const t = currentTime();
-  $("cur").textContent = fmtT(t/rate); $("seek").value = duration ? Math.round(t/duration*1000) : 0;
+  $("cur").textContent = fmtT(t/rate); $("seek").value = duration ? Math.round(t/duration*1000) : 0; miniSync(t);
   drawWaves(); drawMeters(); drawSec(); if(!TAP.on) lvHighlight(t/rate); else beatTick(t/rate);
   if(playing && $("loopOn").checked && AB.a!==null && AB.b!==null && t >= AB.b){ stop(); offset = AB.a; play(); return; }
   if(playing && t >= duration){ stop(); offset = 0; $("cur").textContent=fmtT(0); $("seek").value=0; drawWaves(); return; }
   if(playing) raf = requestAnimationFrame(tick);
 }
 $("play").onclick = ()=>{ playing ? stop() : play(); };
-$("seek").oninput = e=>{ const was = playing; stop(); offset = e.target.value/1000*duration; $("cur").textContent=fmtT(offset/rate); drawWaves(); if(was) play(); };
+/* ---- mini player: fixed bar at the bottom while the big player is scrolled out of view ---- */
+function miniSync(t){
+  if(t === undefined) t = playing ? currentTime() : offset;
+  $("miniSeek").value = duration ? Math.round(t/duration*1000) : 0;
+  $("miniTime").textContent = fmtT(t/rate) + " / " + fmtT(duration/rate);
+}
+function miniCheck(){
+  const r = document.querySelector(".transport").getBoundingClientRect();
+  const show = tracks.length > 0 && (r.bottom < 0 || r.top > innerHeight);
+  if(show === !$("mini").hidden) return;
+  $("mini").hidden = !show; document.body.classList.toggle("hasmini", show);
+  if(show){ $("miniTitle").textContent = $("vTitle").value || $("fname").value || "Mein Projekt"; miniSync(); }
+}
+addEventListener("scroll", ()=>requestAnimationFrame(miniCheck), {passive:true});
+addEventListener("resize", ()=>requestAnimationFrame(miniCheck));
+$("miniPlay").onclick = ()=>$("play").click();
+$("miniSeek").oninput = e=>{ $("seek").value = e.target.value; $("seek").oninput({target: $("seek")}); miniSync(); };
+$("miniAB").onclick = ()=>$("mAB").click();
+$("miniTop").onclick = ()=>document.querySelector(".transport").scrollIntoView({behavior:"smooth", block:"center"});
+$("seek").oninput = e=>{ const was = playing; stop(); offset = e.target.value/1000*duration; $("cur").textContent=fmtT(offset/rate); drawWaves(); miniSync(offset); if(was) play(); };
 $("monVol").oninput = e=>{ MON.v = +e.target.value; MON.muted = false; monSync(); };
 $("monMute").onclick = ()=>{ MON.muted = !MON.muted; monSync(); };
 monSync();
@@ -1172,7 +1214,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.9"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v13.0"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -1495,7 +1537,7 @@ $("mOn").onclick = ()=>setMasterOn(!M.on);
 function setRaw(v){
   RAW = v; M.ab = false;
   $("mAB").setAttribute("aria-pressed", RAW); $("mAB").textContent = RAW ? "Vorher: Original (klick für Nachher)" : "Vorher hören";
-  $("mAB").classList.toggle("rawon", RAW);
+  $("mAB").classList.toggle("rawon", RAW); $("miniAB").classList.toggle("rawon", RAW); $("miniAB").setAttribute("aria-pressed", RAW); $("miniAB").textContent = RAW ? "Vorher (aktiv)" : "Vorher";
   const c = ac(), t0 = c.currentTime;
   mixBus.gain.setTargetAtTime(RAW ? 0 : 1, t0, 0.02); rawBus.gain.setTargetAtTime(RAW ? 1 : 0, t0, 0.02);
   setStatus(RAW ? "Vorher: Du hörst die Spuren im Original, ohne Mix und ohne Mastering. Nochmal klicken für Nachher." : "Nachher: mit Mix und Mastering.");
@@ -3771,9 +3813,9 @@ $("newProj").onclick = ()=>{
   location.reload();
 };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.9"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.0"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.9") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "13.0") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
