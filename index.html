@@ -170,7 +170,8 @@ header{position:relative}
 .automix .big{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:22px;letter-spacing:.03em;padding:10px 22px;border-radius:10px}
 .automix b{display:block}
 .automix small{color:var(--muted)}
-.automix .toolrow{grid-column:1 / -1}
+.automix .toolrow,.automix .genrebox{grid-column:1 / -1;min-width:0}
+.automix .genrebox b,.automix .ginfo b{display:inline}
 .autolog{grid-column:1 / -1;font-family:var(--f-mono);font-size:12px;color:var(--muted);display:grid;gap:2px;border-top:1px solid var(--line);padding-top:8px}
 .autolog b{display:inline;color:var(--fg);font-weight:500}
 @media (max-width:620px){.automix{grid-template-columns:1fr}}
@@ -205,6 +206,14 @@ header{position:relative}
 .cxhint{color:var(--accent)}
 .genrebox{flex-basis:100%;display:flex;flex-direction:column;gap:4px}
 #genreNote{color:var(--accent)}
+.ginfo summary{cursor:pointer;color:var(--muted);font-size:13px;width:max-content}
+.ginfo summary:hover{color:var(--fg)}
+.ginfo[open] summary{margin-bottom:8px;color:var(--fg)}
+.gtable{overflow-x:auto;margin-bottom:6px}
+.gtable table{border-collapse:collapse;font-size:13px;min-width:620px;width:100%}
+.gtable th,.gtable td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.gtable thead th{color:var(--muted);font-weight:600}
+.gtable tbody th{white-space:nowrap}
 .aic .knob input[type=checkbox]{width:auto;flex:none}
 .cxgrid .row{gap:6px 14px}
 .cxgrid .row label{flex-direction:row;align-items:center}
@@ -438,7 +447,22 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div><b>Ein Klick für einen sauberen Mix, passend zum Genre.</b><small>Setzt Lautstärken, Panorama, Low-Cuts, Effekte und Mastering nach den Regeln des gewählten Genres. „Automatisch“ hört sich den Song an und erkennt das Genre selbst. Danach kannst du bei jeder Spur unter „Klang“ alles von Hand nachstellen.</small></div>
     <div class="genrebox"><div class="chips" id="genre"><span class="label" style="align-self:center">Genre</span>
       <button data-g="auto" aria-pressed="true">Automatisch</button><button data-g="pop" aria-pressed="false">Pop</button><button data-g="rnb" aria-pressed="false">R&amp;B</button><button data-g="trap" aria-pressed="false">Hip-Hop / Trap</button><button data-g="edm" aria-pressed="false">EDM / Big Room</button><button data-g="house" aria-pressed="false">House</button><button data-g="rock" aria-pressed="false">Rock / Band</button>
-    </div><small class="tnote" id="genreNote"></small></div>
+    </div><small class="tnote" id="genreNote"></small>
+    <details class="ginfo"><summary>ⓘ Was ändert sich je Genre?</summary>
+      <div class="gtable"><table>
+        <thead><tr><th></th><th>Stimme</th><th>Beat</th><th>Effekte</th><th>Pumpen</th><th>Mastering</th></tr></thead>
+        <tbody>
+          <tr><th>Pop</th><td>vorne, klar</td><td>ausgewogen</td><td>Platten-Hall</td><td>leicht</td><td>−14 LUFS, breit, hell</td></tr>
+          <tr><th>R&amp;B</th><td>vorne, Harmonien lauter</td><td>Drums zurück</td><td>viel Hall, punktiertes Echo</td><td>kaum</td><td>−14 LUFS, warm</td></tr>
+          <tr><th>Hip-Hop / Trap</th><td>Rap trocken und vorne</td><td>808 kräftiger</td><td>kurzer Raum, 1/8-Echo</td><td>808 leicht</td><td>−9 LUFS, schmaler, viel Sub</td></tr>
+          <tr><th>EDM / Big Room</th><td>im Mix</td><td>Kick und Synths dominant</td><td>großer Hall</td><td>stark</td><td>−9 LUFS, sehr breit, hell</td></tr>
+          <tr><th>House</th><td>im Mix</td><td>Kick ist König</td><td>Platte</td><td>Akkorde und Bass pumpen</td><td>−9 LUFS, clubtauglich</td></tr>
+          <tr><th>Rock / Band</th><td>normal</td><td>Gitarren tragen</td><td>Platte</td><td>aus</td><td>−14 LUFS, warme Mitten</td></tr>
+        </tbody>
+      </table></div>
+      <small class="tnote">Außerdem passen sich Kompressor, De-Esser, Low-Cut der Stimme und das Klangziel fürs Mastering an. Bei einem fertigen Song (eine Spur) wirkt das Genre nur aufs Mastering.<br>
+      <b>„Automatisch“</b> hört sich den Song an: Tempo, ob die Kick auf jedem Schlag kommt (House/EDM) oder unregelmäßig (Trap), wie viel Sub-Bass drin ist und welche Instrumente es gibt (z. B. eine Spur „808“ oder Gitarren). Bei Mischformen kann sie danebenliegen, dann wähl das Genre einfach selbst. Am nächsten an einen Profi-Song kommst du mit „An Referenz anpassen“ im Mastering.</small>
+    </details></div>
     <div class="toolrow">
       <button id="autobal" disabled>Auto-Balance</button>
       <button id="autopan" disabled>Auto-Pan</button>
