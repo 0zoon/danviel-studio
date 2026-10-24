@@ -2,37 +2,41 @@
 
 # DANVIEL Studio
 
-Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. Keine Installation, kein Upload: deine Songs bleiben auf deinem Rechner.
-
-**▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
-
-## Was er kann
-- **Stems mixen:** Vocals, Beat, Bass … einzeln an/aus, Lautstärke, Panorama, EQ, Kompressor, Hall, Delay
-- **Auto-Mix:** ein Klick für Pegel, Panorama, EQ, Vocal-Effekte und Mastering
-- **Mastering wie online-Dienste:** −14 LUFS für Streaming, True-Peak-Limiter, Klangbalance, Referenz-Song angleichen
-- **Exporte:** WAV, MP3, M4A, Instrumental, Acapella, einzelne Stems, MIDI
-- **Tempo & Tonart:** schneller/langsamer, Slowed/Sped-up mit Original-Stimmlage, BPM- und Tonart-Erkennung
-- **Shorts:** Hook automatisch finden, 9:16-Video mit Lyrics
-- **Lyrics:** automatisch erkennen (auch zweisprachig) oder per Mittippen synchronisieren, LRC/SRT-Export
-- **Cover-Studio:** Cover mit deinem eigenen Style erzeugen, 3000 × 3000 px
-- **Deutsch & Englisch:** Sprache oben umschalten
-- **Release-Check & Release-Paket:** prüft Lautheit, True Peak, Clipping, Mono und packt alles für den Upload in eine ZIP
-- **Projekte:** als ZIP speichern und an Kollegen weitergeben
-
-## Empfohlener Browser
-Chrome, Edge, Brave oder Opera GX (aktuelle Version). Für Video-Export wird WebCodecs gebraucht.
-
-## English
-DANVIEL Studio is a free music studio in your browser: mix stems with one-click genre-aware Auto-Mix (Pop, R&B, Hip-Hop/Trap, EDM, House, Rock), master to streaming loudness, find the hook, create lyric videos for Reels/TikTok/YouTube, design covers and export a complete release package. Nothing is uploaded, everything runs locally. Switch the language to English at the top of the app.
+**Free music studio in your browser:** mix stems, master your song, make lyric videos and covers, and get everything ready for release. No installation, no upload: your songs stay on your computer.
 
 **▶ Open the app:** https://0zoon.github.io/danviel-studio/
 
-## Musik von DANVIEL
+## Features
+- **Mix stems:** vocals, beat, bass … switch each on/off, level, panning, EQ, compressor, de-esser, reverb, delay
+- **Genre Auto-Mix:** one click for levels, panning, EQ, vocal effects, sidechain and mastering, tuned for Pop, R&B, Hip-Hop/Trap, EDM/Big Room, House or Rock. “Automatic” listens to the song and detects the genre
+- **Mastering like online services:** −14 LUFS for streaming, true-peak limiter, multiband, tonal balance, match a reference song
+- **Before / after:** hear the original without mix and mastering at the click of a button
+- **Exports:** WAV, MP3, M4A, instrumental, acapella, TV mix, single stems, kick as MIDI
+- **Tempo & key:** faster/slower, slowed/sped-up with original vocal pitch, BPM and key detection
+- **Shorts & Reels:** finds the hook automatically, 9:16, 1:1 and 16:9 videos with lyrics and visualizer
+- **Lyrics:** automatic detection (also bilingual) or tap along to sync, LRC/SRT export
+- **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 12 fonts, image filters, 3000 × 3000 px export
+- **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
+- **Projects:** save as one ZIP and send it to collaborators
+- **Split a song into stems** (AI, beta)
+- **English & German:** switch the language at the top of the app
+
+## Recommended browser
+Current Chrome, Edge, Brave or Opera GX. Video export needs WebCodecs.
+
+## Music by DANVIEL
 - [Spotify](https://open.spotify.com/artist/5HL1qbySKHyFuiK1gJOXvN)
 - [YouTube](https://www.youtube.com/@rexhepizhitia) · [YouTube Music](https://www.youtube.com/channel/UCTOu0_LFOVeckTLwhY_34gA)
 - [Instagram](https://www.instagram.com/mcmxciii_dardan/)
 - [Shazam](https://www.shazam.com/artist/dan/1855895355)
 - [UnitedMasters](https://unitedmasters.com/a/dan2464)
+
+---
+
+## Deutsch
+Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. Keine Installation, kein Upload, deine Songs bleiben auf deinem Rechner. Die Sprache stellst du oben im Programm auf **Deutsch** um.
+
+**▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
 
 ---
 Made by **DANVIEL**
