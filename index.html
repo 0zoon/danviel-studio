@@ -64,6 +64,7 @@ button.primary{background:var(--accent);border-color:var(--accent);color:var(--a
 button.danger{border:2px solid #e5484d;color:#ff8a8d;font-weight:600;background:color-mix(in srgb, #e5484d 12%, var(--panel))}
 button.danger:hover{border-color:#e5484d;background:color-mix(in srgb, #e5484d 24%, var(--panel))}
 button.danger.armed{background:#e5484d;color:#fff}
+button.ab.rawon{background:#e5484d;border-color:#e5484d;color:#fff}
 button.hi{border:2px solid var(--accent);color:var(--fg);font-weight:600;background:color-mix(in srgb, var(--accent) 10%, var(--panel))}
 button.hi:hover{background:color-mix(in srgb, var(--accent) 22%, var(--panel))}
 button.hi2{border:2px solid #e5484d;font-weight:600;background:color-mix(in srgb, #e5484d 10%, var(--panel))}
@@ -301,7 +302,10 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
 .meters{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline;font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .meters b{color:var(--fg);font-weight:500;font-size:16px}
 .ab[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.master.off .knobs,.master.off .chips,.master.off .meters,.master.off .ab{opacity:.45;pointer-events:none}
+.master.off .knobs,.master.off .chips,.master.off .meters{opacity:.45;pointer-events:none}
+.master.off .meters .ab{pointer-events:auto;opacity:1}
+.master.off .meters:has(.ab){opacity:1}
+.master.off .meters:has(.ab) span{opacity:.45}
 
 @media (max-width:620px){
   .strip{grid-template-columns:auto minmax(0,1fr) auto auto;}
@@ -316,7 +320,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.8</p>
+      <p class="by">Mix · Master · Release · v12.9</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -482,7 +486,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
       <span>Master <b id="mOut">–</b> LUFS</span>
       <span>True Peak <b id="mTp">–</b> dBTP</span>
       <span id="mNote"></span>
-      <button class="ab" id="mAB" aria-pressed="false" title="Ohne Mastering hören, gleich laut, damit du fair vergleichen kannst">Vorher hören</button>
+      <button class="ab" id="mAB" aria-pressed="false" title="Den Song im Original hören: ohne Mix und ohne Mastering. Nochmal klicken für Nachher.">Vorher hören</button>
     </div>
   </section>
 
@@ -665,11 +669,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.8</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.9</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.8</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.9</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -681,6 +685,10 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.9</h3>
+  <ul>
+    <li>„Vorher hören“ spielt den Song im Original, ohne Mix und ohne Mastering. Nochmal klicken für Nachher, so hörst du sofort den Unterschied.</li>
+  </ul>
   <h3>Neu in v12.8</h3>
   <ul>
     <li>Stem-ZIPs werden komplett entpackt, auch mit Unterordnern und ZIPs in der ZIP (typisch nach WhatsApp, Drive oder WeTransfer)</li>
@@ -795,7 +803,7 @@ let tracks = []; // {name, buffer, on, solo, vol, gain, src, peaks, el}
 let master = null;
 let playing = false, startedAt = 0, offset = 0, duration = 0, raf = 0;
 
-let mixBus = null, live = null, fxLive = null, guard = null, monitor = null;
+let mixBus = null, live = null, fxLive = null, guard = null, monitor = null, rawBus = null, RAW = false;
 /* ---- listening volume: only what you hear, never the exported files ---- */
 const MON = {v:60, muted:false};
 try{ const sv = JSON.parse(localStorage.getItem("stemmixer:monitor")||"null"); if(sv){ MON.v = sv.v ?? 60; MON.muted = !!sv.muted; } }catch(e){}
@@ -818,6 +826,7 @@ function ac(){
     monitor = ctx.createGain(); monitor.gain.value = monGain();
     master.connect(guard).connect(safe).connect(clip).connect(monitor).connect(ctx.destination);
     mixBus = ctx.createGain(); mixBus.channelCount = 2; mixBus.channelCountMode = "explicit";
+    rawBus = ctx.createGain(); rawBus.gain.value = 0; rawBus.connect(master);   // "Vorher hören": the plain stems, no mix, no mastering
     live = buildLive(ctx, mixBus, master);
     fxLive = buildFx(ctx, true); fxLive.out.forEach(n=>n.connect(mixBus));
     buildMeters();
@@ -1055,7 +1064,7 @@ const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"'
 
 function applyGains(){
   if(!ctx) return;
-  tracks.forEach(t=>{ if(t.gain) t.gain.gain.setTargetAtTime(audible(t)?t.vol:0, ctx.currentTime, 0.015); });
+  tracks.forEach(t=>{ if(t.gain) t.gain.gain.setTargetAtTime(audible(t)?t.vol:0, ctx.currentTime, 0.015); if(t.rawG) t.rawG.gain.setTargetAtTime(audible(t)?1:0, ctx.currentTime, 0.015); });
 }
 
 $("presets").addEventListener("click", e=>{
@@ -1081,6 +1090,7 @@ function play(){
     const s = c.createBufferSource(); s.buffer = buf(t); s.playbackRate.value = rate;
     const ch = stemChain(c, fxLive); ch.set(t); ch.vol.gain.value = audible(t)?t.vol:0;
     s.connect(ch.input); ch.output.connect(mixBus);
+    const rg = c.createGain(); rg.gain.value = audible(t) ? 1 : 0; s.connect(rg).connect(rawBus); t.rawG = rg;
     const g = ch.vol; t.chain = ch;
     if(offset < buf(t).duration) s.start(0, offset);
     t.src = s; t.gain = g;
@@ -1092,7 +1102,7 @@ function play(){
 function stop(){
   if(!playing) return;
   offset = currentTime();
-  tracks.forEach(t=>{ try{t.src&&t.src.stop();}catch(e){} t.src=null; if(t.chain){ t.chain.output.disconnect(); t.chain.vol.disconnect(); } t.gain=null; t.chain=null; });
+  tracks.forEach(t=>{ try{t.src&&t.src.stop();}catch(e){} t.src=null; if(t.chain){ t.chain.output.disconnect(); t.chain.vol.disconnect(); } if(t.rawG){ t.rawG.disconnect(); t.rawG = null; } t.gain=null; t.chain=null; });
   if(fxLive) fxLive.out.forEach(n=>n.gain.setTargetAtTime(0, ctx.currentTime, 0.025));
   playing = false; cancelAnimationFrame(raf); setIcon(); resetMeters();
 }
@@ -1162,7 +1172,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.8"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v12.9"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -1479,9 +1489,19 @@ KN.forEach(([id,k,f])=>{ $(id).oninput=e=>{ M[k]=+e.target.value; M.preset=""; s
 $("mStyle").onclick = e=>{ const st = e.target.dataset && e.target.dataset.s; if(!st) return; M.style = st; applyPreset(); syncKnobs(); applyMaster(); scheduleAnalysis(); };
 $("toneOn").onclick = ()=>{ M.tone = !M.tone; syncKnobs(); scheduleAnalysis(); saveSoon(); };
 $("mPresets").onclick = e=>{ const p=e.target.dataset && e.target.dataset.m; if(!p) return; M.intensity = p; applyPreset(); syncKnobs(); applyMaster(); scheduleAnalysis(); if(ana){ $("mOut").textContent="≈ "+M.target.toFixed(1); $("mTp").textContent="≤ "+ceilTP().toFixed(1);} };
-function setMasterOn(v){ M.on=v; $("mOn").setAttribute("aria-pressed",M.on); $("master").classList.toggle("off",!M.on); $("normLbl").hidden=M.on; if(!M.on){M.ab=false; $("mAB").setAttribute("aria-pressed",false); $("mAB").textContent="Vorher hören";} applyMaster(); scheduleAnalysis(); }
+function setMasterOn(v){ M.on=v; $("mOn").setAttribute("aria-pressed",M.on); $("master").classList.toggle("off",!M.on); $("normLbl").hidden=M.on;  applyMaster(); scheduleAnalysis(); }
 $("mOn").onclick = ()=>setMasterOn(!M.on);
-$("mAB").onclick = ()=>{ M.ab=!M.ab; $("mAB").setAttribute("aria-pressed",M.ab); $("mAB").textContent = M.ab?"Vorher (aktiv)":"Vorher hören"; applyMaster(); };
+// Before/after: switch between the finished sound and the plain stems (all at 100 %, no EQ, effects, panning or mastering)
+function setRaw(v){
+  RAW = v; M.ab = false;
+  $("mAB").setAttribute("aria-pressed", RAW); $("mAB").textContent = RAW ? "Vorher: Original (klick für Nachher)" : "Vorher hören";
+  $("mAB").classList.toggle("rawon", RAW);
+  const c = ac(), t0 = c.currentTime;
+  mixBus.gain.setTargetAtTime(RAW ? 0 : 1, t0, 0.02); rawBus.gain.setTargetAtTime(RAW ? 1 : 0, t0, 0.02);
+  setStatus(RAW ? "Vorher: Du hörst die Spuren im Original, ohne Mix und ohne Mastering. Nochmal klicken für Nachher." : "Nachher: mit Mix und Mastering.");
+  if(!playing && tracks.length) play();
+}
+$("mAB").onclick = ()=>setRaw(!RAW);
 syncKnobs();
 
 /* ---- auto balance: loudness-match stems to common mix ratios ---- */
@@ -3751,9 +3771,9 @@ $("newProj").onclick = ()=>{
   location.reload();
 };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.8"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.9"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.8") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.9") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
