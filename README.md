@@ -15,11 +15,17 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 - **Shorts:** Hook automatisch finden, 9:16-Video mit Lyrics
 - **Lyrics:** automatisch erkennen (auch zweisprachig) oder per Mittippen synchronisieren, LRC/SRT-Export
 - **Cover-Studio:** Cover mit deinem eigenen Style erzeugen, 3000 × 3000 px
+- **Deutsch & Englisch:** Sprache oben umschalten
 - **Release-Check & Release-Paket:** prüft Lautheit, True Peak, Clipping, Mono und packt alles für den Upload in eine ZIP
 - **Projekte:** als ZIP speichern und an Kollegen weitergeben
 
 ## Empfohlener Browser
 Chrome, Edge, Brave oder Opera GX (aktuelle Version). Für Video-Export wird WebCodecs gebraucht.
+
+## English
+DANVIEL Studio is a free music studio in your browser: mix stems with one-click genre-aware Auto-Mix (Pop, R&B, Hip-Hop/Trap, EDM, House, Rock), master to streaming loudness, find the hook, create lyric videos for Reels/TikTok/YouTube, design covers and export a complete release package. Nothing is uploaded, everything runs locally. Switch the language to English at the top of the app.
+
+**▶ Open the app:** https://0zoon.github.io/danviel-studio/
 
 ## Musik von DANVIEL
 - [Spotify](https://open.spotify.com/artist/5HL1qbySKHyFuiK1gJOXvN)
