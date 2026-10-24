@@ -61,6 +61,9 @@ button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid color-mix(
 button:hover{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 14%, var(--panel))}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button.danger{border:2px solid #e5484d;color:#ff8a8d;font-weight:600;background:color-mix(in srgb, #e5484d 12%, var(--panel))}
+button.danger:hover{border-color:#e5484d;background:color-mix(in srgb, #e5484d 24%, var(--panel))}
+button.danger.armed{background:#e5484d;color:#fff}
 button.hi{border:2px solid var(--accent);color:var(--fg);font-weight:600;background:color-mix(in srgb, var(--accent) 10%, var(--panel))}
 button.hi:hover{background:color-mix(in srgb, var(--accent) 22%, var(--panel))}
 button.hi2{border:2px solid #e5484d;font-weight:600;background:color-mix(in srgb, #e5484d 10%, var(--panel))}
@@ -310,10 +313,10 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
 
 <div class="wrap">
   <header>
-    <div class="hist"><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
+    <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v12.7</p>
+      <p class="by">Mix · Master · Release · v12.8</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -662,11 +665,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.7</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v12.8</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v12.7</h2>
+  <h2 id="helpTitle">DANVIEL Studio v12.8</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -678,6 +681,10 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v12.8</h3>
+  <ul>
+    <li>„Projekt löschen“ ganz oben (rot): zweimal klicken, dann ist alles leer und du startest ein neues Projekt. Deine Cover-Styles und die Hör-Lautstärke bleiben erhalten.</li>
+  </ul>
   <h3>Neu in v12.7</h3>
   <ul>
     <li>Cover-Studio öffnet sich unter der Video-Vorschau über die ganze Breite</li>
@@ -1146,7 +1153,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v12.7"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v12.8"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -3719,10 +3726,25 @@ function sepAnalysis(res, L, R){
 }
 $("logBtn").onclick = ()=>saveLog();
 $("hudX").onclick = ()=>{ $("hud").hidden = true; };
+// "Projekt löschen": first click asks, second click (within 4 s) clears everything and starts fresh.
+// Personal settings stay (cover styles, listening volume, keys); only this project's autosave is removed.
+let newArmT = 0;
+$("newProj").onclick = ()=>{
+  const b = $("newProj");
+  if(!b.classList.contains("armed")){
+    b.classList.add("armed"); b.textContent = "Wirklich alles löschen? Nochmal klicken";
+    clearTimeout(newArmT); newArmT = setTimeout(()=>{ b.classList.remove("armed"); b.textContent = "Projekt löschen"; }, 4000);
+    return;
+  }
+  clearTimeout(newArmT); clearTimeout(saveT); stop();
+  try{ if(tracks.length) localStorage.removeItem(storeKey()); }catch(e){}
+  log("Projekt gelöscht, Neustart");
+  location.reload();
+};
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.7"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "12.8"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "12.7") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "12.8") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
