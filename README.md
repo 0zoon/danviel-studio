@@ -39,4 +39,8 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 **▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
 
 ---
+
+## License
+© 2026 DANVIEL. All rights reserved. DANVIEL Studio is free to use, and everything you create with it belongs to you. Copying, rebranding, redistributing or selling the code is not permitted without permission. See [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md).
+
 Made by **DANVIEL**
