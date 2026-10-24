@@ -171,6 +171,23 @@ header{position:relative}
 .automix b{display:block}
 .automix small{color:var(--muted)}
 .automix .toolrow,.automix .genrebox{grid-column:1 / -1;min-width:0}
+/* collapsible panels: chevron top right, collapsed = slim bar with the panel's name */
+.coll{position:relative}
+.ctog{position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;display:grid;place-items:center;font-size:15px;line-height:1;z-index:2;background:color-mix(in srgb, var(--fg) 7%, var(--panel))}
+.ctog svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;transition:transform .2s}
+.coll.collapsed .ctog svg{transform:rotate(-90deg)}
+.coll.pad{padding-right:52px}
+.coll > .chead{padding-right:44px}
+.coll.collapsed{min-height:50px;padding-top:12px;padding-bottom:12px}
+.coll.collapsed > *:not(.ctog){display:none !important}
+.coll.collapsed.keephead > .chead{display:flex !important}
+.coll.collapsed:not(.keephead)::before{content:attr(data-title);font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:16px;color:var(--muted);display:block;line-height:26px}
+.strips.coll{padding-top:40px}
+.strips.coll:not(.collapsed)::before{content:attr(data-title);position:absolute;top:10px;left:2px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:16px;color:var(--muted)}
+.strips.coll.collapsed{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.strips.coll .ctog{top:6px;right:0}
+.strips.coll.collapsed .ctog{top:10px;right:10px}
+
 .automix .genrebox b,.automix .ginfo b{display:inline}
 .autolog{grid-column:1 / -1;font-family:var(--f-mono);font-size:12px;color:var(--muted);display:grid;gap:2px;border-top:1px solid var(--line);padding-top:8px}
 .autolog b{display:inline;color:var(--fg);font-weight:500}
@@ -206,9 +223,9 @@ header{position:relative}
 .cxhint{color:var(--accent)}
 .genrebox{flex-basis:100%;display:flex;flex-direction:column;gap:4px}
 #genreNote{color:var(--accent)}
-.ginfo summary{cursor:pointer;color:var(--muted);font-size:13px;width:max-content}
-.ginfo summary:hover{color:var(--fg)}
-.ginfo[open] summary{margin-bottom:8px;color:var(--fg)}
+.ginfo summary{cursor:pointer;color:#ff8a8d;font-size:13px;font-weight:600;width:max-content}
+.ginfo summary:hover{color:#ffb3b5}
+.ginfo[open] summary{margin-bottom:8px}
 .gtable{overflow-x:auto;margin-bottom:6px}
 .gtable table{border-collapse:collapse;font-size:13px;min-width:620px;width:100%}
 .gtable th,.gtable td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -349,7 +366,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="hist"><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <h1>DANVIEL <span>Studio</span></h1>
-      <p class="by">Mix · Master · Release · v13.3</p>
+      <p class="by">Mix · Master · Release · v13.4</p>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -733,11 +750,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <div class="links" id="artistLinks"></div>
   </section>
 
-  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.3</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
+  <footer><span>Tipp: Leertaste = Play/Pause. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v13.4</b> · entwickelt von <b>DANVIEL</b> · © 2026</span></footer>
 </div>
 
 <dialog id="help" aria-labelledby="helpTitle">
-  <h2 id="helpTitle">DANVIEL Studio v13.3</h2>
+  <h2 id="helpTitle">DANVIEL Studio v13.4</h2>
   <p class="tnote">by DANVIEL · läuft komplett in deinem Browser, nichts wird hochgeladen.</p>
   <h3>So geht's in 6 Schritten</h3>
   <ol>
@@ -749,6 +766,11 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li><b>Speichern und weitergeben:</b> „Projekt speichern“ packt alles in eine Datei. Der Empfänger zieht sie rein, fertig.</li>
     <li><b>Exportieren:</b> Song als MP3/WAV, alle Versionen, Stems oder Video (MP4).</li>
   </ol>
+  <h3>Neu in v13.4</h3>
+  <ul>
+    <li>Jeden Bereich zuklappen: Pfeil oben rechts an jedem Kasten. Das Programm merkt sich, was du zugeklappt hast.</li>
+    <li>Die Spuren haben eine eigene Überschrift, die Genre-Info ist rot hervorgehoben</li>
+  </ul>
   <h3>Neu in v13.3</h3>
   <ul>
     <li>Auto-Mix und Mastering nach Genre: Pop, R&amp;B, Hip-Hop/Trap, EDM/Big Room, House, Rock. Jedes Genre hat eigene Lautstärke-Verhältnisse, Vocal-Effekte, Kompression, Sidechain-Pumpen, Stereobreite, Lautheit und Klangziel.</li>
@@ -1231,6 +1253,25 @@ function miniCheck(){
 }
 addEventListener("scroll", ()=>requestAnimationFrame(miniCheck), {passive:true});
 addEventListener("resize", ()=>requestAnimationFrame(miniCheck));
+
+/* ---- collapsible panels (state remembered per browser) ---- */
+(function(){
+  const P = [["#drop","Dateien laden"],[".songbar","Tempo & Tonart"],["#secBox","Ausschnitt / Hook"],[".automix","Auto-Mix & Genre"],["#strips","Spuren"],["#fxsec","Effekte"],["#master","Mastering"],["#vidsec","Video & Lyrics"],[".export","Export"]];
+  let st = {}; try{ st = JSON.parse(localStorage.getItem("stemmixer:collapsed") || "{}") || {}; }catch(e){}
+  const chev = '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+  for(const [sel, title] of P){
+    const el = document.querySelector(sel); if(!el) continue;
+    const id = sel.replace(/[#.]/g,"");
+    el.classList.add("coll"); el.dataset.title = title;
+    if(el.firstElementChild && el.firstElementChild.classList.contains("mhead")){ el.classList.add("keephead"); el.firstElementChild.classList.add("chead"); }
+    else if(id !== "strips") el.classList.add("pad");
+    const b = document.createElement("button"); b.type = "button"; b.className = "ctog"; b.innerHTML = chev;
+    const sync = ()=>{ const c = el.classList.contains("collapsed"); b.title = c ? title + " aufklappen" : title + " zuklappen"; b.setAttribute("aria-label", b.title); b.setAttribute("aria-expanded", !c); };
+    b.onclick = e=>{ e.stopPropagation(); el.classList.toggle("collapsed"); st[id] = el.classList.contains("collapsed"); try{ localStorage.setItem("stemmixer:collapsed", JSON.stringify(st)); }catch(err){} sync(); if(typeof miniCheck === "function") requestAnimationFrame(miniCheck); };
+    el.addEventListener("click", e=>{ if(el.classList.contains("collapsed") && e.target === el){ b.click(); } });
+    el.prepend(b); if(st[id]) el.classList.add("collapsed"); sync();
+  }
+})();
 $("miniPlay").onclick = ()=>$("play").click();
 $("miniSeek").oninput = e=>{ $("seek").value = e.target.value; $("seek").oninput({target: $("seek")}); miniSync(); };
 $("miniAB").onclick = ()=>$("mAB").click();
@@ -1329,7 +1370,7 @@ function id3(){
   return b;
 }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v13.3"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v13.4"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;
@@ -4173,9 +4214,9 @@ $("newProj").onclick = ()=>{
   location.reload();
 };
 $("helpBtn").onclick = ()=>{ try{ $("help").showModal(); }catch(e){ $("help").setAttribute("open",""); } };
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.3"); }catch(e){} };
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "13.4"); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "13.3") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== "13.4") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){
