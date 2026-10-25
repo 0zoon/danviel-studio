@@ -28,6 +28,9 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Suno archive:** connect the folder of your Suno archive (`<Title>.txt` + `<Title> - Lyrics.txt`) once, and every song you load gets its title, clean lyrics and genre automatically. The Suno prompt goes into the release package too.
 - **One click vibes:** 🐢 Slowed + Reverb, ⚡ Sped Up, 🌙 Nightcore, key up/down in semitones
 - **🔊 Bass Boosted**, rename tracks, ⚙ Pro view with every control open, new demos (Pop, R&B, Trap, House)
+- **Compact view:** a step bar 1 Load · 2 Mix · 3 Master · 4 Video & Cover · 5 Release, one step at a time (or “Everything open”), rotary knobs or sliders, choose the background (carbon, studio light, wood, metal), all on a leather desk pad
+- **Cover prompt from the lyrics:** an AI reads your lyrics and writes a ready image prompt for your cover (copy for ChatGPT or use your own OpenAI key)
+- **Split song on several CPU cores** at once, with live progress and a 60-second quick mode
 
 ## 💎 Coming soon
 - **DANVIEL Studio Pro:** a desktop app for Windows with a bit more power (6+ stems with guitar, piano and more, splitting on the graphics card in under a minute, batch export, side panels with a file browser, projects and notes for big screens, a studio desk look) and a **Suno browser extension** that sends stems, lyrics and style straight into the studio. One purchase, no subscription. [More info](https://0zoon.github.io/danviel-studio/pro.html)
