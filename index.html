@@ -461,7 +461,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
       <button class="primary" id="pick" title="Stems, einen fertigen Song oder eine ZIP von deinem Rechner öffnen">Dateien wählen</button>
       <button id="demo" title="Ein kurzes Beispiel laden, um alles auszuprobieren">Demo-Stems laden</button>
       <button id="splitBtn" title="Einen fertigen Song per KI in Gesang, Drums, Bass und Rest aufteilen. Läuft im Browser und dauert ein paar Minuten">Song in Stems zerlegen (KI, Beta)</button>
-      <label class="six" title="Trennt zusätzlich Gitarre und Piano heraus (6 Stems statt 4). Größere KI (ca. 140 MB) und langsamer. Klappt es nicht, nimmt das Programm automatisch die 4-Stem-KI"><input type="checkbox" id="split6"> 6 Stems (+ Gitarre, Piano)</label>
+      <label class="six" hidden title="Trennt zusätzlich Gitarre und Piano heraus (6 Stems statt 4). Größere KI (ca. 140 MB) und langsamer. Klappt es nicht, nimmt das Programm automatisch die 4-Stem-KI"><input type="checkbox" id="split6"> 6 Stems (+ Gitarre, Piano)</label>
       <input type="file" id="splitFile" accept=".mp3,.mpeg,.mpga,.mp2,.wav,.wave,.flac,.ogg,.oga,.opus,.m4a,.aac,.mp4,.m4v,.webm,.weba,.aif,.aiff,.caf,audio/*,video/mpeg,video/mp4" hidden>
       <input type="file" id="file" multiple accept=".mp3,.mpeg,.mpga,.mp2,.wav,.wave,.flac,.ogg,.oga,.opus,.m4a,.aac,.mp4,.m4v,.webm,.weba,.aif,.aiff,.caf,audio/*,video/mpeg,video/mp4,.zip" hidden>
     </div>
@@ -909,7 +909,6 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
   <h3>Neu in v15.0</h3>
   <ul>
     <li>🎙 Aufnahme: über den Song singen, rappen oder einspielen. Jede Aufnahme wird eine eigene Spur mit allen Mix-Reglern, Versatz zum Nachschieben und Löschen. Ohne Song nimmst du frei auf und baust deinen Song von null</li>
-    <li>6 Stems: der Song-Zerleger kann jetzt auch Gitarre und Piano heraustrennen (Beta, fällt bei Problemen automatisch auf 4 Stems zurück)</li>
     <li>🔊 Bass Boosted: der alte, absichtlich übertriebene YouTube-Bass als eigene Stufe beim Bass-Boost</li>
     <li>Ein Klick für 🐢 Slowed + Reverb, ⚡ Sped Up und 🌙 Nightcore</li>
     <li>Tonart-Knöpfe −2, −1, Original, +1, +2 wie beim Tempo</li>
@@ -1088,7 +1087,6 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
   <div class="chg-en" hidden>
   <h3>v15.0</h3><ul>
     <li>🎙 Recording: sing, rap or play over the song. Every take becomes its own track with all mix controls, an offset to nudge it and delete. Without a song you record freely and build your song from scratch</li>
-    <li>6 stems: the song splitter can now also separate guitar and piano (beta, falls back to 4 stems automatically if there's a problem)</li>
     <li>🔊 Bass Boosted: the old, deliberately overdone YouTube bass as its own bass boost level</li>
     <li>One click for 🐢 Slowed + Reverb, ⚡ Sped Up and 🌙 Nightcore</li>
     <li>Key buttons −2, −1, Original, +1, +2 like for tempo</li>
@@ -5396,7 +5394,7 @@ async function fetchModel(url){
 }
 let SPLIT_MODE = "cpu"; try{ if(localStorage.getItem("stemmixer:splitmode") === "gpu") SPLIT_MODE = "gpu"; }catch(e){}
 let DEMUCS_EP = null, SPLIT_IN = null;
-try{ if(localStorage.getItem("stemmixer:split6") === "1") $("split6").checked = true; }catch(e){}
+// 6 stems: kept for the Pro version, switched off in the free version for now
 $("split6").onchange = ()=>{ try{ localStorage.setItem("stemmixer:split6", $("split6").checked ? "1" : "0"); }catch(e){} };
 // 6 stems (drums, bass, other, vocals, guitar, piano): HT-Demucs 6s as ONNX, run directly in 7.8 s windows with overlap-add
 const SIX_URL = "https://huggingface.co/adowu/htdemucs-6s-onnx/resolve/main/htdemucs_6s_fp16weights.onnx";

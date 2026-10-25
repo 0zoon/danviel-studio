@@ -31,7 +31,7 @@
 - **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 25 fonts, filters like warmth, glow, VHS, light leaks and duotone, 3000 × 3000 px export
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
 - **Projects:** save as one ZIP and send it to collaborators
-- **Split a song into stems** (AI, beta): 4 stems, or 6 with guitar and piano
+- **Split a song into stems** (AI, beta): vocals, drums, bass and the rest
 - **English & German:** switch the language at the top of the app
 
 ## Recommended browser
