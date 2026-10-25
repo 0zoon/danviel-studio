@@ -55,7 +55,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Bass boost:** from a little more to the old-school 🔊 Bass Boosted sound
 - **Shorts & Reels:** finds the hook automatically, 9:16, 1:1 and 16:9 videos with lyrics and visualizer
 - **Visualizer styles:** Classic, Neon, Cyberpunk, Late Night R&B, Pastel Pop, Minimal, or build and share your own
-- **Background video:** drop in your own clip and put the lyrics on top, place the title anywhere
+- **⭐ Your own video + your song:** drop in any video you made (phone, CapCut, AI video) and the studio puts your song under it and the lyrics in time and your title on top: a finished clip for TikTok, Reels or YouTube
 - **Lyrics:** automatic detection (also bilingual) or tap along to sync, LRC/SRT export
 - **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 25 fonts, filters like warmth, glow, VHS, light leaks and duotone, 3000 × 3000 px export
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
@@ -86,6 +86,7 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 - Stems mixen mit **Auto-Mix nach Genre**, Mastering für Spotify, YouTube oder Club, Bass-Boost, Tempo und Tonart (Slowed, Sped Up, Nightcore)
 - **🧱 Spuren bauen:** Drum-Pattern per Klick, Instrument einspielen (Maus, Tastatur, MIDI-Keyboard), Piano-Roll, Loops und Zeitleiste
 - **Aufnehmen** über deinen Beat, **Song in Stems zerlegen** (KI, auf mehreren Prozessor-Kernen)
+- **Dein eigenes Video + dein Song:** irgendein Video reinziehen (Handy, CapCut, KI-Video), das Studio legt Song, Lyrics im Takt und Titel drüber
 - **Videos** für TikTok, Reels und YouTube mit Lyrics und Visualizer, **Cover-Studio** mit 25 Schriften und Filtern
 - **Cover-Prompt aus den Lyrics** für ChatGPT, mit oder ohne Titel im Bild
 - **📦 Pakete:** fertige Presets für Mastering, Effekte und einzelne Spuren (z. B. „Trap Lead Vocal“, „Deep 808“), eigene Pakete erstellen und teilen
