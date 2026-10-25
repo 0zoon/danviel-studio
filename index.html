@@ -1,15 +1,11 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<script>/* Website only: a tiny service worker (coi.js) lets the stem-splitter AI use several processor cores. Not in Safari (no "credentialless" support). */
-(function(){ try{
-  if(self.crossOriginIsolated || !("serviceWorker" in navigator) || location.protocol !== "https:" || !/github\.io$/.test(location.hostname)) return;
-  if(/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)) return;
-  navigator.serviceWorker.register("coi.js").then(function(reg){
-    if(sessionStorage.getItem("coiReload")) return;
-    var go = function(){ sessionStorage.setItem("coiReload", "1"); location.reload(); };
-    if(navigator.serviceWorker.controller) go(); else navigator.serviceWorker.addEventListener("controllerchange", go);
-  }).catch(function(){});
+<script>/* The multi-core service worker (coi.js) is switched off again: remove it if a browser still has it. */
+(function(){ try{ if(!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.getRegistrations().then(function(rs){ var had = false;
+    rs.forEach(function(r){ var u = (r.active || r.waiting || r.installing || {}).scriptURL || ""; if(/coi\.js/.test(u)){ had = true; r.unregister(); } });
+    if(had && self.crossOriginIsolated && !sessionStorage.getItem("coiOff")){ sessionStorage.setItem("coiOff", "1"); location.reload(); } }).catch(function(){});
 }catch(e){} })();
 </script>
 <!-- DANVIEL Studio · © 2026 DANVIEL. All rights reserved. Free to use at https://0zoon.github.io/danviel-studio/ · Copying, rebranding, redistributing or selling this code is not permitted without written permission. See LICENSE. -->
@@ -1076,7 +1072,6 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>„So geht's“ ist jetzt eine ausführliche Anleitung mit Bildern zu jedem Bereich (Ausschnitt &amp; Zoomen, Suno-Archiv, Aufnahme …)</li>
     <li>Neuer Look: Flächen wie Studio-Hardware mit Lichtkante, beleuchtete Knöpfe, Metall-Regler, LED-Schalter und das rot-blaue Licht vom Logo im Hintergrund</li>
     <li>DANVIEL in den Logo-Farben: DAN rot, VIEL blau (edel abgestuft), im Kopf der Seite, in der Anleitung und im Video und Cover</li>
-    <li>Song zerlegen auf der Website deutlich schneller: die KI rechnet jetzt auf mehreren Prozessor-Kernen gleichzeitig statt nur auf einem (Chrome, Edge, Firefox)</li>
     <li>Regler wahlweise als <b>Drehknöpfe</b> wie am Mischpult (bei „Spuren“ umschalten: ━ Schieber / ◉ Drehknöpfe). Ziehen nach oben/unten, Mausrad, Doppelklick = Standard</li>
     <li>„So geht’s“ neu: in 5 Schritten zum fertigen Song, mit Bildern, gelben Nummern und Erklärungen zu jedem Knopf. Bild anklicken = groß</li>
   </ul>
@@ -1267,7 +1262,6 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>“How it works” is now a full guide with pictures for every part (section &amp; zoom, Suno archive, recording …)</li>
     <li>New look: panels like studio hardware with a lit edge, illuminated buttons, metal knobs, LED switches and the red/blue light of the logo in the background</li>
     <li>DANVIEL in the logo colours: DAN red, VIEL blue (with a rich gradient), in the page header, the guide, the video and the cover</li>
-    <li>Splitting a song on the website is much faster: the AI now runs on several processor cores at once instead of just one (Chrome, Edge, Firefox)</li>
     <li>Controls optionally as <b>rotary knobs</b> like on a mixing desk (switch at “Tracks”: ━ Sliders / ◉ Knobs). Drag up/down, mouse wheel, double-click = default</li>
     <li>New “How it works”: 5 steps to a finished song, with pictures, yellow numbers and an explanation for every control. Click a picture to enlarge</li></ul>
   <h3>v14.9</h3><ul>
@@ -5804,7 +5798,7 @@ async function loadDemucs(){
   if(!ort) throw lastErr;
   ort = ort.default && ort.default.env ? ort.default : ort;
   ort.env.wasm.wasmPaths = ORT_URL;
-  if(!self.crossOriginIsolated) ort.env.wasm.numThreads = 1;          // a local file has no SharedArrayBuffer: single-threaded WASM
+  ort.env.wasm.numThreads = 1;          // single-threaded WASM: the multi-threaded build stalled for users
   let mod = null;
   for(const u of ["https://cdn.jsdelivr.net/npm/demucs-web@1/+esm", "https://cdn.jsdelivr.net/npm/demucs-web/+esm"]){ try{ mod = await import(u); break; }catch(e){ lastErr = e; } }
   if(!mod) throw lastErr;
@@ -6000,7 +5994,7 @@ async function runDemucs(useGpu, t0, L, R){
     const proc = new mod.DemucsProcessor({ ort,
       sessionOptions: { executionProviders: useGpu ? ["webgpu", "wasm"] : ["wasm"] },
       onProgress: p => { const v = typeof p === "number" ? p : (p && p.progress) || 0; setProg(v); const sec = (performance.now()-t0)/1000;
-        setStatus(`Zerlege in Stems${useGpu ? "" : self.crossOriginIsolated ? " (Prozessor, mehrere Kerne)" : " (Prozessor, 1 Kern)"} … ${Math.round(v*100)} %` + (v>0.03 ? ` · noch ca. ${Math.max(1, Math.round(sec/v*(1-v)/60))} Min.` : "")); },
+        setStatus(`Zerlege in Stems${useGpu ? "" : " (Prozessor)"} … ${Math.round(v*100)} %` + (v>0.03 ? ` · noch ca. ${Math.max(1, Math.round(sec/v*(1-v)/60))} Min.` : "")); },
       onLog: (ph, msg) => console.log("[demucs]", ph, msg) });
     const url = (mod.CONSTANTS && mod.CONSTANTS.DEFAULT_MODEL_URL) || "https://huggingface.co/timcsy/demucs-web-onnx/resolve/main/htdemucs_embedded.onnx";
     let model; try{ model = await fetchModel(url); }catch(e){ model = url; }
@@ -6009,9 +6003,7 @@ async function runDemucs(useGpu, t0, L, R){
     catch(e){ if(ort.env.wasm.numThreads === 1) throw e; log("Mehrere Threads gingen nicht, nehme 1 Thread:", String(e && e.message || e)); ort.env.wasm.numThreads = 1; await proc.loadModel(model); }
     DEMUCS = proc; DEMUCS_EP = ep;
   }
-  setStatus(useGpu ? "Zerlege in Stems …" : self.crossOriginIsolated
-    ? "Zerlege in Stems über den Prozessor (mehrere Kerne) … das dauert je nach Rechner und Songlänge ein paar Minuten. Lass den Tab dabei offen."
-    : "Zerlege in Stems über den Prozessor … das kann je nach Rechner und Songlänge 10–30 Minuten dauern. Lass den Tab dabei offen."); await sleep0();
+  setStatus(useGpu ? "Zerlege in Stems …" : "Zerlege in Stems über den Prozessor … das kann je nach Rechner und Songlänge 10–30 Minuten dauern. Lass den Tab dabei offen."); await sleep0();
   return await DEMUCS.separate(L, R);
 }
 $("splitFile").onchange = async e=>{
