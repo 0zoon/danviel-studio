@@ -20,7 +20,9 @@ third-party software, models, fonts and services. They remain under their own li
 
 ## Fonts (Google Fonts)
 Big Shoulders Display, DM Serif Display, Permanent Marker, Instrument Sans, IBM Plex Mono, Bebas Neue,
-Anton, Cinzel, Playfair Display, Caveat, Unbounded and UnifrakturMaguntia, all under the
+Anton, Cinzel, Playfair Display, Caveat, Unbounded, UnifrakturMaguntia, Oswald, Archivo Black, Abril Fatface,
+Montserrat, Cormorant Garamond, Orbitron, Monoton, Pacifico, Rubik Glitch, Bungee, Syne, Press Start 2P and
+Dancing Script, all under the
 [SIL Open Font License 1.1](https://openfontlicense.org).
 
 ## Optional online services
