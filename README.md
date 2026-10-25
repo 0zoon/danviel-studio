@@ -1,4 +1,4 @@
-<img src="logo.png" width="120" alt="DANVIEL Logo">
+<img src="logo-stone.png" width="150" alt="DANVIEL Logo">
 
 # DANVIEL Studio
 
@@ -10,16 +10,23 @@
 
 [![DANVIEL Studio screenshot](screenshot.png)](https://0zoon.github.io/danviel-studio/)
 
+| Videos for TikTok, Reels & YouTube | Cover studio |
+|---|---|
+| [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
+
 ## Features
-- **Mix stems:** vocals, beat, bass … switch each on/off, level, panning, EQ, compressor, de-esser, reverb, delay
+- **Mix stems:** vocals, beat, bass … switch each on/off, volume, panning, EQ, compressor, de-esser, reverb, delay
+- **Suno-ready:** drop the whole Suno ZIP. When a stem comes as WAV, MP3 and MIDI, the WAV is used, and the MIDI stems are played by a built-in synth (piano, pad, bass, 808, drums …) that you can layer in
 - **Genre Auto-Mix:** one click for levels, panning, EQ, vocal effects, sidechain and mastering, tuned for Pop, R&B, Hip-Hop/Trap, EDM/Big Room, House or Rock. “Automatic” listens to the song and detects the genre
 - **Mastering like online services:** −14 LUFS for streaming, true-peak limiter, multiband, tonal balance, match a reference song
 - **Before / after:** hear the original without mix and mastering at the click of a button
 - **Exports:** WAV, MP3, M4A, instrumental, acapella, TV mix, single stems, kick as MIDI
 - **Tempo & key:** faster/slower, slowed/sped-up with original vocal pitch, BPM and key detection
 - **Shorts & Reels:** finds the hook automatically, 9:16, 1:1 and 16:9 videos with lyrics and visualizer
+- **Visualizer styles:** Classic, Neon, Cyberpunk, Late Night R&B, Pastel Pop, Minimal, or build and share your own
+- **Background video:** drop in your own clip and put the lyrics on top, place the title anywhere
 - **Lyrics:** automatic detection (also bilingual) or tap along to sync, LRC/SRT export
-- **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 12 fonts, image filters, 3000 × 3000 px export
+- **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 25 fonts, filters like warmth, glow, VHS, light leaks and duotone, 3000 × 3000 px export
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
 - **Projects:** save as one ZIP and send it to collaborators
 - **Split a song into stems** (AI, beta)
