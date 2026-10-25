@@ -2424,10 +2424,16 @@ function stepUi(){
 }
 function goStep(n, scroll){
   STEP = Math.max(1, Math.min(5, n)); STEP_SEEN.add(STEP); stepUi();
-  if(!COMPACT){ const el = document.querySelector(`.wrap [data-step~="${STEP}"]:not(.transport)`) || document.querySelector(`.wrap [data-step~="${STEP}"]`);
-    if(el && scroll) el.scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  if(!COMPACT){ const el = document.querySelector(STEP_ANCHOR[STEP]);
+    if(el && scroll){ STEP_JUMP = performance.now(); el.scrollIntoView({behavior:"smooth", block:"start"}); } return; }
   if(scroll){ const bar = document.querySelector(".stepbar"); const y = bar.getBoundingClientRect().top + scrollY - 8; if(scrollY > y) scrollTo({top: y, behavior:"smooth"}); }
 }
+// "Everything open": each step jumps to its main panel, and the bar follows while you scroll
+const STEP_ANCHOR = {1: "#drop", 2: ".automix", 3: "#master", 4: "#vidsec", 5: "section.export"};
+let STEP_JUMP = 0;
+addEventListener("scroll", ()=>{ if(COMPACT || performance.now() - STEP_JUMP < 900) return;
+  let cur = 1; for(let n=1; n<=5; n++){ const el = document.querySelector(STEP_ANCHOR[n]); if(el && el.getBoundingClientRect().top < innerHeight*0.35) cur = n; }
+  if(cur !== STEP){ STEP = cur; STEP_SEEN.add(cur); stepUi(); } }, {passive: true});
 function setLayout(compact){ COMPACT = compact; try{ localStorage.setItem("stemmixer:layout", compact ? "compact" : "full"); }catch(e){} stepUi(); }
 // anything that jumps to a panel (TikTok clip, cover studio, mini player …) opens that panel's step first
 { const orig = Element.prototype.scrollIntoView;
