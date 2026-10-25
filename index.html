@@ -467,6 +467,72 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
   h1{font-size:36px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===================== Premium skin: "night studio hardware" =====================
+   graphite panels with a lit top edge (like an anodized rack unit), amber lamp accents,
+   recessed sliders with metal knobs, LED toggles, and the red/blue stage light of the logo in the room */
+:root{
+  --panel-hi:#ffffff; --panel-lo:#f1f3f6; --hl:rgba(255,255,255,.9); --sh:0 1px 2px rgba(20,24,32,.06),0 12px 28px -18px rgba(20,24,32,.35);
+  --well:#e3e7ec; --knob1:#ffffff; --knob2:#cfd5dd; --glow:rgba(217,134,28,.30); --amber1:#f4ad4c; --amber2:#d9861c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0e12; --panel:#17181e; --line:#272a33; --fg:#eceef2; --muted:#8f97a6;
+  --panel-hi:#1d1f26; --panel-lo:#15161b; --hl:rgba(255,255,255,.06); --sh:0 1px 0 rgba(0,0,0,.5),0 18px 40px -22px rgba(0,0,0,.9);
+  --well:#0b0c10; --knob1:#f2f3f5; --knob2:#8b919c; --glow:rgba(243,165,60,.35); --amber1:#ffbf5c; --amber2:#ee9a2e; --accent:#f3a53c; --wave-on:#f3a53c}}
+:root[data-theme="dark"]{
+  --bg:#0d0e12; --panel:#17181e; --line:#272a33; --fg:#eceef2; --muted:#8f97a6;
+  --panel-hi:#1d1f26; --panel-lo:#15161b; --hl:rgba(255,255,255,.06); --sh:0 1px 0 rgba(0,0,0,.5),0 18px 40px -22px rgba(0,0,0,.9);
+  --well:#0b0c10; --knob1:#f2f3f5; --knob2:#8b919c; --glow:rgba(243,165,60,.35); --amber1:#ffbf5c; --amber2:#ee9a2e; --accent:#f3a53c; --wave-on:#f3a53c}
+/* the room: faint red and blue light from the logo, fixed behind everything */
+body{background:
+  radial-gradient(900px 520px at -8% -12%, color-mix(in srgb, #e2333a 9%, transparent), transparent 70%),
+  radial-gradient(900px 520px at 108% -10%, color-mix(in srgb, #2f7bff 8%, transparent), transparent 70%),
+  var(--bg) fixed}
+/* panels */
+.master,.transport,.songbar,.secbox,.automix,.export,.drop,.lview,.artist{
+  background:linear-gradient(180deg,var(--panel-hi),var(--panel-lo));border-color:var(--line);border-radius:16px;box-shadow:inset 0 1px 0 var(--hl),var(--sh)}
+.drop{border-style:dashed;border-width:1.5px}
+.mhead h2{letter-spacing:.03em}
+/* buttons: soft machined keys */
+button{background:linear-gradient(180deg,color-mix(in srgb,var(--fg) 10%,var(--panel-hi)),color-mix(in srgb,var(--fg) 5%,var(--panel-lo)));
+  border-color:color-mix(in srgb,var(--fg) 16%,var(--panel));box-shadow:inset 0 1px 0 var(--hl),0 1px 2px rgba(0,0,0,.25);transition:border-color .15s,box-shadow .15s,transform .05s}
+button:hover{border-color:color-mix(in srgb,var(--accent) 70%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 16%,var(--panel-hi)),color-mix(in srgb,var(--accent) 8%,var(--panel-lo)))}
+button:active:not(:disabled){transform:translateY(1px);box-shadow:inset 0 1px 3px rgba(0,0,0,.35)}
+button:disabled{box-shadow:none}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* primary: an illuminated amber key */
+button.primary,.chips button[aria-pressed="true"],.automix .amtog[aria-pressed="true"],.vibes button[aria-pressed="true"],#proStrips[aria-pressed="true"]{
+  background:linear-gradient(180deg,var(--amber1),var(--amber2));border-color:color-mix(in srgb,var(--amber2) 70%,#000);color:var(--accent-ink);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 1px rgba(0,0,0,.15),0 6px 18px -6px var(--glow)}
+.play,.play:hover{background:radial-gradient(circle at 50% 30%,var(--amber1),var(--amber2));border-color:color-mix(in srgb,var(--amber2) 70%,#000);color:var(--accent-ink);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent),0 8px 22px -6px var(--glow)}
+.play:hover{filter:brightness(1.06)}
+.recbtn,.recbtn:hover{background:linear-gradient(180deg,#e84650,#b8232d);border-color:#8f1a22;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 18px -6px rgba(226,51,58,.5)}
+button.primary:hover,.chips button[aria-pressed="true"]:hover{filter:brightness(1.06);background:linear-gradient(180deg,var(--amber1),var(--amber2))}
+button.primary:disabled{filter:saturate(.4) brightness(.8);box-shadow:none}
+/* LED toggles in a recessed slot */
+.toggle{background:var(--well);box-shadow:inset 0 1px 3px rgba(0,0,0,.55),0 0 0 1px color-mix(in srgb,var(--fg) 10%,transparent)}
+.toggle::after{background:radial-gradient(circle at 35% 30%,var(--knob1),var(--knob2));box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.toggle[aria-pressed="true"]{background:linear-gradient(180deg,color-mix(in srgb,var(--on) 85%,#fff),var(--on));box-shadow:inset 0 1px 2px rgba(0,0,0,.3),0 0 12px -2px color-mix(in srgb,var(--on) 70%,transparent)}
+.strip .toggle[aria-pressed="true"]{background:linear-gradient(180deg,color-mix(in srgb,var(--sc) 80%,#fff),var(--sc));box-shadow:inset 0 1px 2px rgba(0,0,0,.3),0 0 12px -2px color-mix(in srgb,var(--sc) 70%,transparent)}
+/* sliders: recessed groove + metal knob with a coloured ring */
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,var(--th) 55%,var(--well)),color-mix(in srgb,var(--th) 25%,var(--well)));box-shadow:inset 0 1px 2px rgba(0,0,0,.5)}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;margin-top:-6px;background:radial-gradient(circle at 38% 32%,var(--knob1),var(--knob2) 70%);border:2px solid var(--th);box-shadow:0 2px 5px rgba(0,0,0,.5),0 0 10px -2px var(--th)}
+input[type=range]::-moz-range-track{background:color-mix(in srgb,var(--th) 25%,var(--well));box-shadow:inset 0 1px 2px rgba(0,0,0,.5)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:radial-gradient(circle at 38% 32%,var(--knob1),var(--knob2) 70%);border:2px solid var(--th)}
+/* tracks: tinted channel strips with a lit colour edge */
+.strip{background:linear-gradient(180deg,color-mix(in srgb,var(--sc) 10%,var(--panel-hi)),color-mix(in srgb,var(--sc) 5%,var(--panel-lo)));
+  border-radius:14px;box-shadow:inset 0 1px 0 var(--hl),inset 3px 0 0 var(--sc),-4px 0 18px -10px var(--sc),var(--sh)}
+/* inputs */
+select,input[type=text],input[type=number],input[type=password],textarea{background:var(--well)!important;border-color:var(--line)!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 70%,transparent);outline-offset:1px}
+/* dialogs and the mini player get the same surface */
+#help,#changes,#pro{background:linear-gradient(180deg,var(--panel-hi),var(--panel-lo));box-shadow:inset 0 1px 0 var(--hl),0 30px 80px -20px rgba(0,0,0,.8)}
+#mini{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--panel) 82%,transparent)!important;box-shadow:0 -1px 0 var(--hl),0 -12px 30px -18px rgba(0,0,0,.8)}
+/* scrollbars */
+*{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--fg) 18%,transparent);border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-track{background:transparent}
+@media (prefers-reduced-motion:reduce){button{transition:none}}
 </style>
 
 <div class="wrap">
@@ -963,6 +1029,7 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li>💎 Get Pro: Infos zur kommenden Desktop-Version</li>
     <li>Das im Cover-Studio bearbeitete Cover (mit Schrift und Filtern) erscheint automatisch auch im Video</li>
     <li>„So geht's“ ist jetzt eine ausführliche Anleitung mit Bildern zu jedem Bereich (Ausschnitt &amp; Zoomen, Suno-Archiv, Aufnahme …)</li>
+    <li>Neuer Look: Flächen wie Studio-Hardware mit Lichtkante, beleuchtete Knöpfe, Metall-Regler, LED-Schalter und das rot-blaue Licht vom Logo im Hintergrund</li>
   </ul>
   <h3>Neu in v14.9</h3>
   <ul>
@@ -1148,7 +1215,8 @@ input[type=range]:disabled{opacity:.4;cursor:not-allowed}
     <li>Microphone permission only once per session</li>
     <li>💎 Get Pro: info about the upcoming desktop version</li>
     <li>The cover you edit in the cover studio (with text and filters) automatically shows up in the video too</li>
-    <li>“How it works” is now a full guide with pictures for every part (section &amp; zoom, Suno archive, recording …)</li></ul>
+    <li>“How it works” is now a full guide with pictures for every part (section &amp; zoom, Suno archive, recording …)</li>
+    <li>New look: panels like studio hardware with a lit edge, illuminated buttons, metal knobs, LED switches and the red/blue light of the logo in the background</li></ul>
   <h3>v14.9</h3><ul>
     <li>MIDI stems (e.g. from Suno next to WAV and MP3) are loaded too and played by a built-in synth: piano, e-piano, pad, strings, pluck, lead, bass, 808 and drums. They start switched off so nothing doubles, and you can layer them in</li>
     <li>When a stem comes in several formats, the best quality is always used (WAV before MP3)</li></ul>
