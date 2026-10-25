@@ -6,6 +6,10 @@
 
 **▶ Open the app:** https://0zoon.github.io/danviel-studio/
 
+⭐ **If you like it, star this repo** – it helps other musicians find it.
+
+[![DANVIEL Studio screenshot](screenshot.png)](https://0zoon.github.io/danviel-studio/)
+
 ## Features
 - **Mix stems:** vocals, beat, bass … switch each on/off, level, panning, EQ, compressor, de-esser, reverb, delay
 - **Genre Auto-Mix:** one click for levels, panning, EQ, vocal effects, sidechain and mastering, tuned for Pop, R&B, Hip-Hop/Trap, EDM/Big Room, House or Rock. “Automatic” listens to the song and detects the genre
