@@ -14,6 +14,19 @@
 |---|---|
 | [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
 
+## 🆕 New in v15
+- **🎙 Record right in the studio:** sing or rap over your beat with your microphone. Every take becomes its own track that you can mix, nudge and delete. No beat loaded? Just record and build your song from scratch.
+
+  [![Recording over a beat](screenshot-record.png)](https://0zoon.github.io/danviel-studio/)
+- **Suno archive:** connect the folder of your Suno archive (`<Title>.txt` + `<Title> - Lyrics.txt`) once, and every song you load gets its title, clean lyrics and genre automatically. The Suno prompt goes into the release package too.
+- **One click vibes:** 🐢 Slowed + Reverb, ⚡ Sped Up, 🌙 Nightcore, key up/down in semitones
+- **🔊 Bass Boosted**, rename tracks, ⚙ Pro view with every control open, new demos (Pop, R&B, Trap, House)
+
+## 💎 Coming soon
+- **DANVIEL Studio Pro:** a desktop app for Windows with a bit more power (faster AI, 6 stems with guitar and piano, batch export) and a **Suno browser extension** that sends stems, lyrics and style straight into the studio. One purchase, no subscription. [More info](https://0zoon.github.io/danviel-studio/pro.html)
+- **Everything in the browser version stays free.** Pro is mainly a way to support the project.
+- More visualizer styles, fonts and video looks
+
 ## Features
 - **Mix stems:** vocals, beat, bass … switch each on/off, volume, panning, EQ, compressor, de-esser, reverb, delay
 - **Suno-ready:** drop the whole Suno ZIP. When a stem comes as WAV, MP3 and MIDI, the WAV is used, and the MIDI stems are played by a built-in synth (piano, pad, bass, 808, drums …) that you can layer in
@@ -56,4 +69,4 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 ## License
 © 2026 DANVIEL. All rights reserved. DANVIEL Studio is free to use, and everything you create with it belongs to you. Copying, rebranding, redistributing or selling the code is not permitted without permission. See [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md).
 
-Made by **DANVIEL**
+Made by **DANVIEL** · Follow the repo (⭐ / Watch) to get notified about Pro and new versions.
