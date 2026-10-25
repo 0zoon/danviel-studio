@@ -4115,12 +4115,24 @@ function bgvSync(live, t){
   if(live){ if(v.paused) v.play().catch(()=>{}); if(Math.abs(v.currentTime - want) > 0.35) v.currentTime = want; }
   else { if(!v.paused) v.pause(); if(Math.abs(v.currentTime - want) > 0.05){ v.currentTime = want; v.addEventListener("seeked", ()=>drawPreview(false), {once:true}); } }
 }
+// export: let the background video simply play and keep it in step with the frames we render
+// (seeking every single frame is very slow for H.264; playing decodes each frame only once)
+async function bgvPace(t){
+  const v = VID.bgv; if(!v || !v.duration) return; const d = v.duration, fr = 1/30, want = t % d;
+  let diff = ((v.currentTime - want) % d + d) % d; if(diff > d/2) diff -= d;          // >0: video is ahead, <0: behind
+  if(diff < -1){ await bgvAt(t); return; }                                            // far behind (start, very slow export): jump
+  if(diff > fr*1.5){ if(!v.paused) v.pause(); if(diff > 1){ await bgvAt(t); } return; }   // ahead: wait for us
+  if(v.paused){ v.playbackRate = 1; try{ await v.play(); }catch(e){ await bgvAt(t); return; } }
+  const until = performance.now() + 400;
+  while(performance.now() < until){ let df = ((v.currentTime - want) % d + d) % d; if(df > d/2) df -= d; if(df >= -fr*0.5) break; await new Promise(r=>setTimeout(r, 4)); }
+}
 // exact frame for the export
 function bgvAt(t){ const v = VID.bgv; if(!v || !v.duration) return Promise.resolve();
-  const want = t % v.duration; if(Math.abs(v.currentTime - want) < 0.004 && v.readyState >= 2) return Promise.resolve();
+  const fr = 1/30, want = Math.floor((t % v.duration)/fr)*fr;   // snap to the video's frame grid: no seek needed when the frame did not change
+  if(Math.abs(v.currentTime - want) < fr*0.5 && v.readyState >= 2) return Promise.resolve();
   return new Promise(res=>{ let fin = false; const done = ()=>{ if(fin) return; fin = true; clearTimeout(to); res(); }, to = setTimeout(done, 2500);
     v.addEventListener("seeked", ()=>{ const ok = ()=> v.readyState >= 2;
-      if(ok()){ if(v.requestVideoFrameCallback){ const t2 = setTimeout(done, 250); v.requestVideoFrameCallback(()=>{ clearTimeout(t2); done(); }); } else done(); }
+      if(ok()) done();
       else v.addEventListener("canplay", done, {once:true}); }, {once:true});
     v.currentTime = want; }); }
 $("vStyle").onclick = e=>{ const v = e.target.dataset && e.target.dataset.s; if(!v || !VSTYLES[v]) return; VID.style = v; vStyleUi(); if(VSTYLES[v].custom) vsbFill(VSTYLES[v].data); previewSoon(); saveSoon(); };
@@ -4611,7 +4623,7 @@ async function renderVideoBlob(L, R, sr, aspect, job){
   for(let f=0; f<nf; f++){
     if(job!==VID.job) throw new Error("abgebrochen");
     if(err) throw err;
-    if(VID.bgv){ VID.exporting = true; await bgvAt(f/fps); }
+    if(VID.bgv){ if(!VID.exporting){ VID.exporting = true; await bgvAt(f/fps); } else await bgvPace(f/fps); }
     drawFrame(g, W, H, f/fps, S);
     const fr = new VideoFrame(cv, {timestamp: Math.round(f*1e6/fps), duration: Math.round(1e6/fps)});
     venc.encode(fr, {keyFrame: f % (fps*2) === 0}); fr.close();
