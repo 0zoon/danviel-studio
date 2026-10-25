@@ -1075,6 +1075,7 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>DANVIEL in den Logo-Farben: DAN rot, VIEL blau (edel abgestuft), im Kopf der Seite, in der Anleitung und im Video und Cover</li>
     <li>Song zerlegen: Anzeige läuft ab der ersten Sekunde (Stück x von y, vergangene Zeit, Restzeit), und neu „Nur 60 Sekunden (schnell)“ für Clips</li>
     <li>Mastering aus: kein Übersteuern mehr. Mit „Übersteuern verhindern“ wird der Mix beim Abspielen genauso wie beim Export so weit leiser gestellt, dass die lauteste Stelle bei −1 dB bleibt</li>
+    <li>Mastering an: wird nicht mehr kurz viel zu laut, während es den Song analysiert. Bis die Analyse fertig ist, läuft der normale Mix weiter</li>
     <li>Regler wahlweise als <b>Drehknöpfe</b> wie am Mischpult (bei „Spuren“ umschalten: ━ Schieber / ◉ Drehknöpfe). Ziehen nach oben/unten, Mausrad, Doppelklick = Standard</li>
     <li>„So geht’s“ neu: in 5 Schritten zum fertigen Song, mit Bildern, gelben Nummern und Erklärungen zu jedem Knopf. Bild anklicken = groß</li>
   </ul>
@@ -1267,6 +1268,7 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>DANVIEL in the logo colours: DAN red, VIEL blue (with a rich gradient), in the page header, the guide, the video and the cover</li>
     <li>Split song: the display runs from the first second (piece x of y, time elapsed, time left), and new “Only 60 seconds (fast)” for clips</li>
     <li>Mastering off: no more clipping. With “Prevent clipping” the mix is turned down in playback exactly like in the export, so the loudest peak stays at −1 dB</li>
+    <li>Mastering on: no longer gets far too loud while it analyses the song. The normal mix keeps playing until the analysis is done</li>
     <li>Controls optionally as <b>rotary knobs</b> like on a mixing desk (switch at “Tracks”: ━ Sliders / ◉ Knobs). Drag up/down, mouse wheel, double-click = default</li>
     <li>New “How it works”: 5 steps to a finished song, with pictures, yellow numbers and an explanation for every control. Click a picture to enlarge</li></ul>
   <h3>v14.9</h3><ul>
@@ -2571,9 +2573,12 @@ function applyMaster(){
   if(!live) return;
   const t = ctx.currentTime, set=(p,v)=>p.setTargetAtTime(v,t,0.03);
   live.ch.set(M);
-  set(live.direct.gain, M.on ? 0 : offK());
-  set(live.wet.gain, M.on && !M.ab ? 1:0);
-  set(live.dry.gain, M.on && M.ab ? 1:0);
+  // Until the analysis of this song is ready, the chain has no level staging yet and would play far too loud:
+  // keep playing the plain mix (protected) and switch to the master as soon as the analysis is done.
+  const ready = M.on && !!ana && ana.ver === P.ver;
+  set(live.direct.gain, ready ? 0 : offK());
+  set(live.wet.gain, ready && !M.ab ? 1:0);
+  set(live.dry.gain, ready && M.ab ? 1:0);
   if(ana){
     set(live.pre.gain, db2(ana.pre));
     set(live.makeup.gain, db2(isFinite(ana.Lchain) ? Math.min(24, M.target - ana.Lchain) : 0));
@@ -2744,7 +2749,7 @@ function scheduleAnalysis(){
 }
 async function analyze(){
   if(!tracks.some(t=>t.on)) return;
-  const run=++anaRun, key=stateKey(), fs=tracks[0].buffer.sampleRate;
+  const run=++anaRun, key=stateKey(), fs=tracks[0].buffer.sampleRate, ver=P.ver;
   $("mNote").textContent="Analysiere …";
   await new Promise(r=>setTimeout(r,20));
   const raw=await getMix(); await computeMatch(raw, fs); const key2=stateKey(); const Lraw=lufs(raw,fs);
@@ -2753,7 +2758,7 @@ async function analyze(){
   const lev = levelCurve(raw, fs, M.level||0);
   const pl=await renderChain(raw,fs,pre,lev); if(run!==anaRun) return;
   const Lchain=lufs(pl,fs);
-  ana={key:key2, raw, pre, Lraw, Lchain, pl, fs, lev}; anaKey=key2;
+  ana={key:key2, raw, pre, Lraw, Lchain, pl, fs, lev, ver}; anaKey=key2;
   levSchedule();
   $("mRaw").textContent = isFinite(Lraw)?Lraw.toFixed(1):"–";
   $("mOut").textContent = "≈ "+M.target.toFixed(1);
