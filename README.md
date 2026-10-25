@@ -30,7 +30,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **🔊 Bass Boosted**, rename tracks, ⚙ Pro view with every control open, new demos (Pop, R&B, Trap, House)
 
 ## 💎 Coming soon
-- **DANVIEL Studio Pro:** a desktop app for Windows with a bit more power (faster AI, 6+ stems with guitar, piano and more, batch export) and a **Suno browser extension** that sends stems, lyrics and style straight into the studio. One purchase, no subscription. [More info](https://0zoon.github.io/danviel-studio/pro.html)
+- **DANVIEL Studio Pro:** a desktop app for Windows with a bit more power (6+ stems with guitar, piano and more, splitting on the graphics card in under a minute, batch export, side panels with a file browser, projects and notes for big screens, a studio desk look) and a **Suno browser extension** that sends stems, lyrics and style straight into the studio. One purchase, no subscription. [More info](https://0zoon.github.io/danviel-studio/pro.html)
 - **Everything in the browser version stays free.** Pro is mainly a way to support the project.
 - More visualizer styles, fonts and video looks
 
