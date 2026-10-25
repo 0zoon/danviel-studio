@@ -2,7 +2,7 @@
 
 # DANVIEL Studio
 
-**Free music studio in your browser:** mix stems, master your song, make lyric videos and covers, and get everything ready for release. No installation, no upload: your songs stay on your computer.
+**Free music studio in your browser:** mix stems, master your song, make lyric videos and covers, and get everything ready for release. **Or build a beat from scratch:** drum patterns by clicking, play melodies with your keyboard or a MIDI keyboard, add loops and arrange it all on a timeline, then record your vocals over it. No installation, no upload: your songs stay on your computer.
 
 **▶ Open the app:** https://0zoon.github.io/danviel-studio/
 
@@ -80,7 +80,7 @@ Current Chrome, Edge, Brave or Opera GX. Video export needs WebCodecs.
 ---
 
 ## Deutsch
-Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. Keine Installation, kein Upload, deine Songs bleiben auf deinem Rechner. Die Sprache stellst du oben im Programm auf **Deutsch** um.
+Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. **Oder einen Beat von null bauen:** Drums per Klick, Melodien mit der Tastatur oder einem MIDI-Keyboard einspielen, Loops dazu, alles auf einer Zeitleiste anordnen und deinen Gesang drüber aufnehmen. Keine Installation, kein Upload, deine Songs bleiben auf deinem Rechner. Die Sprache stellst du oben im Programm auf **Deutsch** um.
 
 **Das kann es:**
 - Stems mixen mit **Auto-Mix nach Genre**, Mastering für Spotify, YouTube oder Club, Bass-Boost, Tempo und Tonart (Slowed, Sped Up, Nightcore)
