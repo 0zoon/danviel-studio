@@ -14,6 +14,13 @@
 |---|---|
 | [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
 
+## Made with DANVIEL Studio
+Real song, real workflow: stems split with the built-in AI, lyrics taken over from the Suno archive, cover finished in the cover studio and a YouTube video with lyrics and visualizer.
+
+| Cover studio | 16:9 video with lyrics |
+|---|---|
+| ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
+
 ## 🆕 New in v15
 - **🎙 Record right in the studio:** sing or rap over your beat with your microphone. Every take becomes its own track that you can mix, nudge and delete. No beat loaded? Just record and build your song from scratch.
 
