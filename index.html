@@ -1074,6 +1074,7 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>Neuer Look: Flächen wie Studio-Hardware mit Lichtkante, beleuchtete Knöpfe, Metall-Regler, LED-Schalter und das rot-blaue Licht vom Logo im Hintergrund</li>
     <li>DANVIEL in den Logo-Farben: DAN rot, VIEL blau (edel abgestuft), im Kopf der Seite, in der Anleitung und im Video und Cover</li>
     <li>Song zerlegen: Anzeige läuft ab der ersten Sekunde (Stück x von y, vergangene Zeit, Restzeit), und neu „Nur 60 Sekunden (schnell)“ für Clips</li>
+    <li>Mastering aus: kein Übersteuern mehr. Mit „Übersteuern verhindern“ wird der Mix beim Abspielen genauso wie beim Export so weit leiser gestellt, dass die lauteste Stelle bei −1 dB bleibt</li>
     <li>Regler wahlweise als <b>Drehknöpfe</b> wie am Mischpult (bei „Spuren“ umschalten: ━ Schieber / ◉ Drehknöpfe). Ziehen nach oben/unten, Mausrad, Doppelklick = Standard</li>
     <li>„So geht’s“ neu: in 5 Schritten zum fertigen Song, mit Bildern, gelben Nummern und Erklärungen zu jedem Knopf. Bild anklicken = groß</li>
   </ul>
@@ -1265,6 +1266,7 @@ select:focus,input[type=text]:focus,textarea:focus{outline:2px solid color-mix(i
     <li>New look: panels like studio hardware with a lit edge, illuminated buttons, metal knobs, LED switches and the red/blue light of the logo in the background</li>
     <li>DANVIEL in the logo colours: DAN red, VIEL blue (with a rich gradient), in the page header, the guide, the video and the cover</li>
     <li>Split song: the display runs from the first second (piece x of y, time elapsed, time left), and new “Only 60 seconds (fast)” for clips</li>
+    <li>Mastering off: no more clipping. With “Prevent clipping” the mix is turned down in playback exactly like in the export, so the loudest peak stays at −1 dB</li>
     <li>Controls optionally as <b>rotary knobs</b> like on a mixing desk (switch at “Tracks”: ━ Sliders / ◉ Knobs). Drag up/down, mouse wheel, double-click = default</li>
     <li>New “How it works”: 5 steps to a finished song, with pictures, yellow numbers and an explanation for every control. Click a picture to enlarge</li></ul>
   <h3>v14.9</h3><ul>
@@ -2373,7 +2375,7 @@ $("export").onclick = async ()=>{
     }
     if(!M.on && $("norm").checked){
       let pk=0; for(let i=0;i<L.length;i++){ const a=Math.abs(L[i]), b=Math.abs(R[i]); if(a>pk)pk=a; if(b>pk)pk=b; }
-      if(pk>0.989){ const k=0.989/pk; for(let i=0;i<L.length;i++){ L[i]*=k; R[i]*=k; } }
+      if(pk>OFF_CEIL){ const k=OFF_CEIL/pk; for(let i=0;i<L.length;i++){ L[i]*=k; R[i]*=k; } }
     }
     [L, R] = trimTail(L, R, sr);
     applyFades(L, R, sr);
@@ -2569,7 +2571,7 @@ function applyMaster(){
   if(!live) return;
   const t = ctx.currentTime, set=(p,v)=>p.setTargetAtTime(v,t,0.03);
   live.ch.set(M);
-  set(live.direct.gain, M.on?0:1);
+  set(live.direct.gain, M.on ? 0 : offK());
   set(live.wet.gain, M.on && !M.ab ? 1:0);
   set(live.dry.gain, M.on && M.ab ? 1:0);
   if(ana){
@@ -2718,7 +2720,24 @@ async function renderChain(raw, fs, preDb, lev){
 let ana=null, anaTimer=0, anaRun=0, anaKey="";
 const trackKey = () => (FXON ? "fx1|" : "fx0|") + tracks.map(t=>[t.on?1:0, t.vol.toFixed(3), t.pan, t.hpf, t.low, t.high, t.pf, t.pg, t.rev, t.dly, t.comp, t.deess, t.ride||0].join(":")).join("|") + "#" + [FX.revType, FX.revLvl, FX.dlyNote, FX.dlyFb, FX.dlyLvl, SC.amt, SC.target].join(":");
 function stateKey(){ return trackKey()+"#"+[M.warm,M.air,M.glue,M.sat,M.width,M.mb,M.tone,M.bass,M.level,rate,REF.on,REF.amt,REF.id,P.ver,$("onlyAB").checked?AB.a+"-"+AB.b:""].join(",")+"#"+M.eq.map(v=>v.toFixed(2)).join(","); }
+// Mastering off: "Übersteuern verhindern" turns the whole mix down so its loudest peak stays at −1 dB,
+// in playback exactly like in the export (no limiter colouring, no clipping, no jump in level).
+const OFF_CEIL = 0.891;   // −1 dBFS
+let OFF = {k: 1, key: "", t: 0, run: 0};
+const offK = () => $("norm").checked ? OFF.k : 1;
+function scheduleOffPeak(){
+  if(!tracks.length || M.on) return;
+  const key = trackKey() + "|" + P.ver; if(key === OFF.key){ applyMaster(); return; }
+  clearTimeout(OFF.t); OFF.t = setTimeout(async ()=>{
+    if(!tracks.some(t=>t.on)){ OFF.k = 1; OFF.key = key; applyMaster(); return; }
+    const run = ++OFF.run, [L, R] = await mixRaw(); if(run !== OFF.run) return;
+    let pk = 0; for(let i=0;i<L.length;i++){ const a = Math.abs(L[i]), b = Math.abs(R[i]); if(a>pk) pk=a; if(b>pk) pk=b; }
+    OFF.k = pk > OFF_CEIL ? OFF_CEIL/pk : 1; OFF.key = key;
+    if(OFF.k < 1) log("Mastering aus: Mix um", (20*Math.log10(OFF.k)).toFixed(1), "dB leiser, damit nichts übersteuert (Spitze war", (20*Math.log10(pk)).toFixed(1), "dB)");
+    applyMaster(); }, 450);
+}
 function scheduleAnalysis(){
+  if(tracks.length && !M.on){ scheduleOffPeak(); return; }
   if(!tracks.length || !M.on) return;
   const key=stateKey(); if(key===anaKey && ana) { applyMaster(); return; }
   clearTimeout(anaTimer); anaTimer=setTimeout(analyze, 450);
@@ -2778,6 +2797,7 @@ $("toneOn").onclick = ()=>{ M.tone = !M.tone; syncKnobs(); scheduleAnalysis(); s
 $("mPresets").onclick = e=>{ const p=e.target.dataset && e.target.dataset.m; if(!p) return; M.intensity = p; applyPreset(); syncKnobs(); applyMaster(); scheduleAnalysis(); if(ana){ $("mOut").textContent="≈ "+M.target.toFixed(1); $("mTp").textContent="≤ "+ceilTP().toFixed(1);} };
 function setMasterOn(v){ M.on=v; $("mOn").setAttribute("aria-pressed",M.on); $("master").classList.toggle("off",!M.on); $("normLbl").hidden=M.on;  applyMaster(); scheduleAnalysis(); }
 $("mOn").onclick = ()=>setMasterOn(!M.on);
+$("norm").addEventListener("change", ()=>applyMaster());
 function syncBassLevel(){
   const near = (v, list) => list.reduce((a,b)=>Math.abs(b-v) < Math.abs(a-v) ? b : a);
   const bv = near(M.bass||0, [0,35,65,100,200]), lv = near(M.level||0, [0,50,100]);
@@ -3899,7 +3919,7 @@ $("exportVers").onclick = async ()=>{
     setStatus("Versionen: berechne Main …"); setProg(0.02);
     let ref;
     if(M.on){ ref = await masterExport(); }
-    else { const raw = await getMix(); let pk=0; for(const x of raw) for(let i=0;i<x.length;i++){ const a=Math.abs(x[i]); if(a>pk) pk=a; } ref = {k: $("norm").checked && pk>0.989 ? 0.989/pk : 1}; }
+    else { const raw = await getMix(); let pk=0; for(const x of raw) for(let i=0;i<x.length;i++){ const a=Math.abs(x[i]); if(a>pk) pk=a; } ref = {k: $("norm").checked && pk>OFF_CEIL ? OFF_CEIL/pk : 1}; }
     const preDb = M.on ? ana.pre : 0, ceilLin = db2(ceilTP()-0.5);
     for(let vi=0; vi<list.length; vi++){
       const v = list[vi], V = VERSIONS[v];
@@ -4988,7 +5008,7 @@ $("vCancel").onclick = ()=>{ VID.job++; };
 async function finalAudio(){
   const sr = tracks[0].buffer.sampleRate; let L, R;
   if(M.on){ const r = await masterExport(); L = r.L; R = r.R; }
-  else { [L, R] = await getMix(); let pk=0; for(const x of [L,R]) for(let i=0;i<x.length;i++){ const a=Math.abs(x[i]); if(a>pk) pk=a; } if(pk>0.989){ const k=0.989/pk; for(const x of [L,R]) for(let i=0;i<x.length;i++) x[i]*=k; } }
+  else { [L, R] = await getMix(); let pk=0; for(const x of [L,R]) for(let i=0;i<x.length;i++){ const a=Math.abs(x[i]); if(a>pk) pk=a; } if(pk>OFF_CEIL){ const k=OFF_CEIL/pk; for(const x of [L,R]) for(let i=0;i<x.length;i++) x[i]*=k; } }
   [L, R] = trimTail(L, R, sr); applyFades(L, R, sr);
   return [L, R, sr];
 }
