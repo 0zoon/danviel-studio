@@ -13,6 +13,8 @@
 | Videos for TikTok, Reels & YouTube | Cover studio |
 |---|---|
 | [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
+| **📦 Packs: presets to share** | **Cover prompt from your lyrics** |
+| [![Packs](screenshot-packs.png)](https://0zoon.github.io/danviel-studio/) | [![Cover prompt](screenshot-prompt.png)](https://0zoon.github.io/danviel-studio/) |
 
 ## Made with DANVIEL Studio
 Real song, real workflow: stems split with the built-in AI, lyrics taken over from the Suno archive, cover finished in the cover studio and a YouTube video with lyrics and visualizer.
@@ -56,6 +58,9 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
 - **Projects:** save as one ZIP and send it to collaborators
 - **Split a song into stems** (AI, beta): vocals, drums, bass and the rest
+- **📦 Packs:** ready-made presets for mastering, effects and single tracks (e.g. “Trap Lead Vocal”, “Deep 808”) plus visualizer and cover styles, apply them in one click, create your own pack and share it as a file
+- **Cover prompt from the lyrics:** an AI turns your lyrics into a finished image prompt for ChatGPT, with or without the title on the cover
+- **Compact or everything open:** step bar 1 Load · 2 Mix · 3 Master · 4 Video & Cover · 5 Release, rotary knobs or sliders, backgrounds (carbon, studio light, wood, metal), works on phones
 - **English & German:** switch the language at the top of the app
 
 ## Recommended browser
@@ -72,6 +77,15 @@ Current Chrome, Edge, Brave or Opera GX. Video export needs WebCodecs.
 
 ## Deutsch
 Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover machen und alles fertig für den Release packen. Keine Installation, kein Upload, deine Songs bleiben auf deinem Rechner. Die Sprache stellst du oben im Programm auf **Deutsch** um.
+
+**Das kann es:**
+- Stems mixen mit **Auto-Mix nach Genre**, Mastering für Spotify, YouTube oder Club, Bass-Boost, Tempo und Tonart (Slowed, Sped Up, Nightcore)
+- **Aufnehmen** über deinen Beat, **Song in Stems zerlegen** (KI, auf mehreren Prozessor-Kernen)
+- **Videos** für TikTok, Reels und YouTube mit Lyrics und Visualizer, **Cover-Studio** mit 25 Schriften und Filtern
+- **Cover-Prompt aus den Lyrics** für ChatGPT, mit oder ohne Titel im Bild
+- **📦 Pakete:** fertige Presets für Mastering, Effekte und einzelne Spuren (z. B. „Trap Lead Vocal“, „Deep 808“), eigene Pakete erstellen und teilen
+- **Suno-Archiv**, Release-Check und komplettes Release-Paket
+- **Kompakt-Ansicht** in 5 Schritten oder alles offen, Drehknöpfe oder Schieber, Hintergründe (Carbon, Studio-Licht, Holz, Metall), läuft auch am Handy
 
 **▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
 
