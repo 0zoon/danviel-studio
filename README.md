@@ -13,6 +13,8 @@
 | Videos for TikTok, Reels & YouTube | Cover studio |
 |---|---|
 | [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
+| **🧱 Build tracks: beat, melody, loops** | **🎹 Play in with keyboard or MIDI** |
+| [![Build tracks](screenshot-build.png)](https://0zoon.github.io/danviel-studio/) | [![Instrument](screenshot-inst.png)](https://0zoon.github.io/danviel-studio/) |
 | **📦 Packs: presets to share** | **Cover prompt from your lyrics** |
 | [![Packs](screenshot-packs.png)](https://0zoon.github.io/danviel-studio/) | [![Cover prompt](screenshot-prompt.png)](https://0zoon.github.io/danviel-studio/) |
 
@@ -34,6 +36,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Cover prompt from the lyrics:** an AI reads your lyrics and writes a ready image prompt for your cover (copy for ChatGPT or use your own OpenAI key)
 - **Split song on several CPU cores** at once, with live progress and a 60-second quick mode
 - **📦 Packs:** load, apply and share ready-made settings: mastering, effects, chains for single tracks (e.g. “Trap Lead Vocal”, “Deep 808”), visualizer and cover styles. Starter pack included. Packs contain only settings, no code
+- **🧱 Build tracks:** drum pattern, instrument with piano roll and MIDI keyboard, loops, timeline
 
 ## 💎 Coming soon
 - **DANVIEL Studio Pro:** a desktop app for Windows with a bit more power (6+ stems with guitar, piano and more, splitting on the graphics card in under a minute, VST3 plugins on any track, batch export, side panels with a file browser, projects and notes for big screens, a studio desk look) and a **Suno browser extension** that sends stems, lyrics and style straight into the studio. One purchase, no subscription. [More info](https://0zoon.github.io/danviel-studio/pro.html)
@@ -58,6 +61,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
 - **Projects:** save as one ZIP and send it to collaborators
 - **Split a song into stems** (AI, beta): vocals, drums, bass and the rest
+- **🧱 Build tracks:** drum patterns by clicking (with genre templates), play an instrument with mouse, computer keyboard or MIDI keyboard, a simple piano roll, loops fitted to the tempo and a timeline to choose where each track plays. Works without any song too
 - **📦 Packs:** ready-made presets for mastering, effects and single tracks (e.g. “Trap Lead Vocal”, “Deep 808”) plus visualizer and cover styles, apply them in one click, create your own pack and share it as a file
 - **Cover prompt from the lyrics:** an AI turns your lyrics into a finished image prompt for ChatGPT, with or without the title on the cover
 - **Compact or everything open:** step bar 1 Load · 2 Mix · 3 Master · 4 Video & Cover · 5 Release, rotary knobs or sliders, backgrounds (carbon, studio light, wood, metal), works on phones
@@ -80,6 +84,7 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 
 **Das kann es:**
 - Stems mixen mit **Auto-Mix nach Genre**, Mastering für Spotify, YouTube oder Club, Bass-Boost, Tempo und Tonart (Slowed, Sped Up, Nightcore)
+- **🧱 Spuren bauen:** Drum-Pattern per Klick, Instrument einspielen (Maus, Tastatur, MIDI-Keyboard), Piano-Roll, Loops und Zeitleiste
 - **Aufnehmen** über deinen Beat, **Song in Stems zerlegen** (KI, auf mehreren Prozessor-Kernen)
 - **Videos** für TikTok, Reels und YouTube mit Lyrics und Visualizer, **Cover-Studio** mit 25 Schriften und Filtern
 - **Cover-Prompt aus den Lyrics** für ChatGPT, mit oder ohne Titel im Bild
