@@ -21,7 +21,9 @@
 - **Mastering like online services:** −14 LUFS for streaming, true-peak limiter, multiband, tonal balance, match a reference song
 - **Before / after:** hear the original without mix and mastering at the click of a button
 - **Exports:** WAV, MP3, M4A, instrumental, acapella, TV mix, single stems, kick as MIDI
-- **Tempo & key:** faster/slower, slowed/sped-up with original vocal pitch, BPM and key detection
+- **Tempo & key:** faster/slower, one click for Slowed + Reverb, Sped Up and Nightcore, key up/down, BPM and key detection
+- **Record:** sing, rap or play over the song with your microphone, every take becomes its own track (or start a song from scratch)
+- **Bass boost:** from a little more to the old-school 🔊 Bass Boosted sound
 - **Shorts & Reels:** finds the hook automatically, 9:16, 1:1 and 16:9 videos with lyrics and visualizer
 - **Visualizer styles:** Classic, Neon, Cyberpunk, Late Night R&B, Pastel Pop, Minimal, or build and share your own
 - **Background video:** drop in your own clip and put the lyrics on top, place the title anywhere
@@ -29,7 +31,7 @@
 - **Cover studio:** create covers with AI in your own style, drag title and artist anywhere, 25 fonts, filters like warmth, glow, VHS, light leaks and duotone, 3000 × 3000 px export
 - **Release check & release package:** checks loudness, true peak, clipping, mono and silence, then packs master, instrumental, acapella, cover, lyrics and Shorts video into one ZIP
 - **Projects:** save as one ZIP and send it to collaborators
-- **Split a song into stems** (AI, beta)
+- **Split a song into stems** (AI, beta): 4 stems, or 6 with guitar and piano
 - **English & German:** switch the language at the top of the app
 
 ## Recommended browser
