@@ -25,6 +25,10 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 📱 New in v15.1
+- **Made for phones too:** small header with a ☰ menu, the player stays at the top while you scroll, bigger buttons for your thumb and a simple view with the essentials (“＋ Show all features” brings back everything). The step bar sits at the bottom like in an app
+- **A refresh no longer loses your work:** tracks, mix, lyrics, cover and settings stay saved in your browser and come back right away. Only “Delete project” starts over
+
 ## 🆕 New in v15
 - **🎙 Record right in the studio:** sing or rap over your beat with your microphone. Every take becomes its own track that you can mix, nudge and delete. No beat loaded? Just record and build your song from scratch.
 
@@ -65,6 +69,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **📦 Packs:** ready-made presets for mastering, effects and single tracks (e.g. “Trap Lead Vocal”, “Deep 808”) plus visualizer and cover styles, apply them in one click, create your own pack and share it as a file
 - **Cover prompt from the lyrics:** an AI turns your lyrics into a finished image prompt for ChatGPT, with or without the title on the cover
 - **Compact or everything open:** step bar 1 Load · 2 Mix · 3 Master · 4 Video & Cover · 5 Release, rotary knobs or sliders, backgrounds (carbon, studio light, wood, metal), works on phones
+- **📱 Phone ready:** a real mobile layout with a menu, sticky player and big buttons, so you can finish a clip right on your phone
 - **English & German:** switch the language at the top of the app
 
 ## Recommended browser
@@ -91,7 +96,7 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 - **Cover-Prompt aus den Lyrics** für ChatGPT, mit oder ohne Titel im Bild
 - **📦 Pakete:** fertige Presets für Mastering, Effekte und einzelne Spuren (z. B. „Trap Lead Vocal“, „Deep 808“), eigene Pakete erstellen und teilen
 - **Suno-Archiv**, Release-Check und komplettes Release-Paket
-- **Kompakt-Ansicht** in 5 Schritten oder alles offen, Drehknöpfe oder Schieber, Hintergründe (Carbon, Studio-Licht, Holz, Metall), läuft auch am Handy
+- **Kompakt-Ansicht** in 5 Schritten oder alles offen, Drehknöpfe oder Schieber, Hintergründe (Carbon, Studio-Licht, Holz, Metall), eigene Handy-Ansicht mit Menü, Player oben und großen Knöpfen (neu in v15.1)
 
 **▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
 
