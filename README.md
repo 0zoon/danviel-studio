@@ -25,6 +25,9 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎬 New in v15.7
+- **Auto-Mix profiles for instrumentals:** 🎬 Cinematic / film (dynamic, wide, spacious), 🎮 Game music (even, loop-friendly, −16 LUFS / −1 dBTP mobile game standard) and 🎧 Background music (steady level, room for a voice)
+
 ## ✂ New in v15.6
 - **Trim and move any track:** zoom in, cut start and end, nudge it earlier or later, the original is kept
 - **Put built drums, instruments or loops into an existing track** instead of a new one (with undo)
