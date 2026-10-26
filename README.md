@@ -25,10 +25,15 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎨 New in v15.4
+- **Cover studio:** 12 new fonts, 9 new text colours plus your own colour, outline, upper/lower case and letter spacing
+- **5 new demo songs** (EDM, Drill, Lo-Fi, Reggaeton, Ballad) and **6 new backgrounds** (concrete, black marble, neon night, starry sky, red velvet, acoustic foam)
+- Bigger branding in the video, and the visualizer builder sits right under the styles again
+
 ## 🧭 New in v15.3
 - **Clearer and easier:** every step has its own colour, keys 1–5 jump between steps, and a “What now?” line tells you the next move
 - **Folding you can see:** clear Expand / Collapse buttons with a one-line summary, tools in the mix folded away, Video & Cover split into three cards (Lyrics, Cover, Video) with the rarely used settings one level deeper
-- **Tidier header** with a ☰ menu, packs right at Auto-Mix and Mastering, split progress right under the buttons, and the hook clip starts half a second earlier
+- **Packs right at Auto-Mix and Mastering, split progress right under the buttons, and the hook clip starts half a second earlier
 
 ## 🔇 New in v15.2
 - **Remove noise:** a new slider on every track takes out the typical AI hiss, especially in pauses, without making the music dull. Auto-Mix finds noisy vocal and instrument stems and switches it on there by itself
