@@ -877,6 +877,9 @@ details.foldy[open] > summary{margin-bottom:10px}
 .trimrow .tplay{margin-left:auto}
 .bemerge{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
 .bemerge select{max-width:180px}
+.lvwrap{position:relative}
+.lclock{position:absolute;top:6px;right:22px;z-index:2;font:500 12px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);border:1px solid var(--line);border-radius:999px;padding:4px 9px;pointer-events:none;opacity:.85}
+.lvwrap:has(#lView[hidden]) .lclock{display:none}
 .mixvars{display:flex;flex-wrap:wrap;align-items:center;gap:8px;grid-column:1 / -1}
 .mixvars .label{margin-right:4px}
 .mixvars button{font-size:14px}
@@ -3368,6 +3371,7 @@ if(document.documentElement.dataset.bg === "foto") bgPhotoShow().then(ok=>{ if(!
 /* ---- mini player: fixed bar at the bottom while the big player is scrolled out of view ---- */
 function miniSync(t){
   if(t === undefined) t = playing ? currentTime() : offset;
+  { const c = document.getElementById("lClock"); if(c){ const s = Math.max(0, t/rate), m = Math.floor(s/60), r = s - m*60; c.textContent = m + ":" + (r < 10 ? "0" : "") + r.toFixed(3); } }
   $("miniSeek").value = duration ? Math.round(t/duration*1000) : 0;
   $("miniTime").textContent = fmtT(t/rate) + " / " + fmtT(duration/rate);
 }
@@ -3628,6 +3632,8 @@ function collSum(){
 setInterval(collSum, 2000); collSum();
 document.querySelectorAll(".coll").forEach(el=>{ if(el.__sync) el.__sync(); });
 $("beMerge").onclick = ()=>bldMerge();
+// playback clock (with milliseconds) at the top right of the scrolling lyrics
+{ const lv = $("lView"); if(lv){ const w = document.createElement("div"); w.className = "lvwrap"; lv.before(w); w.appendChild(lv); const c = document.createElement("span"); c.className = "lclock"; c.id = "lClock"; c.setAttribute("translate", "no"); c.setAttribute("aria-hidden", "true"); c.textContent = "0:00.000"; w.appendChild(c); } }
 $("miniPlay").onclick = ()=>$("play").click();
 $("miniSeek").oninput = e=>{ $("seek").value = e.target.value; $("seek").oninput({target: $("seek")}); miniSync(); };
 $("miniAB").onclick = ()=>$("mAB").click();
