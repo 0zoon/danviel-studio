@@ -25,6 +25,11 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🔇 New in v15.2
+- **Remove noise:** a new slider on every track takes out the typical AI hiss, especially in pauses, without making the music dull. Auto-Mix finds noisy vocal and instrument stems and switches it on there by itself
+- **Auto-Mix sounds cleaner:** fixed hidden make-up gain in the browser's compressors. The de-esser now really tames S sounds instead of lifting hiss, compressed vocals stay exactly where the mix puts them, and the preview is as loud as the export
+- **Volume in the bottom bar**, AI splitting and loading stems work on iPhones without crashing, the Suno archive works in Brave, Firefox and Safari
+
 ## 📱 New in v15.1
 - **Made for phones too:** small header with a ☰ menu, the player stays at the top while you scroll, bigger buttons for your thumb and a simple view with the essentials (“＋ Show all features” brings back everything). The step bar sits at the bottom like in an app
 - **A refresh no longer loses your work:** tracks, mix, lyrics, cover and settings stay saved in your browser and come back right away. Only “Delete project” starts over
@@ -96,6 +101,7 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 - **Cover-Prompt aus den Lyrics** für ChatGPT, mit oder ohne Titel im Bild
 - **📦 Pakete:** fertige Presets für Mastering, Effekte und einzelne Spuren (z. B. „Trap Lead Vocal“, „Deep 808“), eigene Pakete erstellen und teilen
 - **Suno-Archiv**, Release-Check und komplettes Release-Paket
+- **Rauschen entfernen** pro Spur: nimmt das typische KI-Rauschen raus, Auto-Mix schaltet es bei verrauschten Stems selbst ein
 - **Kompakt-Ansicht** in 5 Schritten oder alles offen, Drehknöpfe oder Schieber, Hintergründe (Carbon, Studio-Licht, Holz, Metall), eigene Handy-Ansicht mit Menü, Player oben und großen Knöpfen (neu in v15.1)
 
 **▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
