@@ -29,6 +29,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **Trim and move any track:** zoom in, cut start and end, nudge it earlier or later, the original is kept
 - **Put built drums, instruments or loops into an existing track** instead of a new one (with undo)
 - **Quick tweaks:** vocals louder, more bass, radio mix, wider, clean, warmer, brighter in one click, and the export name shows “(Beat)” or “(Vocals)” automatically
+- **Visualizer builder:** 6 new shapes, a third colour, a cover that pulses, breathes, spins or shakes with the beat, stars, beat flash and a glowing title
 
 ## 📦 New in v15.5
 - **Packs right where you work:** in the mix, effects, mastering, visualizer styles and cover studio, with the matching presets highlighted
