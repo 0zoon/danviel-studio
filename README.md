@@ -25,6 +25,11 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## ✂ New in v15.6
+- **Trim and move any track:** zoom in, cut start and end, nudge it earlier or later, the original is kept
+- **Put built drums, instruments or loops into an existing track** instead of a new one (with undo)
+- **Quick tweaks:** vocals louder, more bass, radio mix, wider, clean, warmer, brighter in one click, and the export name shows “(Beat)” or “(Vocals)” automatically
+
 ## 📦 New in v15.5
 - **Packs right where you work:** in the mix, effects, mastering, visualizer styles and cover studio, with the matching presets highlighted
 - **Your own photo as background** (kept in your browser only) and **15 more fonts**, now over 50
