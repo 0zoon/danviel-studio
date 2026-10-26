@@ -25,6 +25,11 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 📦 New in v15.5
+- **Packs right where you work:** in the mix, effects, mastering, visualizer styles and cover studio, with the matching presets highlighted
+- **Your own photo as background** (kept in your browser only) and **15 more fonts**, now over 50
+- Cover studio preview centred above the controls, branding and logo next to “Create video”
+
 ## 🎨 New in v15.4
 - **Cover studio:** 12 new fonts, 9 new text colours plus your own colour, outline, upper/lower case and letter spacing
 - **5 new demo songs** (EDM, Drill, Lo-Fi, Reggaeton, Ballad) and **6 new backgrounds** (concrete, black marble, neon night, starry sky, red velvet, acoustic foam)
