@@ -5969,10 +5969,10 @@ function drawCoverTo(g, S, work){
   const ta = alignOf(CX.t.x), tc = col(tb), tx = ta === "left" ? tb[0] : ta === "right" ? tb[0] + tb[2] : tb[0] + tb[2]/2;
   g.fillStyle = tc; shadowFor(tc); g.textAlign = ta; g.font = tfont(ts);
   rows.forEach((r,i)=>g.fillText(r, tx, tb[1] + ts*0.85 + i*lh));
-  CXBOX.t = tb;
+  CXBOX.t = tb.map(v=>v*3000/S);   // always in preview units (the video draws the cover at 1080 px and must not break dragging)
   // artist
   if(ab){ const aa = alignOf(CX.a.x), ac = col(ab); g.fillStyle = ac; shadowFor(ac); g.textAlign = aa; g.font = `${aw} ${as}px ${afam}`;
-    fillName(g, artist, aa === "left" ? ab[0] : aa === "right" ? ab[0] + ab[2] : ab[0] + ab[2]/2, ab[1] + as*0.9); CXBOX.a = ab; }
+    fillName(g, artist, aa === "left" ? ab[0] : aa === "right" ? ab[0] + ab[2] : ab[0] + ab[2]/2, ab[1] + as*0.9); CXBOX.a = ab.map(v=>v*3000/S); }
   // dedication
   if(ded){ g.font = `italic ${ds}px ${CX_FONTS.serif}`; g.globalAlpha = 0.85; g.fillStyle = tc;
     if(preset){ const dx = left ? pad : S/2; g.textAlign = left ? "left" : "center"; g.fillText(ded, dx, CX._ded.y*S + ds*0.35); }
