@@ -25,6 +25,11 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎚 New in v16.2
+- **17 new Auto-Mix genres:** drill, afrobeats and lo-fi in the first row; instrumental, classical, jazz, reggaeton / Latin, K-pop, amapiano, gospel, country, techno, drum & bass, psytrance / Goa, synthwave / cyberpunk, phonk and metal under “More genres”, each set up the way studios usually mix them
+- **New DANVIEL genre pack** (mastering, effects, track chains) and **export** for every pack
+- **Delete project** also at the bottom right of the monitor, always with an “are you sure?” window
+
 ## 🎛 New in v16.1
 - **Monitor upgraded:** whole-mix waveform to click and seek, keys for start, loop, before/after and mute
 - **Building blocks:** selected track, track overview, big visualizer and quick select can be hidden and dragged; video and player always stay
