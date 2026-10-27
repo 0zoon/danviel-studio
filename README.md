@@ -25,6 +25,12 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🥁 New in v16.4
+- **15 demo songs** instead of short loops: intro, verse, hook, break and outro, about 1 to 1.5 minutes each, as separate stems. New: afrobeats, amapiano, phonk, dancehall, synthwave and boom bap
+- **Samples:** 40 one-shots made in the studio (drums, 808s, crowd shouts, hits, FX, atmo), straight into the drum pattern, plus your own samples
+- **Full-screen picture in videos:** your image corner to corner with a slow zoom, title, visualizer and lyrics on or off with one click
+- **10 new backgrounds** and a completely new “How it works” with golden numbers, monitor and samples
+
 ## 🎹 New in v16.3
 - **Packs go on top of Auto-Mix:** “Deep 808” adds sub to the bass without resetting anything else; loudness and balance stay, every change is listed with an undo, and active packs are re-applied after each new Auto-Mix
 - **Plug in a keyboard and play:** USB keyboards are detected anywhere in the studio, with velocity, sustain pedal, pitch bend and start/stop recording (Chrome/Edge)
