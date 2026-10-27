@@ -28,6 +28,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 ## 🎹 New in v16.3
 - **Packs go on top of Auto-Mix:** “Deep 808” adds sub to the bass without resetting anything else; loudness and balance stay, every change is listed with an undo, and active packs are re-applied after each new Auto-Mix
 - **Plug in a keyboard and play:** USB keyboards are detected anywhere in the studio, with velocity, sustain pedal, pitch bend and start/stop recording (Chrome/Edge)
+- **Drum pads:** pads like Akai MPD play the drum pattern, and while the song runs every hit is written into the grid on the nearest 16th
 - **Save project takes everything:** cover drafts, the finished cover with text, lyrics, background video and your finished videos
 - **Cleaner track list:** switched-off MIDI tracks are hidden until you click “Show MIDI”
 - **7 new video styles** (DANVIEL Gold, Rainy night, Ice, Sunset, Embers, Vaporwave, Old film), **6 new effects** (rain, snow, embers, light leak, bokeh, dust), new backgrounds and cover styles; the visualizer always ends above the signature
