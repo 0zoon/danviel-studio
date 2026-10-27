@@ -2,7 +2,7 @@
 
 # DANVIEL Studio
 
-**Free music studio in your browser:** mix stems, master your song, make lyric videos and covers, and get everything ready for release. **Or build a beat from scratch:** drum patterns by clicking, play melodies with your keyboard or a MIDI keyboard, add loops and arrange it all on a timeline, then record your vocals over it. No installation, no upload: your songs stay on your computer.
+**Free music studio in your browser:** mix stems, master your song, make lyric videos and covers, and get everything ready for release. **Or build a beat from scratch:** drum patterns by clicking, play melodies with your computer keys or a USB keyboard, drum in with pads, add loops and arrange it all on a timeline, then record your vocals over it. No installation, no upload: your songs stay on your computer.
 
 **▶ Open the app:** https://0zoon.github.io/danviel-studio/
 
@@ -13,7 +13,7 @@
 | Videos for TikTok, Reels & YouTube | Cover studio |
 |---|---|
 | [![Video and lyrics](screenshot-video.png)](https://0zoon.github.io/danviel-studio/) | [![Cover studio](screenshot-cover.png)](https://0zoon.github.io/danviel-studio/) |
-| **🧱 Build tracks: beat, melody, loops** | **🎹 Play in with keyboard or MIDI** |
+| **🧱 Build tracks: beat, melody, loops** | **🎹 Play in with a keyboard or drum pads** |
 | [![Build tracks](screenshot-build.png)](https://0zoon.github.io/danviel-studio/) | [![Instrument](screenshot-inst.png)](https://0zoon.github.io/danviel-studio/) |
 | **📦 Packs: presets to share** | **Cover prompt from your lyrics** |
 | [![Packs](screenshot-packs.png)](https://0zoon.github.io/danviel-studio/) | [![Cover prompt](screenshot-prompt.png)](https://0zoon.github.io/danviel-studio/) |
