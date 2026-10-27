@@ -25,6 +25,12 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎛 New in v16.1
+- **Monitor upgraded:** whole-mix waveform to click and seek, keys for start, loop, before/after and mute
+- **Building blocks:** selected track, track overview, big visualizer and quick select can be hidden and dragged; video and player always stay
+- **Four monitor designs:** stainless steel, chrome, black glass, leather
+- **MIDI stays off** on quick select, wider folder on big screens, own icons instead of emojis, Auto-Mix report folds after 10 s
+
 ## 🎛 New in v16
 - **New design, dark by default:** charcoal cards with gold on the leather folder (“☀ Light” background for the bright look)
 - **The monitor:** on wide screens a stainless steel tray on the right follows you while scrolling: big live video preview, the player with loudness, peak and analyzer, and “Selected” with the main controls of the track you touched last
