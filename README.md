@@ -25,6 +25,14 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎹 New in v16.3
+- **Packs go on top of Auto-Mix:** “Deep 808” adds sub to the bass without resetting anything else; loudness and balance stay, every change is listed with an undo, and active packs are re-applied after each new Auto-Mix
+- **Plug in a keyboard and play:** USB keyboards are detected anywhere in the studio, with velocity, sustain pedal, pitch bend and start/stop recording (Chrome/Edge)
+- **Save project takes everything:** cover drafts, the finished cover with text, lyrics, background video and your finished videos
+- **Cleaner track list:** switched-off MIDI tracks are hidden until you click “Show MIDI”
+- **7 new video styles** (DANVIEL Gold, Rainy night, Ice, Sunset, Embers, Vaporwave, Old film), **6 new effects** (rain, snow, embers, light leak, bokeh, dust), new backgrounds and cover styles; the visualizer always ends above the signature
+- **Own icons everywhere** instead of emojis, and switches for on/off options
+
 ## 🎚 New in v16.2
 - **17 new Auto-Mix genres:** drill, afrobeats and lo-fi in the first row; instrumental, classical, jazz, reggaeton / Latin, K-pop, amapiano, gospel, country, techno, drum & bass, psytrance / Goa, synthwave / cyberpunk, phonk and metal under “More genres”, each set up the way studios usually mix them
 - **New DANVIEL genre pack** (mastering, effects, track chains) and **export** for every pack
