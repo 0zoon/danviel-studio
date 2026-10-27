@@ -6098,8 +6098,9 @@ function drawFrame(g, W, H, t, S){
     }
   }
   // visualizer in the chosen style
-  // the visualizer leaves room on the right for the DANVIEL signature (v15.8)
-  if(S.showViz !== false){ const rs = Math.round(Math.min(W, H)*0.085*3.1); drawViz(g, Object.assign({}, Lo, {bars: Object.assign({}, Lo.bars, {w: Lo.bars.w - rs})}), t, S, ST, bands); }
+  // DANVIEL signature sits in the bottom right corner under the visualizer, the bars run over it and blend in
+  danSign(g, W, H, Lo);
+  if(S.showViz !== false) drawViz(g, Lo, t, S, ST, bands);
   // progress
   const P0 = Lo.bars.x, PW = Lo.bars.w, py = Lo.prog.y;
   g.fillStyle = "rgba(255,255,255,.15)"; roundRect(g, P0, py, PW, 6, 3); g.fill();
@@ -6120,7 +6121,6 @@ function drawFrame(g, W, H, t, S){
       for(const p of parts){ if(p.img) g.drawImage(p.img, x, Lo.brand.y - lh*0.72, wOf(p), lh); else fillName(g, p.t, x, Lo.brand.y); x += wOf(p) + gap; }
     }
     danMark(g, W, H, parts.length ? "tr" : "tl");
-    danSign(g, W, H, Lo);
   }
   drawOver(g, W, H, t, ST);
 }
@@ -6137,7 +6137,7 @@ function danMark(g, W, H, corner){
 }
 // DANVIEL signature: handwritten "Danviel", gold swoosh, STUDIO underneath, bottom right, slightly tilted like a signed picture
 function danSign(g, W, H, Lo){
-  const m = Math.min(W, H), fs = Math.round(m*0.085), xr = Lo.bars.x + Lo.bars.w, yS = Lo.prog.y - Math.round(m*0.016), yN = yS - fs*0.42;
+  const m = Math.min(W, H), fs = Math.round(m*0.068), xr = Lo.bars.x + Lo.bars.w + Math.round(m*0.01), yS = Lo.prog.y - Math.round(m*0.012), yN = yS - fs*0.42;
   g.save(); g.translate(xr, yS); g.rotate(-0.07); g.translate(-xr, -yS);
   g.shadowColor = "rgba(0,0,0,.6)"; g.shadowBlur = 12; g.shadowOffsetY = 2;
   g.font = `400 ${fs}px "Herr Von Muellerhoff", "Brush Script MT", cursive`; g.textAlign = "right"; g.textBaseline = "alphabetic"; g.fillStyle = "#fff8ec";
