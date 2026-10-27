@@ -1971,7 +1971,7 @@ html[data-theme="light"] .fpkpop{background:#fbfaf7}html[data-theme="light"] .fp
     <li><b>DANVIEL wie im Logo:</b> der voreingestellte Artist erscheint in Video, Platte und Cover weiß-gold wie das Logo, jeder andere Name in normaler Schrift</li>
     <li><b>Eigenen Style bauen ändert beim Öffnen nichts mehr:</b> der Baukasten startet mit dem gewählten Style, nur was du änderst (z. B. Cover pulsiert) kommt obendrauf. Speichern oder Verwerfen</li>
     <li><b>„Bild hinzufügen“</b> direkt im Cover-Studio unter der Vorschau und beim Video unter der Vorschau</li>
-    <li><b>Cover, Platte und Titel im Video verschieben:</b> in der Vorschau mit der Maus ziehen, am goldenen Eck größer oder kleiner. Das Cover bleibt immer im Bild und nie über Wasserzeichen oder Signatur. Neuer Regler „Artist-Größe“</li>
+    <li><b>Cover, Platte und Titel im Video verschieben:</b> in der Vorschau mit der Maus ziehen, am goldenen Eck größer oder kleiner. Das Cover bleibt immer im Bild und nie über Wasserzeichen oder Signatur. In der Nähe der Bildmitte rastet alles genau ein, eine goldene Linie zeigt es. Steht das Cover bei 16:9 in der Mitte, rückt der Titel darüber. Neuer Regler „Artist-Größe“</li>
     <li><b>Logo als polierte Bronze-Plakette:</b> mit Fase und Schrauben, DANVIEL weiß-gold mit dunkler Kontur, die Version passt sich automatisch an</li>
   </ul>
   <h3>v16.4</h3>
@@ -2309,7 +2309,7 @@ html[data-theme="light"] .fpkpop{background:#fbfaf7}html[data-theme="light"] .fp
     <li><b>DANVIEL as in the logo:</b> the default artist appears in video, record and cover in white and gold like the logo, any other name in normal type</li>
     <li><b>Build your own style no longer changes anything when it opens:</b> it starts from the chosen style, only what you change (e.g. pulsing cover) goes on top. Save or discard</li>
     <li><b>“Add picture”</b> right under the preview in the cover studio and in the video section</li>
-    <li><b>Move the cover, record and title in the video:</b> drag them in the preview, the gold corner resizes. The cover always stays in the frame and never covers the watermark or signature. New “Artist size” slider</li>
+    <li><b>Move the cover, record and title in the video:</b> drag them in the preview, the gold corner resizes. The cover always stays in the frame and never covers the watermark or signature. Near the exact middle everything snaps into place, a gold line shows it. With the cover centred in 16:9 the title moves above it. New “Artist size” slider</li>
     <li><b>Logo as a polished bronze nameplate:</b> with bevel and screws, DANVIEL in white and gold with a dark outline, the version updates automatically</li>
   </ul>
   <h3>v16.4</h3><ul>
@@ -6794,7 +6794,9 @@ function drawFrame(g, W, H, t, S){
     else if(pos === "center") tY = Math.round(H*0.5);
     else if(pos === "bottom") tY = Math.round((vizOn ? Lo.bars.y - 40 : H*0.86) - aSize*1.6);
     else if(pos === "free" && TP.free) tY = Math.round(TP.free.y*H);
-    if(W > H && pos === "auto" && al === "auto" && !(S.full && VID.cover) && Lo.cover.x + Lo.cover.s/2 > W/2){ tA = "left"; tX = 150; }   // cover moved to the right: the title goes to the left
+    if(W > H && pos === "auto" && al === "auto" && !(S.full && VID.cover) && S.showCover !== false){ const cc = Lo.cover.x + Lo.cover.s/2;
+      if(Math.abs(cc - W/2) < W*0.12){ tA = "center"; tX = Math.round(W/2); const above = Lo.cover.y - 34 - Math.round(aSize*1.45); tY = above - tSize*0.2 > tSize*0.9 ? above : Math.round(Lo.cover.y + Lo.cover.s + tSize*0.95); }   // cover in the middle: title centred above it
+      else if(cc > W/2){ tA = "left"; tX = 150; } }   // cover moved to the right: the title goes to the left
     const fullAuto = S.full && VID.cover && pos === "auto";   // full picture: text sits in the darker lower part, centred
     if(fullAuto){ tY = Math.round((vizOn ? (Lo.bars0 || Lo.bars).y - 70 : H*0.86) - aSize*1.9); if(al === "auto"){ tA = "center"; tX = Math.round(W/2); } }
     if(pos === "free" && TP.free && al === "auto"){ tA = "center"; tX = Math.round(TP.free.x*W); }
@@ -6962,6 +6964,8 @@ function drawPreview(live){
   if(VID.bgv && !VID.exporting) bgvSync(!!live, t);
   drawFrame(g, W, H, t, S); VID.lastTbox = S.tbox || null;
   VID.lastVbox = S.full && VID.cover && S.vbox ? S.vbox : null; VID.lastLbox = S.full && VID.cover && S.lbox && S.lyrOn && S.lines.length ? S.lbox : null; VID.lastCbox = S.cbox || null;
+  if(VID.snapG && (VID.snapG.v || VID.snapG.h)){ g.save(); g.strokeStyle = "rgba(240,176,60,.95)"; g.lineWidth = 3; g.setLineDash([18, 12]); g.beginPath();
+    if(VID.snapG.v){ g.moveTo(W/2, 0); g.lineTo(W/2, H); } if(VID.snapG.h){ g.moveTo(0, H/2); g.lineTo(W, H/2); } g.stroke(); g.restore(); }
   if(VID.prevHover && !VID.exporting){ g.save(); g.setLineDash([12, 10]); g.lineWidth = 2.5; g.strokeStyle = "rgba(243,238,228,.55)"; g.fillStyle = "#e8a93a";
     [VID.lastCbox, VID.lastTbox].forEach(b=>{ if(!b) return; g.strokeRect(b.x0, b.y0, b.x1-b.x0, b.y1-b.y0); g.fillRect(b.x1-14, b.y1-14, 22, 22); }); g.restore(); }
   if(VID.lastVbox || VID.lastLbox){ g.save(); g.setLineDash([14, 10]); g.lineWidth = 3; g.strokeStyle = "rgba(232,169,58,.85)"; g.fillStyle = "#e8a93a";
@@ -6993,8 +6997,10 @@ $("vASize").oninput = e=>{ VID.tp.asize = +e.target.value; vtChanged(); };
   cv.addEventListener("pointermove", e=>{ const p = toW(e); const b = VID.lastTbox;
     if(!drag){ cv.style.cursor = b && p.x >= b.x0 && p.x <= b.x1 && p.y >= b.y0 && p.y <= b.y1 ? "grab" : ""; return; }
     VID.tp.pos = "free"; if(VID.tp.align !== "auto" && VID.tp.align !== "center") VID.tp.align = "auto";
-    VID.tp.free = {x: Math.min(.95, Math.max(.05, (p.x - drag.dx)/p.W)), y: Math.min(.95, Math.max(.06, (p.y - drag.dy)/p.H))}; vtSync(); drawPreview(playing); });
-  const end = ()=>{ if(!drag) return; drag = null; cv.classList.remove("tdrag"); saveSoon(); };
+    let fx = Math.min(.95, Math.max(.05, (p.x - drag.dx)/p.W)), fy = Math.min(.95, Math.max(.06, (p.y - drag.dy)/p.H));
+    const snx = Math.abs(fx*p.W - p.W/2) < 30, sny = Math.abs(fy*p.H - p.H/2) < 30; if(snx) fx = 0.5; if(sny) fy = 0.5; VID.snapG = {v: snx, h: sny};
+    VID.tp.free = {x: fx, y: fy}; if(snx && VID.tp.align === "auto") VID.tp.align = "auto"; vtSync(); drawPreview(playing); });
+  const end = ()=>{ if(!drag) return; drag = null; VID.snapG = null; cv.classList.remove("tdrag"); drawPreview(playing); saveSoon(); };
   cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end); })();
 function setBgVideo(file){
   if(!file || !/^video\//.test(file.type||"") && !/\.(mp4|mov|webm|m4v|mkv)$/i.test(file.name)) return false;
@@ -10320,6 +10326,9 @@ window.__afterI18n(()=>{
     preview: k => { if(k === null){ if(VID.tp.__keep !== undefined){ VID.tp.font = VID.tp.__keep; delete VID.tp.__keep; } } else { if(VID.tp.__keep === undefined) VID.tp.__keep = VID.tp.font; VID.tp.font = k; const f = CXF[k]; try{ f && document.fonts.load(`${f.w} 60px ${f.fam}`).then(()=>previewSoon()); }catch(e){} } previewSoon(); } }), 50);
 });
 
+/* snapping: near the exact middle of the frame things jump to it, a gold guide shows it */
+const SNAP_PX = 30;
+function snapC(c, mid, len){ return Math.abs(c - mid) < SNAP_PX ? {v: mid, on: true} : {v: c, on: false}; }
 /* v16.5: move and resize visualizer + lyrics in full-screen mode (drag in the preview, gold corner = size) */
 (()=>{ const cv = $("vPrev"); let drag = null;
   const toW = e => { const r = cv.getBoundingClientRect(), [W, H] = ASPECTS[VID.aspect]; return {x: (e.clientX - r.left)/r.width*W, y: (e.clientY - r.top)/r.height*H, W, H}; };
@@ -10344,11 +10353,14 @@ window.__afterI18n(()=>{
     if(drag.k === "title"){ const f = c((v.w + (p.x - drag.p0.x) + (p.y - drag.p0.y))/v.w, 0.3, 4); VID.tp.size = Math.round(c(v.size*f, 40, 250)); if(v.asize) VID.tp.asize = Math.round(c(v.asize*f, 40, 250)); try{ vtSync(); }catch(err){} drawPreview(playing); return; }
     if(drag.k === "cover"){ const m = Math.min(p.W, p.H);
       if(drag.mode === "move") B[drag.ck] = {...v, x: v.x + dx, y: v.y + dy}; else B[drag.ck] = {...v, s: c(v.s + Math.max(p.x - drag.p0.x, p.y - drag.p0.y)/m, 0.15, 1)};
-      const Lo = layout(p.W, p.H), cl = coverClamp({x: B[drag.ck].x*p.W, y: B[drag.ck].y*p.H, s: B[drag.ck].s*m}, p.W, p.H, Lo); B[drag.ck] = {x: cl.x/p.W, y: cl.y/p.H, s: cl.s/m}; drawPreview(playing); return; }
-    if(drag.k === "viz"){ if(drag.mode === "move") B.viz = {...v, x: c(v.x + dx, -0.05, 1 - v.w*0.3), y: c(v.y + dy, 0.02, 0.95)}; else B.viz = {...v, w: c(v.w + dx, 0.12, 1.1), h: c(v.h + dy, 0.03, 0.6)}; }
-    else { if(drag.mode === "move") B.lyr = {...v, x: c(v.x + dx, 0.08, 0.92), y: c(v.y + dy, 0.06, 0.95)}; else B.lyr = {...v, s: c(v.s*(1 + (dx + dy)*2.2), 0.45, 2.4)}; }
+      const Lo = layout(p.W, p.H); let cl = coverClamp({x: B[drag.ck].x*p.W, y: B[drag.ck].y*p.H, s: B[drag.ck].s*m}, p.W, p.H, Lo);
+      if(drag.mode === "move"){ const sx = snapC(cl.x + cl.s/2, p.W/2), sy = snapC(cl.y + cl.s/2, p.H/2); cl = coverClamp({x: sx.v - cl.s/2, y: sy.v - cl.s/2, s: cl.s}, p.W, p.H, Lo); VID.snapG = {v: sx.on && Math.abs(cl.x + cl.s/2 - p.W/2) < 1, h: sy.on && Math.abs(cl.y + cl.s/2 - p.H/2) < 1}; }
+      B[drag.ck] = {x: cl.x/p.W, y: cl.y/p.H, s: cl.s/m}; drawPreview(playing); return; }
+    VID.snapG = null;
+    if(drag.k === "viz"){ if(drag.mode === "move"){ let x = c(v.x + dx, -0.05, 1 - v.w*0.3), y = c(v.y + dy, 0.02, 0.95); const sx = snapC((x + v.w/2)*p.W, p.W/2), sy = snapC((y + v.h/2)*p.H, p.H/2); x = sx.v/p.W - v.w/2; y = sy.v/p.H - v.h/2; VID.snapG = {v: sx.on, h: sy.on}; B.viz = {...v, x, y}; } else B.viz = {...v, w: c(v.w + dx, 0.12, 1.1), h: c(v.h + dy, 0.03, 0.6)}; }
+    else { if(drag.mode === "move"){ const sx = snapC(c(v.x + dx, 0.08, 0.92)*p.W, p.W/2), sy = snapC(c(v.y + dy, 0.06, 0.95)*p.H, p.H/2); VID.snapG = {v: sx.on, h: sy.on}; B.lyr = {...v, x: sx.v/p.W, y: sy.v/p.H}; } else B.lyr = {...v, s: c(v.s*(1 + (dx + dy)*2.2), 0.45, 2.4)}; }
     drawPreview(playing); }, true);
-  const end = e=>{ if(!drag) return; e.stopImmediatePropagation(); drag = null; saveSoon(); };
+  const end = e=>{ if(!drag) return; e.stopImmediatePropagation(); drag = null; VID.snapG = null; drawPreview(playing); saveSoon(); };
   cv.addEventListener("pointerup", end, true); cv.addEventListener("pointercancel", end, true);
   $("vFreeReset").onclick = ()=>{ VID.boxes = {}; previewSoon(); saveSoon(); };
   $("vCovReset").onclick = ()=>{ const B = VID.boxes || {}; ["cover_w","cover_s","cover_v"].forEach(k=>delete B[k]); previewSoon(); saveSoon(); };
