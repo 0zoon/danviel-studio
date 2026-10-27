@@ -25,6 +25,12 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🔤 New in v16.5
+- **Font menu with live preview:** your title in every font, hover to see it on the cover, a click takes it; groups, search, favourites and 26 new fonts (over 75 now)
+- **Full-screen videos your way:** move and resize the visualizer and lyrics right in the preview
+- **Karaoke lyrics stop with the lead vocal** instead of running into the instrumental, or switch the sweep off
+- Bigger cover without lyrics, DANVIEL in the logo look, the style builder starts from the style you picked, “Add picture” where you need it
+
 ## 🥁 New in v16.4
 - **15 demo songs** instead of short loops: intro, verse, hook, break and outro, about 1 to 1.5 minutes each, as separate stems. New: afrobeats, amapiano, phonk, dancehall, synthwave and boom bap
 - **Samples:** 40 one-shots made in the studio (drums, 808s, crowd shouts, hits, FX, atmo), straight into the drum pattern, plus your own samples
