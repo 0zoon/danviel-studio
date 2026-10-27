@@ -25,6 +25,14 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🎛 New in v16
+- **New design, dark by default:** charcoal cards with gold on the leather folder (“☀ Light” background for the bright look)
+- **The monitor:** on wide screens a stainless steel tray on the right follows you while scrolling: big live video preview, the player with loudness, peak and analyzer, and “Selected” with the main controls of the track you touched last
+- **Wide step bar** with its own icons, **info cards on hover**, undo/redo as arrows, “Compact / Everything open” as a switch
+- **Project bar at the bottom:** save, open and the red delete button
+- **Auto-Mix in gold, packs in teal**, auto tools and quick tweaks in one even grid with their own icons
+- **Fixes:** track waveforms stayed empty after switching steps; video signature smaller in the corner
+
 ## ✨ New in v15.8
 - **New logo:** “DΛNVIEL” built from its own letters, Λ, N and V form a golden sound wave, plus a new app icon (D with a golden peak)
 - **Branding in the video:** the DANVIEL mark top left and the signature “Danviel Studio” bottom right, the whole video long. With your own logo or name the mark moves to the top right
