@@ -1,4 +1,4 @@
-<img src="logo-stone.png" width="150" alt="DANVIEL Logo">
+<img src="logo-wordmark.png" width="420" alt="DANVIEL Studio logo">
 
 # DANVIEL Studio
 
@@ -24,6 +24,14 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 | Cover studio | 16:9 video with lyrics |
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
+
+## ✨ New in v15.8
+- **New logo:** “DΛNVIEL” built from its own letters, Λ, N and V form a golden sound wave, plus a new app icon (D with a golden peak)
+- **Branding in the video:** the DANVIEL mark top left and the signature “Danviel Studio” bottom right, the whole video long. With your own logo or name the mark moves to the top right
+- **Keyboard shortcuts:** A = Auto-Mix, M = mastering on/off, B = before/after, L = load files, V = create video, E = export, ? = all shortcuts. The keyboard button in the step bar lists them all
+- **Step bar with its own icons** instead of numbers
+- **Colour pickers** with swatch, hex code and 12 ready colours, checkbox groups in a neat grid, red delete/reset buttons, buttons in one row share one height
+- **Folding tracks fixed:** collapse all tracks with one click, the line shows e.g. “5 tracks · 5 on”
 
 ## 🎬 New in v15.7
 - **Auto-Mix profiles for instrumentals:** 🎬 Cinematic / film (dynamic, wide, spacious), 🎮 Game music (even, loop-friendly, −16 LUFS / −1 dBTP mobile game standard) and 🎧 Background music (steady level, room for a voice)
