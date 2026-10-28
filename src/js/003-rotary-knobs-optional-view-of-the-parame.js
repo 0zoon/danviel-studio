@@ -42,7 +42,10 @@ let PROVIEW = false; try{ PROVIEW = localStorage.getItem("stemmixer:proview") ==
 function proViewUi(){ $("proStrips").setAttribute("aria-pressed", PROVIEW); document.querySelectorAll(".strip").forEach(el=>{ const d = el.querySelector(".detail"), m = el.querySelector(".more"); if(d){ d.hidden = !PROVIEW; m.setAttribute("aria-expanded", PROVIEW); } }); }
 $("proStrips").onclick = ()=>{ PROVIEW = !PROVIEW; try{ localStorage.setItem("stemmixer:proview", PROVIEW ? "1" : "0"); }catch(e){} proViewUi(); };
 setTimeout(()=>$("proStrips").setAttribute("aria-pressed", PROVIEW), 0);
-const mkTrack = t => ({...t, on:!t.isMidi, solo:false, vol:1, pan:0, hpf:0, low:0, high:0, pf:2000, pg:0, rev:0, dly:0, comp:0, deess:0, dn:0, trimA:0, trimB:0, shift:0, why:"", gain:null, src:null, chain:null, peaks:computePeaks(t.buffer, 400)});
+/* v17: a MIDI track that comes back as audio (page refresh, project ZIP) is still a MIDI track: off and tucked away */
+const isMidiName = n => /\(MIDI\)\s*$/i.test(String(n || "").replace(/\.[a-z0-9]{2,4}$/i, ""));
+const mkTrack = t0 => { const t = (!t0.isMidi && isMidiName(t0.name)) ? {...t0, isMidi: true} : t0; return mkTrack0(t); };
+const mkTrack0 = t => ({...t, on:!t.isMidi, solo:false, vol:1, pan:0, hpf:0, low:0, high:0, pf:2000, pg:0, rev:0, dly:0, comp:0, deess:0, dn:0, trimA:0, trimB:0, shift:0, why:"", gain:null, src:null, chain:null, peaks:computePeaks(t.buffer, 400)});
 // add one track (recording) without touching the rest of the mix
 function addTrack(t){ const was = playing; if(was) stop(); tracks.push(mkTrack(t)); stemLufs = null; mixSpec = null; P.ver++; SEC.env = null;
   renderStrips(); syncSc(); updateUI(); drawSec(); scheduleAnalysis(); saveSoon(); try{ bldInfo(); }catch(e){} }
