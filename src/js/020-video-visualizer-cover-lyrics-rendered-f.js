@@ -149,6 +149,33 @@ function lyrSungEnds(lines){
     return {...l, send}; });
 }
 window.__lyrEnds = () => lyrSungEnds(parseLyrics($("lText").value, LYR.dur || 60)).map(l=>[+l.t.toFixed(2), +l.send.toFixed(2), +l.end.toFixed(2)]);
+/* v17: marquee for long titles. Holds 2.5 s at the start, then glides left (speed scales with the video size),
+   the text follows itself with a gap so the loop is seamless; soft fades at both edges like in music players */
+const TMQ = {c: null};
+function titleMarquee(g, title, tX, tY, tA, lim, fullW, tSize, t, W, ST, bass, col, dark){
+  const gap = Math.round(tSize*1.6), span = fullW + gap, speed = W/1080*95, hold = 2.5, run = span/speed, cyc = hold + run;
+  const ph = ((t % cyc) + cyc) % cyc, sx = ph < hold ? 0 : (ph - hold)*speed;
+  const padY = Math.round(tSize*0.6), h = Math.round(tSize*1.25 + padY*2), w = Math.ceil(lim) + 40;
+  if(!TMQ.c) TMQ.c = document.createElement("canvas");
+  const c = TMQ.c; if(c.width !== w || c.height !== h){ c.width = w; c.height = h; }
+  const q = c.getContext("2d"); q.setTransform(1,0,0,1,0,0); q.clearRect(0, 0, w, h);
+  q.font = g.font; q.textAlign = "left"; q.textBaseline = "alphabetic";
+  const by = Math.round(tSize + padY);
+  const draw = x => {
+    if(ST.glitch){ const hit = bass > 0.72 && (Math.floor(t*12) % 3 === 0), j = hit ? 5 + 6*bass : 1.5; q.save(); q.globalCompositeOperation = "screen"; q.globalAlpha = .75;
+      q.fillStyle = "#00f0ff"; q.fillText(title, x - j, by); q.fillStyle = "#ff0a6e"; q.fillText(title, x + j, by + (hit ? 2 : 0)); q.restore(); }
+    const sh = ST.tglow || ST.glow || (dark ? "rgba(0,0,0,.8)" : null); q.fillStyle = col;
+    if(sh){ q.save(); q.shadowColor = sh; q.shadowBlur = (ST.glow || ST.tglow) ? 30 : 18; q.fillText(title, x, by); q.restore(); } else q.fillText(title, x, by); };
+  draw(20 - sx); draw(20 - sx + span);
+  // fade the edges out
+  q.globalCompositeOperation = "destination-in";
+  const fw = Math.min(60, lim*0.12), gr = q.createLinearGradient(0, 0, w, 0);
+  gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(Math.min(0.49, (20 + fw*(sx > 0 ? 1 : 0.0001))/w), "rgba(0,0,0,1)");
+  gr.addColorStop(Math.max(0.51, (w - 20 - fw)/w), "rgba(0,0,0,1)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+  q.fillStyle = gr; q.fillRect(0, 0, w, h); q.globalCompositeOperation = "source-over";
+  const x0 = tA === "center" ? tX - lim/2 : tA === "right" ? tX - lim : tX;
+  g.drawImage(c, Math.round(x0 - 20), Math.round(tY - by));
+}
 function parseLyrics(text, dur){
   const rows = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
   const out = rows.map(r=>{ const m = r.match(/^(\d+):(\d{1,2}(?:[.,]\d+)?)\s+(.*)$/); return m ? {t:+m[1]*60 + parseFloat(m[2].replace(",",".")), text:m[3]} : {t:null, text:r}; });
@@ -426,7 +453,14 @@ function drawFrame(g, W, H, t, S){
     g.textAlign = tA; g.fillStyle = VC.text;
     g.font = fk ? `${fk.w} ${tSize}px ${fk.fam}` : `${ST.tw || (ST.tfont && ST.tfont.includes("Serif") ? 400 : 800)} ${tSize}px ${ST.tfont || '"Big Shoulders Display", Impact, sans-serif'}`;
     const upper = fk ? !!fk.up : ST.tcase !== "none";
-    let title = upper ? (S.title||"").toUpperCase() : (S.title||""); while(title.length>3 && g.measureText(title).width > Math.max(200, maxW)) title = title.slice(0,-2)+"…";
+    const title = upper ? (S.title||"").toUpperCase() : (S.title||""), lim = Math.max(200, maxW), fullW = g.measureText(title).width;
+    // v17: a title that doesn't fit scrolls slowly to the left and starts over (marquee), instead of being cut off with "…"
+    if(fullW > lim){ titleMarquee(g, title, tX, tY, tA, lim, fullW, tSize, t, W, ST, bass, VC.text, VID.bgv || (S.full && VID.cover));
+      const aY0 = tY + Math.round(aSize*1.45);
+      g.font = `600 ${aSize}px "Instrument Sans", system-ui, sans-serif`; g.fillStyle = ST.acol || S.pal.accent; g.textAlign = tA;
+      if(VID.bgv || ST.nameShadow || (S.full && VID.cover)){ g.save(); g.shadowColor = "rgba(0,0,0,.85)"; g.shadowBlur = 14; g.shadowOffsetY = ST.nameShadow ? 2 : 0; fillName(g, S.artist||"", tX, aY0); if(ST.nameShadow) fillName(g, S.artist||"", tX, aY0); g.restore(); } else fillName(g, S.artist||"", tX, aY0);
+      const x0 = tA === "center" ? tX - lim/2 : tA === "right" ? tX - lim : tX; S.tbox = {x0: x0 - 20, x1: x0 + lim + 20, y0: tY - tSize, y1: aY0 + 16};
+    } else {
     if(ST.glitch){ const hit = bass > 0.72 && (Math.floor(t*12) % 3 === 0), j = hit ? 5 + 6*bass : 1.5; g.save(); g.globalCompositeOperation = "screen"; g.globalAlpha = .75;
       g.fillStyle = "#00f0ff"; g.fillText(title, tX - j, tY); g.fillStyle = "#ff0a6e"; g.fillText(title, tX + j, tY + (hit ? 2 : 0)); g.restore(); g.fillStyle = VC.text; }
     const sh = ST.tglow || ST.glow || (VID.bgv || (S.full && VID.cover) ? "rgba(0,0,0,.8)" : null);
@@ -437,6 +471,7 @@ function drawFrame(g, W, H, t, S){
     // remember where the title sits so it can be dragged in the preview
     g.font = fk ? `${fk.w} ${tSize}px ${fk.fam}` : g.font; const tw = Math.max(g.measureText(title).width, 120), x0 = tA === "center" ? tX - tw/2 : tA === "right" ? tX - tw : tX;
     S.tbox = {x0: x0 - 20, x1: x0 + tw + 20, y0: tY - tSize, y1: aY + 16};
+    }
   }
   // lyrics: current line with karaoke sweep, next line dimmed
   if(S.lyrOn && S.lines.length){ g.save(); if(S.full && VID.cover){ g.shadowColor = "rgba(0,0,0,.85)"; g.shadowBlur = 14; g.shadowOffsetY = 2; }

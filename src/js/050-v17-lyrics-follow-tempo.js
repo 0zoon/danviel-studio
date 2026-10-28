@@ -21,3 +21,4 @@ retime = function(fn){
   const n = duration ? duration/rate : 0;
   if(o > 0 && n > 0 && Math.abs(n/o - 1) > 1e-4) lyrRescale(o, n);
 };
+window.__dbgFrame = (g, W, H, t) => { const S = vidState(duration ? duration/rate : 60, null, 30); S.dur = duration ? duration/rate : 60; drawFrame(g, W, H, t, S); };   // test hook
