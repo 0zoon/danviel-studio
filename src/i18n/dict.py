@@ -745,7 +745,7 @@ FRAG = {
 "Speichern abgebrochen.": "Saving cancelled.",
 }
 
-HELP_EN = open("/home/claude/i18n/help_en.html",encoding="utf-8").read()
+HELP_EN = open(__import__("os").path.join(__import__("os").path.dirname(__file__),"help_en.html"),encoding="utf-8").read()
 
 EXACT.update({
 "Auto-Mix: fertiger Song erkannt": "Auto-Mix: finished song detected",
