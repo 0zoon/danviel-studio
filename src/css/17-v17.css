@@ -2,3 +2,6 @@
 /* v17: accessibility */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 #vPrev:focus-visible{outline:3px solid #e8a93a;outline-offset:3px}
+#vidsec.vlock #vPrev{pointer-events:none}
+#vidsec.vlock .chip, #vidsec.vlock .seg button{opacity:.55}
+.vlocknote{margin:8px 0;padding:10px 14px;border-radius:10px;border:1px solid rgba(232,169,58,.55);background:rgba(232,169,58,.12);color:var(--fg);font-size:14px}

@@ -576,7 +576,23 @@ async function finalAudio(){
   [L, R] = trimTail(L, R, sr); applyFades(L, R, sr);
   return [L, R, sr];
 }
+/* v17: while the video is made, it keeps exactly the look it started with: style, title layout and positions are frozen,
+   and the video settings are locked until it is done (only "Cancel" stays usable) */
 async function renderVideoBlob(L, R, sr, aspect, job){
+  const sec = $("vidsec"), keep = [];
+  VID.lockStyle = JSON.parse(JSON.stringify(VSTYLES[VID.style] || VSTYLES.classic));
+  const tp0 = VID.tp, bx0 = VID.boxes, full0 = VID.full; VID.tp = JSON.parse(JSON.stringify(VID.tp || {})); VID.boxes = JSON.parse(JSON.stringify(VID.boxes || {}));
+  sec.querySelectorAll("input, select, textarea, button").forEach(el=>{ if(el.id === "vCancel" || el.disabled) return; keep.push(el); el.disabled = true; });
+  sec.classList.add("vlock"); let note = $("vLockNote");
+  if(!note){ note = document.createElement("div"); note.id = "vLockNote"; note.className = "vlocknote"; note.setAttribute("role", "status"); }
+  note.textContent = window.I18N_LANG === "en" ? "The video is being made. The video settings are locked until it is done, so it keeps exactly the look it started with." : "Das Video wird erstellt. Bis es fertig ist, sind die Video-Einstellungen gesperrt, damit es genau so aussieht wie beim Start.";
+  $("vMake").closest(".row").before(note); note.hidden = false;
+  try{ return await renderVideoBlob0(L, R, sr, aspect, job); }
+  finally{ VID.lockStyle = null; keep.forEach(el=>{ el.disabled = false; }); sec.classList.remove("vlock"); note.hidden = true;
+    // what was changed meanwhile can't happen any more, but keep any state the render itself touched as it was
+    VID.tp = tp0; VID.boxes = bx0; VID.full = full0; try{ vtSync(); }catch(e){} previewSoon(); }
+}
+async function renderVideoBlob0(L, R, sr, aspect, job){
   const [W, H] = ASPECTS[aspect], fps = 30;
   const cfg = await pickAvc(W, H);
   if(!cfg) throw new Error("H.264-Video wird von diesem Browser nicht unterstützt. Nimm Chrome oder Edge.");

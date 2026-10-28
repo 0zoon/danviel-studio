@@ -75,7 +75,7 @@ const VSTYLES = {
   film:   {pal:{accent:"#f3efe6", accent2:"#a39b8d"}, bg:"#0b0a09", tint:null, viz:"bars", mono:true, grain:true, dust:true, vignette:0.95,
            tfont:'"DM Serif Display", Georgia, serif', tcase:"none", tscale:0.82},
 };
-const vStyle = () => VSTYLES[VID.style] || VSTYLES.classic;
+const vStyle = () => VID.lockStyle || VSTYLES[VID.style] || VSTYLES.classic;   // while a video is being made, the style is frozen (lockStyle)
 // ---- own styles: pure data (colours, shape, font, switches), so a shared style file can never run code ----
 const VS_KEYS = ["bars","neon","led","ring","dots","line","mirror","area","pixel","circle","sparkle","none"], VS_CFX = ["none","pulse","breathe","spin","tilt","shake"], HEX = /^#[0-9a-f]{6}$/i;
 const hexA = (h, a) => `rgba(${parseInt(h.slice(1,3),16)},${parseInt(h.slice(3,5),16)},${parseInt(h.slice(5,7),16)},${a})`;
@@ -139,11 +139,13 @@ function lyrEnv(t){ const b = t.buffer; if(t._venv && t._venv.b === b) return t.
 function lyrSungEnds(lines){
   const lt = lyrLead(); if(!lt || !lines.length) return lines;
   let E; try{ E = lyrEnv(lt); }catch(e){ return lines; }
-  const gapN = Math.round(0.5/E.hop);   // a pause of half a second ends the line
+  // the envelope is in the original song's time, the lyrics in the time you hear (Slowed / Sped Up): q converts between them
+  const orig = Math.max(...tracks.map(t=>t.buffer.duration)), q = orig > 0 && duration ? (duration/rate)/orig : 1;
+  const gapN = Math.round(0.5/(E.hop*q));   // a pause of half a second (as heard) ends the line
   return lines.map((l, i)=>{ const nx = lines[i+1], a = l.t, z = nx ? nx.t : l.end; let last = -1, quiet = 0, voiced = 0;
-    for(let k = Math.max(0, Math.floor((a - E.shift)/E.hop)); k < Math.min(E.e.length, Math.ceil((z - E.shift)/E.hop)); k++){
-      if(E.e[k] > E.thr){ last = k; quiet = 0; voiced++; } else if(voiced*E.hop >= 0.4 && ++quiet >= gapN) break; }
-    const send = last < 0 ? l.end : Math.min(z, Math.max(a + 0.4, (last + 1)*E.hop + E.shift + 0.12));
+    for(let k = Math.max(0, Math.floor((a/q - E.shift)/E.hop)); k < Math.min(E.e.length, Math.ceil((z/q - E.shift)/E.hop)); k++){
+      if(E.e[k] > E.thr){ last = k; quiet = 0; voiced++; } else if(voiced*E.hop*q >= 0.4 && ++quiet >= gapN) break; }
+    const send = last < 0 ? l.end : Math.min(z, Math.max(a + 0.4, ((last + 1)*E.hop + E.shift)*q + 0.12));
     return {...l, send}; });
 }
 window.__lyrEnds = () => lyrSungEnds(parseLyrics($("lText").value, LYR.dur || 60)).map(l=>[+l.t.toFixed(2), +l.send.toFixed(2), +l.end.toFixed(2)]);
