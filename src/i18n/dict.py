@@ -783,6 +783,16 @@ PAT.append([r"^Clip bereit: Hook ab (.+?), (\d+) s, Format 9:16\. Jetzt „Video
 EXACT.update({
 "· Alle Rechte vorbehalten ·": "· All rights reserved ·",
 "Lizenzen": "Licenses",
+"Song zum Zerlegen wählen": "Choose a song to split",
+"Audiodateien wählen": "Choose audio files",
+"Spur für das Pack": "Track for the pack",
+"Verwendeter Prompt": "Prompt used",
+"Bild-Prompt": "Image prompt",
+"Infos zum Song": "Song info",
+"Länge in Takten": "Length in bars",
+"Tempo in BPM": "Tempo in BPM",
+"Video-Vorschau. N wählt das nächste Element, Pfeiltasten verschieben es, Plus und Minus ändern die Größe.": "Video preview. N selects the next element, arrow keys move it, plus and minus change the size.",
+"Video-Vorschau": "Video preview",
 "Abtastrate: Original": "Sample rate: original",
 "Abtastrate": "Sample rate",
 "44,1 kHz": "44.1 kHz",
@@ -1582,7 +1592,7 @@ EXACT.update({"eigen": "own", "Verwerfen": "Discard", "Änderungen verwerfen, zu
 EXACT.update({"Mitlaufend": "Karaoke sweep", "Die Zeile wird beim Singen mitlaufend markiert. Aus = die ganze Zeile steht sofort da": "The line is highlighted as it is sung. Off = the whole line shows right away"})
 EXACT.update({"Graffiti (Sedgwick)": "Graffiti (Sedgwick)", "Spraydose (Rubik)": "Spray can (Rubik)", "Tropfende Farbe": "Dripping paint", "Abgenutzt (Rubik)": "Distressed (Rubik)", "Schablone (Saira)": "Stencil (Saira)", "Street (Wallpoet)": "Street (Wallpoet)", "Gotisch schmal (Pirata)": "Gothic narrow (Pirata)", "Gotisch modern (Grenze)": "Gothic modern (Grenze)", "Japan fett (Dela Gothic)": "Japanese bold (Dela Gothic)", "Metal (Metal Mania)": "Metal (Metal Mania)", "Rocker (New Rocker)": "Rocker (New Rocker)", "Mode-Magazin (Bodoni)": "Fashion magazine (Bodoni)", "Luxus dünn (Italiana)": "Luxury thin (Italiana)", "Antik (Marcellus)": "Antique (Marcellus)", "Edel schlicht (Tenor)": "Classy plain (Tenor)", "Hochzeit (Allura)": "Wedding (Allura)", "Signatur (Sacramento)": "Signature (Sacramento)", "Kugelschreiber (Homemade)": "Ballpoint pen (Homemade)", "3D-Schatten (Bungee)": "3D shadow (Bungee)", "Linien (Bungee Inline)": "Lines (Bungee Inline)", "Umriss 3D (Rampart)": "Outline 3D (Rampart)", "Schräg (Tilt Warp)": "Tilted (Tilt Warp)", "Bubble (Bagel)": "Bubble (Bagel)", "Tech breit (Michroma)": "Tech wide (Michroma)", "Sport (Russo One)": "Sport (Russo One)", "Breit modern (Krona)": "Wide modern (Krona)", "Rap & Trap": "Rap & trap", "Elegant": "Elegant", "Handschrift": "Handwriting", "Retro & Neon": "Retro & neon", "Klar & modern": "Clean & modern", "★ Favoriten": "★ Favourites", "Weitere": "More", "Schrift suchen …": "Search fonts …", "Als Lieblingsschrift merken": "Save as favourite font"})
 EXACT.update({"Im Vollbild: Visualizer und Lyrics in der Vorschau verschieben, am goldenen Eck größer oder kleiner ziehen.": "In full screen: move the visualizer and lyrics in the preview, drag the gold corner to make them bigger or smaller.", "Zurück auf Standard": "Back to default"})
-EXACT.update({"Neu in v16.5": "New in v16.5", "Studio · v16.5": "Studio · v16.5", "🖼 Bild hinzufügen": "🖼 Add picture", "Bild hinzufügen": "Add picture",
+EXACT.update({"Neu in v16.5": "New in v16.5", "Neu in v17": "New in v17", "Studio · v17": "Studio · v17", "Studio · v16.5": "Studio · v16.5", "🖼 Bild hinzufügen": "🖼 Add picture", "Bild hinzufügen": "Add picture",
  "Ein eigenes Bild als Cover laden (oder einfach auf die Vorschau ziehen)": "Load your own picture as the cover (or just drop it on the preview)",
  "Bild oder Cover fürs Video laden (oder einfach auf die Vorschau ziehen)": "Load a picture or cover for the video (or just drop it on the preview)"})
 EXACT.update({"Artist-Größe": "Artist size", "In der Vorschau: Cover oder Platte und Titel mit der Maus verschieben, am goldenen Eck größer oder kleiner ziehen.": "In the preview: move the cover or record and the title with the mouse, drag the gold corner to make them bigger or smaller.", "Cover zurücksetzen": "Reset cover"})

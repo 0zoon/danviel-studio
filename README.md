@@ -25,6 +25,13 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 |---|---|
 | ![Cover made in the cover studio](gallery-cover.png) | ![YouTube video with lyrics and visualizer](gallery-video.png) |
 
+## 🔒 New in v17
+- **No connection to Google or font services:** all fonts and the MP3 encoder are hosted right here, better for privacy and faster
+- **Works offline:** open it once on the website and it starts without internet too, fonts included
+- **Choose the sample rate** for the export (original, 44.1 kHz or 48 kHz) with the true peak held, and **dither on 16-bit WAV**
+- **Video preview with the keyboard:** Tab in, N picks cover, title, lyrics or visualizer, arrows move, + / − resize. Better labels for screen readers
+- [Privacy & legal notice](https://0zoon.github.io/danviel-studio/privacy.html), source code in modules and an automatic test on every update
+
 ## 🔤 New in v16.5
 - **Font menu with live preview:** your title in every font, hover to see it on the cover, a click takes it; groups, search, favourites and 26 new fonts (over 75 now)
 - **Full-screen videos your way:** move and resize the visualizer and lyrics right in the preview
@@ -176,9 +183,24 @@ Kostenloses Musik-Studio im Browser: Stems mixen, mastern, Videos und Cover mach
 - **Rauschen entfernen** pro Spur: nimmt das typische KI-Rauschen raus, Auto-Mix schaltet es bei verrauschten Stems selbst ein
 - **Kompakt-Ansicht** in 5 Schritten oder alles offen, Drehknöpfe oder Schieber, Hintergründe (Carbon, Studio-Licht, Holz, Metall), eigene Handy-Ansicht mit Menü, Player oben und großen Knöpfen (neu in v15.1)
 
+**Neu in v17:** keine Verbindung mehr zu Google, funktioniert offline, Abtastrate beim Export wählbar, Video-Vorschau mit der Tastatur. [Datenschutz & Impressum](https://0zoon.github.io/danviel-studio/privacy.html)
+
 **▶ Direkt starten:** https://0zoon.github.io/danviel-studio/
 
 ---
+
+## Privacy
+Your music, lyrics and pictures never leave your computer. No account, no cookies, no ads. Details: [Privacy & legal notice](https://0zoon.github.io/danviel-studio/privacy.html).
+
+## For developers
+The app is one HTML file, built from the modules in `src/`:
+```
+python3 build.py            # src/ -> index.html
+python3 build.py --check    # is index.html up to date?
+python3 tests/smoke.py      # needs: pip install playwright && playwright install chromium
+```
+`src/studio.html` is the page, `src/css/` and `src/js/` are joined in file-name order, `src/i18n/` holds the English
+translation and the help. Fonts live in `fonts/`, the MP3 encoder in `vendor/`. The test runs on every push (GitHub Actions).
 
 ## License
 © 2026 DANVIEL. All rights reserved. DANVIEL Studio is free to use, and everything you create with it belongs to you. Copying, rebranding, redistributing or selling the code is not permitted without permission. See [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md).

@@ -38,7 +38,7 @@ function id3(){
 /* TPDF dither (±1 LSB triangular noise) for the final 16-bit export: quiet fades stay smooth instead of turning grainy */
 function toI16D(x){ const d = (Math.random() - Math.random()); let q = Math.round((x<-1?-1:x>1?1:x) * 32767 + d); return q>32767?32767:q<-32768?-32768:q; }
 function toI16(x){ x = x<-1?-1:x>1?1:x; return x<0 ? x*0x8000 : x*0x7FFF; }
-const CREDIT = "DANVIEL Studio v16.5"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
+const CREDIT = "DANVIEL Studio v17"; window.__CREDIT = CREDIT; window.__deliver = (b,n)=>deliver(b,n);
 function encodeWav(L,R,sr,bits=16,dither=false){
   // RIFF/WAVE PCM stereo: fmt, LIST/INFO (software credit), then data
   const B = bits/8, txt = CREDIT + "\0", tl = txt.length + (txt.length%2), info = 4 + 8 + tl;

@@ -56,7 +56,7 @@ window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__
     <div class="hist"><select id="bgSel" aria-label="Hintergrund" title="Hintergrund der Seite"><option value="carbon">🎨 Carbon</option><option value="hell">☀ Hell</option><option value="licht">🎨 Studio-Licht</option><option value="holz">🎨 Dunkles Holz</option><option value="metall">🎨 Gebürstetes Metall</option><option value="schwarz">🎨 Schlicht schwarz</option><option value="beton">🎨 Beton</option><option value="marmor">🎨 Schwarzer Marmor</option><option value="neon">🎨 Neon-Nacht</option><option value="nacht">🎨 Sternenhimmel</option><option value="samt">🎨 Roter Samt</option><option value="akustik">🎨 Akustik-Schaum</option><option value="smaragd">🎨 Smaragd</option><option value="bordeaux">🎨 Bordeaux</option><option value="nebel">🎨 Studio-Nebel</option><option value="goldlinien">🎨 Gold-Linien</option><option value="chrom">🎨 Chrom</option><option value="walnuss">🎨 Walnuss</option><option value="diffusor">🎨 Studio-Holzwand</option><option value="waben">🎨 Graphit-Waben</option><option value="vinyl">🎨 Vinyl</option><option value="nachtstadt">🎨 Nachtstadt</option><option value="aurora">🎨 Aurora</option><option value="sunset">🎨 Sunset</option><option value="granit">🎨 Granit</option><option value="carbongold">🎨 Carbon-Gold</option><option value="leder">🎨 Mattes Leder</option><option value="foto">📷 Eigenes Foto …</option></select><select id="langSel" aria-label="Sprache / Language" translate="no"><option value="de">Deutsch</option><option value="en">English</option></select><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><a class="ghbtn" href="https://github.com/0zoon/danviel-studio" target="_blank" rel="noopener" title="DANVIEL Studio auf GitHub: Updates verfolgen und mit einem Stern unterstützen">⭐ GitHub</a><button id="chgBtn" title="Was ist neu in welcher Version">📋 Changelog</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="packsBtn" title="Pakete: fertige Mastering-, Effekt- und Spur-Presets, Visualizer- und Cover-Styles laden, anwenden oder selbst eins erstellen und teilen">📦 Pakete</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
     <div>
       <div class="brand"><h1 class="bh1"><svg class="bword" viewBox="-6 -6 582 112" role="img" aria-label="DANVIEL"><path d="M0 0H44A50 50 0 0 1 44 100H0Z M16 16V84H44A34 34 0 0 0 44 16Z" fill-rule="evenodd" fill="currentColor"/><g class="bwave"><polygon points="112,100 141,0 159,0 188,100 170,100 150,30 130,100"/><polygon points="206,100 206,0 224,0 264,66 264,0 282,0 282,100 264,100 224,34 224,100"/><polygon points="300,0 318,0 338,70 358,0 376,0 347,100 329,100"/></g><g fill="currentColor"><rect x="394" y="0" width="16" height="100"/><path d="M428 0H492V16H444V42H486V58H444V84H492V100H428Z"/><path d="M510 0H526V84H570V100H510Z"/></g></svg><span class="bvis">DANVIEL Studio</span></h1>
-      <p class="by" translate="no">Studio · v16</p></div>
+      <p class="by" translate="no">Studio · v17</p></div>
       <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
     </div>
   </header>
@@ -686,7 +686,18 @@ window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__
   <button class="dlgx" type="button" aria-label="Schließen" title="Schließen">✕</button>
   <h2 id="chgTitle">Changelog</h2>
   <div class="chg-de">
-  <h3>Neu in v16.5</h3>
+  <h3>Neu in v17</h3>
+  <ul>
+    <li><b>Keine Verbindung mehr zu Google:</b> alle Schriften und der MP3-Encoder kommen direkt von der DANVIEL-Seite. Besser für den Datenschutz, und die Schriften laden schneller</li>
+    <li><b>Funktioniert offline:</b> einmal auf der Website geöffnet, startet das Studio auch ohne Internet, mit allen Schriften</li>
+    <li><b>Abtastrate beim Export wählbar:</b> Original, 44,1 kHz (CD, Streaming) oder 48 kHz (Video). Der True Peak bleibt beim Umrechnen gehalten</li>
+    <li><b>WAV 16 bit mit Dither:</b> leise Ausklänge und Fades bleiben sauber statt körnig</li>
+    <li><b>Video-Vorschau mit der Tastatur:</b> Tab in die Vorschau, N wählt Cover, Titel, Lyrics oder Visualizer, Pfeiltasten verschieben, + und − ändern die Größe. Dazu bessere Beschriftungen für Screenreader</li>
+    <li><b>Datenschutz &amp; Impressum:</b> eigene Seite, unten im Studio verlinkt</li>
+    <li><b>Unter der Haube:</b> der Quellcode ist jetzt in Module aufgeteilt, und bei jedem Update läuft automatisch ein Test, der Laden, Demo, Abspielen, Export und Übersetzung prüft</li>
+    <li>Unten steht jetzt immer die aktuelle Version</li>
+  </ul>
+  <h3>v16.5</h3>
   <ul>
     <li><b>Schriften mit Live-Vorschau:</b> das Schrift-Menü zeigt deinen Titel in jeder Schrift, beim Drüberfahren siehst du sie sofort groß auf dem Cover, ein Klick übernimmt sie. Gruppen, Suche und ★ Favoriten, auch für die Titel-Schrift im Video</li>
     <li><b>26 neue Schriften:</b> Graffiti, Spraydose, tropfende Farbe, Schablone, gotisch, Mode-Magazin, Luxus, Hochzeit, Signatur, 3D-Schatten, Bubble, Tech und mehr, jetzt über 75</li>
@@ -1027,6 +1038,16 @@ window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__
   </ul>
   </div>
   <div class="chg-en" hidden>
+  <h3>v17</h3><ul>
+    <li><b>No more connection to Google:</b> all fonts and the MP3 encoder come straight from the DANVIEL site. Better for privacy, and the fonts load faster</li>
+    <li><b>Works offline:</b> once opened on the website, the studio starts without internet too, with all fonts</li>
+    <li><b>Choose the sample rate for the export:</b> original, 44.1 kHz (CD, streaming) or 48 kHz (video). The true peak is held when converting</li>
+    <li><b>16-bit WAV with dither:</b> quiet fade-outs stay clean instead of grainy</li>
+    <li><b>Video preview with the keyboard:</b> Tab into the preview, N selects cover, title, lyrics or visualizer, arrow keys move, + and − resize. Plus better labels for screen readers</li>
+    <li><b>Privacy &amp; legal notice:</b> its own page, linked at the bottom of the studio</li>
+    <li><b>Under the hood:</b> the source code is now split into modules, and every update runs an automatic test that checks loading, demo, playback, export and translation</li>
+    <li>The bottom bar now always shows the current version</li>
+  </ul>
   <h3>v16.5</h3><ul>
     <li><b>Fonts with live preview:</b> the font menu shows your title in every font, hover and you see it big on the cover right away, a click takes it. Groups, search and ★ favourites, also for the video title font</li>
     <li><b>26 new fonts:</b> graffiti, spray can, dripping paint, stencil, gothic, fashion magazine, luxury, wedding, signature, 3D shadow, bubble, tech and more, now over 75</li>
