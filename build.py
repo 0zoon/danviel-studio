@@ -5,6 +5,14 @@ R=os.path.dirname(os.path.abspath(__file__)); S=os.path.join(R,"src")
 rd=lambda p: open(os.path.join(S,p),encoding="utf-8").read()
 def parts(d,ext): return "".join(rd(os.path.join(d,f)) for f in sorted(os.listdir(os.path.join(S,d))) if f.endswith(ext))
 s=rd("studio.html")
+UI={"Big Shoulders Display","Unbounded","Herr Von Muellerhoff","Instrument Sans","IBM Plex Mono"}
+SITE="https://0zoon.github.io/danviel-studio/"
+ff=[]
+for f in json.load(open(os.path.join(S,"fonts.json"),encoding="utf-8")):
+    if f["family"] in UI: src='url(data:font/woff2;base64,%s) format("woff2")'%base64.b64encode(open(os.path.join(R,"fonts",f["file"]),"rb").read()).decode()
+    else: src='url("fonts/%s") format("woff2"),url("%sfonts/%s") format("woff2")'%(f["file"],SITE,f["file"])
+    ff.append('@font-face{font-family:"%s";font-style:%s;font-weight:%d;font-display:swap;src:%s}'%(f["family"],"italic" if f["i"] else "normal",f["w"],src))
+s=s.replace("@@FONTS@@","<style id=\"fontfaces\">/* self-hosted fonts (SIL OFL / Apache), Latin subset - no Google request */\n"+"\n".join(ff)+"\n</style>",1)
 s=s.replace("@@JSZIP@@",rd("vendor/jszip.min.js").rstrip("\n"),1)
 s=s.replace("@@CSS@@",parts("css",".css"),1)
 s=s.replace("@@JS@@",parts("js",".js"),1)

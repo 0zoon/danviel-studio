@@ -1,0 +1,512 @@
+[
+{
+"family": "Big Shoulders Display",
+"w": 600,
+"i": 0,
+"file": "bigshouldersdisplay-600.woff2"
+},
+{
+"family": "Big Shoulders Display",
+"w": 800,
+"i": 0,
+"file": "bigshouldersdisplay-800.woff2"
+},
+{
+"family": "Unbounded",
+"w": 600,
+"i": 0,
+"file": "unbounded-600.woff2"
+},
+{
+"family": "Unbounded",
+"w": 800,
+"i": 0,
+"file": "unbounded-800.woff2"
+},
+{
+"family": "Herr Von Muellerhoff",
+"w": 400,
+"i": 0,
+"file": "herrvonmuellerhoff-400.woff2"
+},
+{
+"family": "DM Serif Display",
+"w": 400,
+"i": 0,
+"file": "dmserifdisplay-400.woff2"
+},
+{
+"family": "Permanent Marker",
+"w": 400,
+"i": 0,
+"file": "permanentmarker-400.woff2"
+},
+{
+"family": "Instrument Sans",
+"w": 400,
+"i": 0,
+"file": "instrumentsans-400.woff2"
+},
+{
+"family": "Instrument Sans",
+"w": 500,
+"i": 0,
+"file": "instrumentsans-500.woff2"
+},
+{
+"family": "Instrument Sans",
+"w": 600,
+"i": 0,
+"file": "instrumentsans-600.woff2"
+},
+{
+"family": "IBM Plex Mono",
+"w": 400,
+"i": 0,
+"file": "ibmplexmono-400.woff2"
+},
+{
+"family": "IBM Plex Mono",
+"w": 500,
+"i": 0,
+"file": "ibmplexmono-500.woff2"
+},
+{
+"family": "Bebas Neue",
+"w": 400,
+"i": 0,
+"file": "bebasneue-400.woff2"
+},
+{
+"family": "Anton",
+"w": 400,
+"i": 0,
+"file": "anton-400.woff2"
+},
+{
+"family": "Cinzel",
+"w": 700,
+"i": 0,
+"file": "cinzel-700.woff2"
+},
+{
+"family": "Playfair Display",
+"w": 700,
+"i": 1,
+"file": "playfairdisplay-700i.woff2"
+},
+{
+"family": "Caveat",
+"w": 700,
+"i": 0,
+"file": "caveat-700.woff2"
+},
+{
+"family": "Unbounded",
+"w": 700,
+"i": 0,
+"file": "unbounded-700.woff2"
+},
+{
+"family": "UnifrakturMaguntia",
+"w": 400,
+"i": 0,
+"file": "unifrakturmaguntia-400.woff2"
+},
+{
+"family": "Oswald",
+"w": 700,
+"i": 0,
+"file": "oswald-700.woff2"
+},
+{
+"family": "Archivo Black",
+"w": 400,
+"i": 0,
+"file": "archivoblack-400.woff2"
+},
+{
+"family": "Abril Fatface",
+"w": 400,
+"i": 0,
+"file": "abrilfatface-400.woff2"
+},
+{
+"family": "Montserrat",
+"w": 900,
+"i": 0,
+"file": "montserrat-900.woff2"
+},
+{
+"family": "Cormorant Garamond",
+"w": 600,
+"i": 1,
+"file": "cormorantgaramond-600i.woff2"
+},
+{
+"family": "Orbitron",
+"w": 800,
+"i": 0,
+"file": "orbitron-800.woff2"
+},
+{
+"family": "Monoton",
+"w": 400,
+"i": 0,
+"file": "monoton-400.woff2"
+},
+{
+"family": "Pacifico",
+"w": 400,
+"i": 0,
+"file": "pacifico-400.woff2"
+},
+{
+"family": "Rubik Glitch",
+"w": 400,
+"i": 0,
+"file": "rubikglitch-400.woff2"
+},
+{
+"family": "Bungee",
+"w": 400,
+"i": 0,
+"file": "bungee-400.woff2"
+},
+{
+"family": "Syne",
+"w": 800,
+"i": 0,
+"file": "syne-800.woff2"
+},
+{
+"family": "Press Start 2P",
+"w": 400,
+"i": 0,
+"file": "pressstart2p-400.woff2"
+},
+{
+"family": "Dancing Script",
+"w": 700,
+"i": 0,
+"file": "dancingscript-700.woff2"
+},
+{
+"family": "Lobster",
+"w": 400,
+"i": 0,
+"file": "lobster-400.woff2"
+},
+{
+"family": "Righteous",
+"w": 400,
+"i": 0,
+"file": "righteous-400.woff2"
+},
+{
+"family": "Bangers",
+"w": 400,
+"i": 0,
+"file": "bangers-400.woff2"
+},
+{
+"family": "Teko",
+"w": 600,
+"i": 0,
+"file": "teko-600.woff2"
+},
+{
+"family": "Black Ops One",
+"w": 400,
+"i": 0,
+"file": "blackopsone-400.woff2"
+},
+{
+"family": "Great Vibes",
+"w": 400,
+"i": 0,
+"file": "greatvibes-400.woff2"
+},
+{
+"family": "Satisfy",
+"w": 400,
+"i": 0,
+"file": "satisfy-400.woff2"
+},
+{
+"family": "Fredoka",
+"w": 700,
+"i": 0,
+"file": "fredoka-700.woff2"
+},
+{
+"family": "Rye",
+"w": 400,
+"i": 0,
+"file": "rye-400.woff2"
+},
+{
+"family": "Six Caps",
+"w": 400,
+"i": 0,
+"file": "sixcaps-400.woff2"
+},
+{
+"family": "Shrikhand",
+"w": 400,
+"i": 0,
+"file": "shrikhand-400.woff2"
+},
+{
+"family": "Creepster",
+"w": 400,
+"i": 0,
+"file": "creepster-400.woff2"
+},
+{
+"family": "Rock Salt",
+"w": 400,
+"i": 0,
+"file": "rocksalt-400.woff2"
+},
+{
+"family": "Special Elite",
+"w": 400,
+"i": 0,
+"file": "specialelite-400.woff2"
+},
+{
+"family": "Audiowide",
+"w": 400,
+"i": 0,
+"file": "audiowide-400.woff2"
+},
+{
+"family": "Alfa Slab One",
+"w": 400,
+"i": 0,
+"file": "alfaslabone-400.woff2"
+},
+{
+"family": "Boogaloo",
+"w": 400,
+"i": 0,
+"file": "boogaloo-400.woff2"
+},
+{
+"family": "Nosifer",
+"w": 400,
+"i": 0,
+"file": "nosifer-400.woff2"
+},
+{
+"family": "Codystar",
+"w": 400,
+"i": 0,
+"file": "codystar-400.woff2"
+},
+{
+"family": "Kaushan Script",
+"w": 400,
+"i": 0,
+"file": "kaushanscript-400.woff2"
+},
+{
+"family": "Yellowtail",
+"w": 400,
+"i": 0,
+"file": "yellowtail-400.woff2"
+},
+{
+"family": "Staatliches",
+"w": 400,
+"i": 0,
+"file": "staatliches-400.woff2"
+},
+{
+"family": "Bowlby One",
+"w": 400,
+"i": 0,
+"file": "bowlbyone-400.woff2"
+},
+{
+"family": "Major Mono Display",
+"w": 400,
+"i": 0,
+"file": "majormonodisplay-400.woff2"
+},
+{
+"family": "Faster One",
+"w": 400,
+"i": 0,
+"file": "fasterone-400.woff2"
+},
+{
+"family": "Vibur",
+"w": 400,
+"i": 0,
+"file": "vibur-400.woff2"
+},
+{
+"family": "Silkscreen",
+"w": 400,
+"i": 0,
+"file": "silkscreen-400.woff2"
+},
+{
+"family": "Sedgwick Ave Display",
+"w": 400,
+"i": 0,
+"file": "sedgwickavedisplay-400.woff2"
+},
+{
+"family": "Rubik Spray Paint",
+"w": 400,
+"i": 0,
+"file": "rubikspraypaint-400.woff2"
+},
+{
+"family": "Rubik Wet Paint",
+"w": 400,
+"i": 0,
+"file": "rubikwetpaint-400.woff2"
+},
+{
+"family": "Rubik Distressed",
+"w": 400,
+"i": 0,
+"file": "rubikdistressed-400.woff2"
+},
+{
+"family": "Saira Stencil One",
+"w": 400,
+"i": 0,
+"file": "sairastencilone-400.woff2"
+},
+{
+"family": "Wallpoet",
+"w": 400,
+"i": 0,
+"file": "wallpoet-400.woff2"
+},
+{
+"family": "Pirata One",
+"w": 400,
+"i": 0,
+"file": "pirataone-400.woff2"
+},
+{
+"family": "Grenze Gotisch",
+"w": 700,
+"i": 0,
+"file": "grenzegotisch-700.woff2"
+},
+{
+"family": "Dela Gothic One",
+"w": 400,
+"i": 0,
+"file": "delagothicone-400.woff2"
+},
+{
+"family": "Metal Mania",
+"w": 400,
+"i": 0,
+"file": "metalmania-400.woff2"
+},
+{
+"family": "New Rocker",
+"w": 400,
+"i": 0,
+"file": "newrocker-400.woff2"
+},
+{
+"family": "Bodoni Moda",
+"w": 700,
+"i": 0,
+"file": "bodonimoda-700.woff2"
+},
+{
+"family": "Italiana",
+"w": 400,
+"i": 0,
+"file": "italiana-400.woff2"
+},
+{
+"family": "Marcellus",
+"w": 400,
+"i": 0,
+"file": "marcellus-400.woff2"
+},
+{
+"family": "Tenor Sans",
+"w": 400,
+"i": 0,
+"file": "tenorsans-400.woff2"
+},
+{
+"family": "Allura",
+"w": 400,
+"i": 0,
+"file": "allura-400.woff2"
+},
+{
+"family": "Sacramento",
+"w": 400,
+"i": 0,
+"file": "sacramento-400.woff2"
+},
+{
+"family": "Homemade Apple",
+"w": 400,
+"i": 0,
+"file": "homemadeapple-400.woff2"
+},
+{
+"family": "Bungee Shade",
+"w": 400,
+"i": 0,
+"file": "bungeeshade-400.woff2"
+},
+{
+"family": "Bungee Inline",
+"w": 400,
+"i": 0,
+"file": "bungeeinline-400.woff2"
+},
+{
+"family": "Rampart One",
+"w": 400,
+"i": 0,
+"file": "rampartone-400.woff2"
+},
+{
+"family": "Tilt Warp",
+"w": 400,
+"i": 0,
+"file": "tiltwarp-400.woff2"
+},
+{
+"family": "Bagel Fat One",
+"w": 400,
+"i": 0,
+"file": "bagelfatone-400.woff2"
+},
+{
+"family": "Michroma",
+"w": 400,
+"i": 0,
+"file": "michroma-400.woff2"
+},
+{
+"family": "Russo One",
+"w": 400,
+"i": 0,
+"file": "russoone-400.woff2"
+},
+{
+"family": "Krona One",
+"w": 400,
+"i": 0,
+"file": "kronaone-400.woff2"
+}
+]
