@@ -1,8 +1,12 @@
 /* ---------- Transport ---------- */
 let rate = 1;
+/* every source that is sounding, independent of the track list: if the tracks are replaced while playing
+   (new files, project, split, demo ...), stop() still reaches the old ones, so nothing can keep playing on its own */
+const LIVE = new Set();
+function killLive(){ LIVE.forEach(o=>{ try{ o.s.stop(); }catch(e){} try{ o.s.disconnect(); }catch(e){} try{ o.out && o.out.disconnect(); }catch(e){} try{ o.raw && o.raw.disconnect(); }catch(e){} }); LIVE.clear(); }
 function currentTime(){ return playing ? Math.min(duration, offset + (ctx.currentTime - startedAt)*rate) : offset; }
 function play(){
-  if(playing) stop();   // never start a second copy: sources that are no longer referenced could not be stopped any more (played twice, much louder)
+  if(playing) stop(); killLive();   // never start a second copy: sources that are no longer referenced could not be stopped any more (played twice, much louder)
   const c = ac(); if(c.state==="suspended") c.resume();
   if(fxLive && fxLive.used){ const old = fxLive; old.out.forEach(n=>{ n.gain.setTargetAtTime(0, c.currentTime, 0.02); }); setTimeout(()=>old.out.forEach(n=>n.disconnect()), 300); fxLive = buildFx(c, true); fxLive.out.forEach(n=>n.connect(mixBus)); }
   fxLive.used = true;
@@ -14,6 +18,7 @@ function play(){
     const rg = c.createGain(); rg.gain.value = audible(t) ? 1 : 0; s.connect(rg).connect(rawBus); t.rawG = rg;
     const g = ch.vol; t.chain = ch;
     if(offset < buf(t).duration) s.start(0, offset);
+    const rec = {s, out: ch.output, raw: rg}; LIVE.add(rec); s.onended = ()=>LIVE.delete(rec);
     t.src = s; t.gain = g;
   });
   startedAt = c.currentTime; playing = true;
@@ -21,9 +26,10 @@ function play(){
   setIcon(); tick(); levSchedule();
 }
 function stop(){
-  if(!playing) return;
+  if(!playing){ killLive(); return; }
   offset = currentTime();
   tracks.forEach(t=>{ try{t.src&&t.src.stop();}catch(e){} t.src=null; if(t.chain){ t.chain.output.disconnect(); t.chain.vol.disconnect(); } if(t.rawG){ t.rawG.disconnect(); t.rawG = null; } t.gain=null; t.chain=null; });
+  killLive();
   if(fxLive) fxLive.out.forEach(n=>n.gain.setTargetAtTime(0, ctx.currentTime, 0.025));
   playing = false; cancelAnimationFrame(raf); setIcon(); resetMeters(); levSchedule();
 }

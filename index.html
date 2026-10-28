@@ -2073,6 +2073,7 @@ html[data-theme="light"] .fpkpop{background:#fbfaf7}html[data-theme="light"] .fp
     <li><b>Datenschutz &amp; Impressum:</b> eigene Seite, unten im Studio verlinkt</li>
     <li><b>Unter der Haube:</b> der Quellcode ist jetzt in Module aufgeteilt, und bei jedem Update läuft automatisch ein Test, der Laden, Demo, Abspielen, Export und Übersetzung prüft</li>
     <li>Unten steht jetzt immer die aktuelle Version</li>
+    <li><b>Behoben:</b> wurde während der Wiedergabe ein neuer Song, eine Demo oder ein Projekt geladen, lief der alte Song unsichtbar weiter und ließ sich nicht mehr stoppen. Jetzt verstummt er sofort</li>
   </ul>
   <h3>v16.5</h3>
   <ul>
@@ -2424,6 +2425,7 @@ html[data-theme="light"] .fpkpop{background:#fbfaf7}html[data-theme="light"] .fp
     <li><b>Privacy &amp; legal notice:</b> its own page, linked at the bottom of the studio</li>
     <li><b>Under the hood:</b> the source code is now split into modules, and every update runs an automatic test that checks loading, demo, playback, export and translation</li>
     <li>The bottom bar now always shows the current version</li>
+    <li><b>Fixed:</b> loading a new song, demo or project during playback left the old song playing invisibly and it could not be stopped. Now it falls silent right away</li>
   </ul>
   <h3>v16.5</h3><ul>
     <li><b>Fonts with live preview:</b> the font menu shows your title in every font, hover and you see it big on the cover right away, a click takes it. Groups, search and ★ favourites, also for the video title font</li>
@@ -3745,7 +3747,8 @@ function addTrack(t){ const was = playing; if(was) stop(); tracks.push(mkTrack(t
 function removeTrack(t){ const was = playing; if(was) stop(); const i = tracks.indexOf(t); if(i < 0) return; tracks.splice(i, 1);
   if(!tracks.length){ location.reload(); return; } stemLufs = null; mixSpec = null; P.ver++; SEC.env = null; renderStrips(); syncSc(); updateUI(); drawSec(); scheduleAnalysis(); saveSoon();
   try{ if(BLD.sel === t) bldEdit(null); bldInfo(); }catch(e){} }
-function setTracks(list){ setTimeout(miniCheck, 50); setTimeout(()=>{ try{ bldInfo(); }catch(e){} }, 80); setTimeout(()=>{ if(typeof goStep !== "function") return; if(tracks.length && STEP === 1) goStep(2, true); else stepUi(); }, 60);
+function setTracks(list){ if(playing) stop(); killLive();   /* new tracks: the old ones must fall silent first, or they keep playing out of reach */
+  setTimeout(miniCheck, 50); setTimeout(()=>{ try{ bldInfo(); }catch(e){} }, 80); setTimeout(()=>{ if(typeof goStep !== "function") return; if(tracks.length && STEP === 1) goStep(2, true); else stepUi(); }, 60);
   tracks = list.map(mkTrack);
   duration = Math.max(...tracks.map(t=>t.buffer.duration));
   P.tempo = 1; P.semis = 0; P.ver++; rate = 1; AB.a = AB.b = null; $("rate").value = 100; $("semi").value = 0;
@@ -4015,9 +4018,13 @@ $("presets").addEventListener("click", e=>{
 
 /* ---------- Transport ---------- */
 let rate = 1;
+/* every source that is sounding, independent of the track list: if the tracks are replaced while playing
+   (new files, project, split, demo ...), stop() still reaches the old ones, so nothing can keep playing on its own */
+const LIVE = new Set();
+function killLive(){ LIVE.forEach(o=>{ try{ o.s.stop(); }catch(e){} try{ o.s.disconnect(); }catch(e){} try{ o.out && o.out.disconnect(); }catch(e){} try{ o.raw && o.raw.disconnect(); }catch(e){} }); LIVE.clear(); }
 function currentTime(){ return playing ? Math.min(duration, offset + (ctx.currentTime - startedAt)*rate) : offset; }
 function play(){
-  if(playing) stop();   // never start a second copy: sources that are no longer referenced could not be stopped any more (played twice, much louder)
+  if(playing) stop(); killLive();   // never start a second copy: sources that are no longer referenced could not be stopped any more (played twice, much louder)
   const c = ac(); if(c.state==="suspended") c.resume();
   if(fxLive && fxLive.used){ const old = fxLive; old.out.forEach(n=>{ n.gain.setTargetAtTime(0, c.currentTime, 0.02); }); setTimeout(()=>old.out.forEach(n=>n.disconnect()), 300); fxLive = buildFx(c, true); fxLive.out.forEach(n=>n.connect(mixBus)); }
   fxLive.used = true;
@@ -4029,6 +4036,7 @@ function play(){
     const rg = c.createGain(); rg.gain.value = audible(t) ? 1 : 0; s.connect(rg).connect(rawBus); t.rawG = rg;
     const g = ch.vol; t.chain = ch;
     if(offset < buf(t).duration) s.start(0, offset);
+    const rec = {s, out: ch.output, raw: rg}; LIVE.add(rec); s.onended = ()=>LIVE.delete(rec);
     t.src = s; t.gain = g;
   });
   startedAt = c.currentTime; playing = true;
@@ -4036,9 +4044,10 @@ function play(){
   setIcon(); tick(); levSchedule();
 }
 function stop(){
-  if(!playing) return;
+  if(!playing){ killLive(); return; }
   offset = currentTime();
   tracks.forEach(t=>{ try{t.src&&t.src.stop();}catch(e){} t.src=null; if(t.chain){ t.chain.output.disconnect(); t.chain.vol.disconnect(); } if(t.rawG){ t.rawG.disconnect(); t.rawG = null; } t.gain=null; t.chain=null; });
+  killLive();
   if(fxLive) fxLive.out.forEach(n=>n.gain.setTargetAtTime(0, ctx.currentTime, 0.025));
   playing = false; cancelAnimationFrame(raf); setIcon(); resetMeters(); levSchedule();
 }

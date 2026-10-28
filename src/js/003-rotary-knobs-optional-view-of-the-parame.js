@@ -49,7 +49,8 @@ function addTrack(t){ const was = playing; if(was) stop(); tracks.push(mkTrack(t
 function removeTrack(t){ const was = playing; if(was) stop(); const i = tracks.indexOf(t); if(i < 0) return; tracks.splice(i, 1);
   if(!tracks.length){ location.reload(); return; } stemLufs = null; mixSpec = null; P.ver++; SEC.env = null; renderStrips(); syncSc(); updateUI(); drawSec(); scheduleAnalysis(); saveSoon();
   try{ if(BLD.sel === t) bldEdit(null); bldInfo(); }catch(e){} }
-function setTracks(list){ setTimeout(miniCheck, 50); setTimeout(()=>{ try{ bldInfo(); }catch(e){} }, 80); setTimeout(()=>{ if(typeof goStep !== "function") return; if(tracks.length && STEP === 1) goStep(2, true); else stepUi(); }, 60);
+function setTracks(list){ if(playing) stop(); killLive();   /* new tracks: the old ones must fall silent first, or they keep playing out of reach */
+  setTimeout(miniCheck, 50); setTimeout(()=>{ try{ bldInfo(); }catch(e){} }, 80); setTimeout(()=>{ if(typeof goStep !== "function") return; if(tracks.length && STEP === 1) goStep(2, true); else stepUi(); }, 60);
   tracks = list.map(mkTrack);
   duration = Math.max(...tracks.map(t=>t.buffer.duration));
   P.tempo = 1; P.semis = 0; P.ver++; rate = 1; AB.a = AB.b = null; $("rate").value = 100; $("semi").value = 0;
