@@ -13,7 +13,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Built file matches the source
-        run: python3 build.py --check
+        run: |
+          out=$(python3 build.py --check 2>&1) || { echo "::error::$(echo "$out" | tail -6 | tr '\n' ' ')"; exit 1; }
+          echo "$out"
       - name: Install Chromium
         run: |
           pip install playwright==1.47.0
