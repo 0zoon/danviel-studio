@@ -27,6 +27,10 @@ def img(m):
     return '<img class="himg" data-h="%s" data-l="%s" alt="" loading="lazy" src="%s">'%(m.group(1),m.group(2),src)
 s=re.sub(r'<img class="himg" data-h="(\w+)" data-l="(\w+)" alt=""(?: loading="lazy")? src="[^"]*">',img,s)
 full='<!doctype html>\n<html lang="en">\n'+s
+swp=os.path.join(R,"sw.js"); sw=open(swp,encoding="utf-8").read()
+sw2=re.sub(r"const FONTS = \[.*?\];","const FONTS = "+json.dumps([f["file"] for f in json.load(open(os.path.join(S,"fonts.json"),encoding="utf-8"))])+";",sw,count=1)
+if "--check" in sys.argv and sw2!=sw: print("::error::sw.js font list is out of date (run python3 build.py)"); sys.exit(1)
+if sw2!=sw: open(swp,"w",encoding="utf-8").write(sw2)
 if "--check" in sys.argv:
     same = open(os.path.join(R,"index.html"),encoding="utf-8").read()==full
     if not same:

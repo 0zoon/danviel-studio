@@ -11,9 +11,18 @@ const VERSIONS = {
   acap: {label:"Acapella",      make: t => ({on:t.on && isVox(t), vol:t.vol})},
   vup:  {label:"Vocal Up",      make: t => ({on:t.on, vol: isLead(t) ? t.vol*db2(1) : t.vol})},
 };
+/* chosen sample rate (WAV and MP3). Resampling can add tiny peaks between samples, so the true peak is held where it was */
+async function toRate(L, R, sr){
+  const want = +($("srSel") && $("srSel").value) || 0;
+  if(!want || want===sr) return [L, R, sr];
+  const tp0 = truePeak([L, R]); let [a, b] = await resample(L, R, sr, want); const tp1 = truePeak([a, b]);
+  if(tp1 > tp0 && tp1 > 0.5){ const g = tp0/tp1; a = Float32Array.from(a, x=>x*g); b = Float32Array.from(b, x=>x*g); }
+  return [a, b, want];
+}
 async function encodeAny(L, R, sr){
   const fmt = $("fmt").value;
-  if(fmt==="wav") return {blob: encodeWav(L,R,sr), ext:"wav"};
+  if(fmt!=="m4a") [L, R, sr] = await toRate(L, R, sr);
+  if(fmt==="wav") return {blob: encodeWav(L,R,sr,16,true), ext:"wav"};
   if(fmt==="wav24") return {blob: encodeWav(L,R,sr,24), ext:"wav"};
   if(fmt==="m4a"){
     if(!AAC_OK) throw new Error("Dieser Browser kann kein AAC/M4A erzeugen. Nimm Chrome oder Edge unter Windows/Mac, oder wähl MP3 oder WAV.");

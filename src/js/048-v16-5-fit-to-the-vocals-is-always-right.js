@@ -7,4 +7,3 @@ setInterval(lAutoTopUi, 1500); lAutoTopUi();
 
 $("lTap3").onclick = ()=>tapBegin(3); $("lTap3Top").onclick = ()=>tapBegin(3);
 const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener && mq.addEventListener("change", drawWaves);
-})();

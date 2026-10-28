@@ -58,6 +58,14 @@ async def main():
         dl2 = await d2.value; data2 = open(await dl2.path(), "rb").read()
         check("MP3 export", (data[:3] == b"ID3" or data[0] == 0xFF) and len(data) > 100000, f"{len(data)} bytes, {dl.suggested_filename}")
         check("WAV export", data2[:4] == b"RIFF" and data2[8:12] == b"WAVE" and len(data2) > 200000, f"{len(data2)} bytes, {dl2.suggested_filename}")
+        await E('const s=document.getElementById("srSel"); s.value="48000"; s.dispatchEvent(new Event("change"))')
+        async with pg.expect_download(timeout=180000) as d3:
+            await E('document.getElementById("export").click()')
+        data3 = open(await (await d3.value).path(), "rb").read()
+        import struct
+        sr3 = struct.unpack("<I", data3[24:28])[0]
+        pcm = data3[data3.index(b"data")+8:]; pk = max(abs(v) for v in struct.unpack("<%dh" % (len(pcm)//2), pcm)) / 32768
+        check("WAV export at 48 kHz, peak held", sr3 == 48000 and pk < 0.99, f"{sr3} Hz, sample peak {pk:.3f}")
         check("footer shows the current version", await E('document.querySelector("footer .credit b").textContent') == "v" + VER)
 
         await E('localStorage.setItem("stemmixer:lang","en")'); await pg.reload(); await pg.wait_for_timeout(2500)

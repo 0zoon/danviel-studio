@@ -783,6 +783,11 @@ PAT.append([r"^Clip bereit: Hook ab (.+?), (\d+) s, Format 9:16\. Jetzt „Video
 EXACT.update({
 "· Alle Rechte vorbehalten ·": "· All rights reserved ·",
 "Lizenzen": "Licenses",
+"Abtastrate: Original": "Sample rate: original",
+"Abtastrate": "Sample rate",
+"44,1 kHz": "44.1 kHz",
+"M4A ist immer 48 kHz": "M4A is always 48 kHz",
+"Abtastrate der Datei. Original lässt sie, wie sie ist. 44,1 kHz ist CD und Streaming, 48 kHz ist Video.": "Sample rate of the file. Original keeps it as it is. 44.1 kHz is CD and streaming, 48 kHz is video.",
 "Datenschutz & Impressum": "Privacy & legal notice",
 })
 

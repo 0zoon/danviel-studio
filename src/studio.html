@@ -12,6 +12,13 @@ window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__
     if(had && self.crossOriginIsolated && !sessionStorage.getItem("coiOff")){ sessionStorage.setItem("coiOff", "1"); location.reload(); } }).catch(function(){});
 }catch(e){} })();
 </script>
+<script>/* Offline: on the website the studio keeps a copy of itself, so it opens without internet too (sw.js). */
+(function(){ try{ if(!("serviceWorker" in navigator) || !/github\.io$|^(127\.0\.0\.1|localhost)$/.test(location.hostname)) return;
+  window.addEventListener("load", function(){ navigator.serviceWorker.getRegistrations().then(function(rs){
+    if(rs.some(function(r){ return /coi\.js/.test((r.active || r.waiting || r.installing || {}).scriptURL || ""); })) return;   // old one is being removed first
+    navigator.serviceWorker.register("sw.js").catch(function(){}); }).catch(function(){}); });
+}catch(e){} })();
+</script>
 <!-- DANVIEL Studio · © 2026 DANVIEL. All rights reserved. Free to use at https://0zoon.github.io/danviel-studio/ · Copying, rebranding, redistributing or selling this code is not permitted without written permission. See LICENSE. -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DANVIEL Studio – Free Online Stem Mixer, Mastering &amp; Lyric Video Maker</title>
@@ -578,6 +585,11 @@ window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__
         <option value="m4a">M4A · AAC 256 kbps</option>
         <option value="wav">WAV · 16 bit</option>
         <option value="wav24">WAV · 24 bit (Studio)</option>
+      </select>
+      <select id="srSel" aria-label="Abtastrate" title="Abtastrate der Datei. Original lässt sie, wie sie ist. 44,1 kHz ist CD und Streaming, 48 kHz ist Video.">
+        <option value="">Abtastrate: Original</option>
+        <option value="44100">44,1 kHz</option>
+        <option value="48000">48 kHz</option>
       </select>
       <label id="normLbl"><input type="checkbox" id="norm" checked> Übersteuern verhindern</label>
       <button class="primary" id="export" disabled title="Den fertigen Mix als Datei speichern, mit Mastering wenn es an ist">Mix exportieren</button>

@@ -13,7 +13,7 @@ function getProject(){
     section: (AB.a!==null && AB.b!==null && duration) ? [AB.a/duration, AB.b/duration] : null, onlyAB: $("onlyAB").checked,
     video: {aspect:VID.aspect, style:VID.style, cxUsed: !!VID.cxUsed, cxUse: $("vCxUse").checked, tp:VID.tp, customStyle: VSTYLES[VID.style] && VSTYLES[VID.style].custom ? VSTYLES[VID.style].data : null, showViz:$("vShowViz").checked, showCover:$("vShowCover").checked, showTitle:$("vShowTitle").checked, title:$("vTitle").value, artist:$("vArtist").value, lyrics:$("lText").value, lyrOn:$("vLyr").checked, brand:$("vBrand").checked, brandTxt:$("vBrandTxt").value, full: !!VID.full, boxes: JSON.parse(JSON.stringify(VID.boxes||{})), cover:VID.coverUrl||"", coverName:VID.coverName||"", logo:VID.logoUrl||"", cx: JSON.parse(JSON.stringify(CX))},
     hook: SEC.hook, sectionLen: SEC.len, genre: GENRE, genreUsed: GENRE_USED, autoOn: AUTO_ON, revAmt: REV_AMT,
-    fadeIn: +$("fadeIn").value||0, fadeOut: +$("fadeOut").value||0, name: $("fname").value, nameManual: fnameManual, format: $("fmt").value,
+    fadeIn: +$("fadeIn").value||0, fadeOut: +$("fadeOut").value||0, name: $("fname").value, nameManual: fnameManual, format: $("fmt").value, srate: $("srSel").value,
     cover: {idea: $("aiIdea").value, genre: $("aiGenre").value, dedic: $("aiDedic").value, style: typeof styleSel === "string" ? styleSel : "neutral",
       prompt: {title: $("cpTitle").value, artist: $("cpArtist").value, genre: $("cpGenre").value, wish: $("cpWish").value, out: $("cpOut").value, withText: typeof CP_TEXT === "boolean" ? CP_TEXT : true}},
   };
@@ -44,7 +44,7 @@ function applyProject(pj){
   M.preset = m.preset||""; syncKnobs();
   if(pj.revAmt && REV_K[pj.revAmt]!==undefined){ REV_AMT = pj.revAmt; revAmtUi(); }
   if(pj.fadeIn!=null) $("fadeIn").value = pj.fadeIn; if(pj.fadeOut!=null) $("fadeOut").value = pj.fadeOut;
-  if(pj.name){ $("fname").value = pj.name; fnameManual = !!pj.nameManual; } if(pj.format) $("fmt").value = pj.format;
+  if(pj.name){ $("fname").value = pj.name; fnameManual = !!pj.nameManual; } if(pj.format) $("fmt").value = pj.format; $("srSel").value = pj.srate || ""; srSelSync();
   if(pj.section){ AB.a = pj.section[0]*duration; AB.b = pj.section[1]*duration; }
   if(pj.video){ const v = pj.video; if(ASPECTS[v.aspect]) VID.aspect = v.aspect;
     VID.cxUsed = !!v.cxUsed; VID.cxImg = null; $("vCxUse").checked = v.cxUse !== false; $("vCxUseBox").hidden = !VID.cxUsed;
@@ -119,5 +119,5 @@ $("projFile").onchange = async e=>{
     setStatus("Projekt geladen."); applyProject(pj);
   } catch(err){ setStatus("Diese Datei konnte nicht gelesen werden.", true); }
 };
-["fadeIn","fadeOut","fname","fmt"].forEach(id=>$(id).addEventListener("change", saveSoon));
+["fadeIn","fadeOut","fname","fmt","srSel"].forEach(id=>$(id).addEventListener("change", saveSoon));
 
