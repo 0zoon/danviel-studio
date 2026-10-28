@@ -1,0 +1,21 @@
+/* v16 polish */
+@media (min-width:1280px){ body.has-mon .wrap{flex:1 1 auto;max-width:min(1560px,calc(100vw - 420px - 24px - 56px))} }
+@media (min-width:1900px){ body.has-mon #monitor{flex-basis:460px;width:460px} body.has-mon .wrap{max-width:min(1640px,calc(100vw - 460px - 24px - 64px))} }
+.toplinks{position:absolute;top:0;right:0;display:flex;align-items:center;gap:8px;z-index:3}
+.toplinks .probtn{position:static!important}
+.toplinks #chgBtn,.toplinks a.ghbtn{height:34px;min-height:34px!important;padding:0 12px!important;font-size:13px!important;border-radius:999px!important;display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,var(--fg) 18%,transparent)!important;background:color-mix(in srgb,var(--fg) 6%,transparent)!important;color:var(--fg)!important;text-decoration:none}
+.toplinks a.ghbtn .dic{color:#e8a93a}
+@media (max-width:700px){.toplinks{position:static;order:3}}
+/* feature buttons glow a little so they are easy to find */
+.wrap button.primary,.wrap button.hi2,.wrap .c-purple,.wrap .c-blue,.wrap .c-glow,.wrap #quickClip,.wrap .clipbar button,.wrap .vchead{box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent),0 0 18px -4px color-mix(in srgb,var(--accent) 45%,transparent)!important}
+.wrap .c-purple{box-shadow:0 0 0 1px rgba(168,85,247,.45),0 0 18px -4px rgba(168,85,247,.55)!important}
+.wrap .c-blue{box-shadow:0 0 0 1px rgba(91,142,230,.45),0 0 18px -4px rgba(91,142,230,.5)!important}
+.wrap button.primary:hover,.wrap button.hi2:hover,.wrap .c-purple:hover,.wrap .c-blue:hover{filter:brightness(1.12)}
+button .dic{margin-right:2px}
+/* Auto-Mix report folds into one line */
+.autolog .alt{justify-self:start;height:28px;min-height:28px!important;padding:0 10px!important;font:600 12px var(--f-body)!important;border-radius:999px!important;margin-top:4px}
+.autolog.folded > span:not(:first-child){display:none}
+.autolog.folded .alt::before{content:"▸ "}
+.autolog:not(.folded) .alt::before{content:"▴ "}
+.stripbar .kseg{display:none!important}
+.kmswitch{margin:0}

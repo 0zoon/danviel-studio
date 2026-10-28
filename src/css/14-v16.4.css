@@ -1,0 +1,12 @@
+/* v16.4: switch labels and hover info easier to read */
+.lyswitch,.kmswitch{font-size:13.5px!important;color:#d9d3c7!important}
+.lyswitch span,.kmswitch span{transition:color .15s}
+.lyswitch .on,.kmswitch .on{color:#f3c463!important;font-weight:700}
+html[data-theme="light"] .lyswitch,html[data-theme="light"] .kmswitch{color:#3a3a40!important}
+html[data-theme="light"] .lyswitch .on,html[data-theme="light"] .kmswitch .on{color:#9a6a10!important}
+#tip16{background:linear-gradient(170deg,#1f2026,#15161a)!important;color:#f3eee4!important;border:1px solid rgba(214,178,94,.6);font:500 14px/1.45 var(--f-body)!important;max-width:320px!important;padding:10px 14px!important}
+
+.cxtexttog{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vidprev{display:flex;flex-direction:column;align-items:center;gap:8px}
+.vaddimg{align-self:center}
+

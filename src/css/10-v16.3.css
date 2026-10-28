@@ -1,0 +1,7 @@
+/* v16.3: MIDI tracks hidden until you ask for them (switched-on ones always stay visible) */
+#strips:not(.showmidi) .strip.midi:has(> .toggle[aria-pressed="false"]){display:none}
+.midtog{position:absolute;top:6px;z-index:2;height:34px;padding:0 13px!important;border-radius:999px!important;font:600 13px/1 var(--f-body)!important;display:inline-flex;align-items:center;gap:6px}
+.strips.coll.collapsed .midtog{display:none}
+#strips.showmidi .midtog{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 60%,var(--line))}
+
+.dname.hit{color:#1d1404!important;background:var(--accent)!important;border-radius:6px}

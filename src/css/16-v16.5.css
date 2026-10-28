@@ -1,0 +1,14 @@
+/* v16.5: the logo is a polished bronze nameplate on the leather folder (screws, bevel), name in white and gold with a dark outline */
+.brand{position:relative;border:0!important;padding:20px 34px 16px!important;
+  background:
+    radial-gradient(circle at 13px 13px,#fff3d0 0 1.5px,#c8913f 2.5px,#5a3812 5px,rgba(0,0,0,.35) 6px,transparent 7px),
+    radial-gradient(circle at calc(100% - 13px) 13px,#fff3d0 0 1.5px,#c8913f 2.5px,#5a3812 5px,rgba(0,0,0,.35) 6px,transparent 7px),
+    radial-gradient(circle at 13px calc(100% - 13px),#fff3d0 0 1.5px,#c8913f 2.5px,#5a3812 5px,rgba(0,0,0,.35) 6px,transparent 7px),
+    radial-gradient(circle at calc(100% - 13px) calc(100% - 13px),#fff3d0 0 1.5px,#c8913f 2.5px,#5a3812 5px,rgba(0,0,0,.35) 6px,transparent 7px),
+    conic-gradient(from 200deg at 62% 38%,#4a3321,#93693b,#2c1f14,#6e4c2b,#22170e,#4a3321)!important;
+  box-shadow:inset 0 0 0 2px rgba(214,170,105,.55),inset 0 0 0 4px rgba(20,12,4,.65),inset 0 6px 10px rgba(255,220,170,.16),inset 0 -8px 14px rgba(0,0,0,.55),0 16px 34px rgba(0,0,0,.6)!important}
+.brand .bword{color:#f6ead2!important;overflow:visible;filter:drop-shadow(0 2px 0 rgba(0,0,0,.65)) drop-shadow(0 -1px 0 rgba(255,240,210,.3))}
+.brand .bword path,.brand .bword rect,.brand .bword polygon{stroke:#140c04;stroke-width:3px;stroke-linejoin:round;paint-order:stroke fill}
+.brand .bword .bwave{fill:#f0b03c!important}
+.brand .by{color:#e8a93a!important;-webkit-text-stroke:0;text-shadow:0 2px 0 rgba(0,0,0,.6)}
+@media (max-width:700px){.brand{padding:12px 28px!important}.brand .bword path,.brand .bword rect,.brand .bword polygon{stroke-width:4px}}

@@ -1,0 +1,1308 @@
+<meta charset="utf-8">
+<script>/* Visitor count (GoatCounter: no cookies, no personal data), only on the website, not in the downloaded file */
+(function(){ try{ if(!/github\.io$/.test(location.hostname)) return; const g = document.createElement("script"); g.async = true; g.src = "https://gc.zgo.at/count.js";
+  g.dataset.goatcounter = "https://danviel-studio.goatcounter.com/count"; document.head.appendChild(g); }catch(e){} })();</script>
+<script>try{ document.documentElement.dataset.bg = localStorage.getItem("stemmixer:bg") || "carbon"; }catch(e){ document.documentElement.dataset.bg = "carbon"; } document.documentElement.dataset.theme = document.documentElement.dataset.bg === "hell" ? "light" : "dark";
+// run something only after the translation layer has gone over the page (it sets I18N_LANG when it starts)
+window.__afterI18n = fn => { const go = () => { if(window.I18N_LANG && window.__T) setTimeout(fn, 0); else setTimeout(go, 25); }; go(); };</script>
+<script>/* The multi-core service worker (coi.js) is switched off again: remove it if a browser still has it. */
+(function(){ try{ if(!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.getRegistrations().then(function(rs){ var had = false;
+    rs.forEach(function(r){ var u = (r.active || r.waiting || r.installing || {}).scriptURL || ""; if(/coi\.js/.test(u)){ had = true; r.unregister(); } });
+    if(had && self.crossOriginIsolated && !sessionStorage.getItem("coiOff")){ sessionStorage.setItem("coiOff", "1"); location.reload(); } }).catch(function(){});
+}catch(e){} })();
+</script>
+<!-- DANVIEL Studio · © 2026 DANVIEL. All rights reserved. Free to use at https://0zoon.github.io/danviel-studio/ · Copying, rebranding, redistributing or selling this code is not permitted without written permission. See LICENSE. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DANVIEL Studio – Free Online Stem Mixer, Mastering &amp; Lyric Video Maker</title>
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b0d10">
+<meta name="description" content="Free online music studio in your browser: mix stems (Suno ready), split songs into stems with AI, auto-mix and master for Spotify, build beats, record vocals, make lyric videos for TikTok and YouTube and cover art. No upload, no signup.">
+<link rel="canonical" href="https://0zoon.github.io/danviel-studio/">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "DANVIEL Studio", "url": "https://0zoon.github.io/danviel-studio/", "applicationCategory": "MultimediaApplication", "operatingSystem": "Web browser (Chrome, Edge, Firefox)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Free browser music studio: stem mixer, AI stem splitter, auto-mix and mastering, beat builder, vocal recording, lyric video maker and cover studio. Your songs stay on your computer.", "image": "https://0zoon.github.io/danviel-studio/og-v16.png", "author": {"@type": "Person", "name": "DANVIEL"}, "inLanguage": ["en", "de"], "featureList": ["Stem mixer", "AI stem splitter", "Auto-mix by genre", "Mastering for Spotify and YouTube", "Beat builder with drum patterns and piano roll", "Vocal recording", "Lyric video maker for TikTok, Reels and YouTube", "Cover art studio", "Suno archive import"]}</script>
+<meta property="og:title" content="DANVIEL Studio">
+<meta property="og:description" content="Mix · Master · Release. Free in your browser, your songs stay on your computer.">
+<meta property="og:image" content="https://0zoon.github.io/danviel-studio/og-v16.png">
+<meta property="og:url" content="https://0zoon.github.io/danviel-studio/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://0zoon.github.io/danviel-studio/og-v16.png">
+<meta property="og:image:width" content="1280"><meta property="og:image:height" content="640">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Unbounded:wght@600;800&family=Herr+Von+Muellerhoff&family=DM+Serif+Display&family=Permanent+Marker&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Bebas+Neue&family=Anton&family=Cinzel:wght@700&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@700&family=Unbounded:wght@700&family=UnifrakturMaguntia&family=Oswald:wght@700&family=Archivo+Black&family=Abril+Fatface&family=Montserrat:wght@900&family=Cormorant+Garamond:ital,wght@1,600&family=Orbitron:wght@800&family=Monoton&family=Pacifico&family=Rubik+Glitch&family=Bungee&family=Syne:wght@800&family=Press+Start+2P&family=Dancing+Script:wght@700&family=Lobster&family=Righteous&family=Bangers&family=Teko:wght@600&family=Black+Ops+One&family=Great+Vibes&family=Satisfy&family=Fredoka:wght@700&family=Rye&family=Six+Caps&family=Shrikhand&family=Creepster&family=Rock+Salt&family=Special+Elite&family=Audiowide&family=Alfa+Slab+One&family=Boogaloo&family=Nosifer&family=Codystar&family=Kaushan+Script&family=Yellowtail&family=Staatliches&family=Bowlby+One&family=Major+Mono+Display&family=Faster+One&family=Vibur&family=Silkscreen&family=Sedgwick+Ave+Display&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Distressed&family=Saira+Stencil+One&family=Wallpoet&family=Pirata+One&family=Grenze+Gotisch:wght@700&family=Dela+Gothic+One&family=Metal+Mania&family=New+Rocker&family=Bodoni+Moda:wght@700&family=Italiana&family=Marcellus&family=Tenor+Sans&family=Allura&family=Sacramento&family=Homemade+Apple&family=Bungee+Shade&family=Bungee+Inline&family=Rampart+One&family=Tilt+Warp&family=Bagel+Fat+One&family=Michroma&family=Russo+One&family=Krona+One&display=swap">
+<script>
+@@JSZIP@@
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js';document.head.appendChild(s)"></script>
+<style>
+@@CSS@@
+</style>
+
+<div class="wrap">
+  <header>
+    <button id="phMenu" type="button" aria-expanded="false" aria-label="Menü" title="Menü">☰</button>
+    <button id="proBtn" class="probtn" title="DANVIEL Studio Pro: die kommende Desktop-Version. Hier ist schon alles kostenlos freigeschaltet">💎 Pro <small>bald</small></button>
+    <div class="hist"><select id="bgSel" aria-label="Hintergrund" title="Hintergrund der Seite"><option value="carbon">🎨 Carbon</option><option value="hell">☀ Hell</option><option value="licht">🎨 Studio-Licht</option><option value="holz">🎨 Dunkles Holz</option><option value="metall">🎨 Gebürstetes Metall</option><option value="schwarz">🎨 Schlicht schwarz</option><option value="beton">🎨 Beton</option><option value="marmor">🎨 Schwarzer Marmor</option><option value="neon">🎨 Neon-Nacht</option><option value="nacht">🎨 Sternenhimmel</option><option value="samt">🎨 Roter Samt</option><option value="akustik">🎨 Akustik-Schaum</option><option value="smaragd">🎨 Smaragd</option><option value="bordeaux">🎨 Bordeaux</option><option value="nebel">🎨 Studio-Nebel</option><option value="goldlinien">🎨 Gold-Linien</option><option value="chrom">🎨 Chrom</option><option value="walnuss">🎨 Walnuss</option><option value="diffusor">🎨 Studio-Holzwand</option><option value="waben">🎨 Graphit-Waben</option><option value="vinyl">🎨 Vinyl</option><option value="nachtstadt">🎨 Nachtstadt</option><option value="aurora">🎨 Aurora</option><option value="sunset">🎨 Sunset</option><option value="granit">🎨 Granit</option><option value="carbongold">🎨 Carbon-Gold</option><option value="leder">🎨 Mattes Leder</option><option value="foto">📷 Eigenes Foto …</option></select><select id="langSel" aria-label="Sprache / Language" translate="no"><option value="de">Deutsch</option><option value="en">English</option></select><button id="newProj" class="danger" title="Alles leeren und ein neues Projekt starten">Projekt löschen</button><a class="ghbtn" href="https://github.com/0zoon/danviel-studio" target="_blank" rel="noopener" title="DANVIEL Studio auf GitHub: Updates verfolgen und mit einem Stern unterstützen">⭐ GitHub</a><button id="chgBtn" title="Was ist neu in welcher Version">📋 Changelog</button><button id="helpBtn" title="Kurzanleitung und Neuigkeiten">So geht's</button><button id="packsBtn" title="Pakete: fertige Mastering-, Effekt- und Spur-Presets, Visualizer- und Cover-Styles laden, anwenden oder selbst eins erstellen und teilen">📦 Pakete</button><button id="undo" disabled title="Strg+Z">Rückgängig</button><button id="redo" disabled title="Strg+Y">Wiederholen</button></div>
+    <div>
+      <div class="brand"><h1 class="bh1"><svg class="bword" viewBox="-6 -6 582 112" role="img" aria-label="DANVIEL"><path d="M0 0H44A50 50 0 0 1 44 100H0Z M16 16V84H44A34 34 0 0 0 44 16Z" fill-rule="evenodd" fill="currentColor"/><g class="bwave"><polygon points="112,100 141,0 159,0 188,100 170,100 150,30 130,100"/><polygon points="206,100 206,0 224,0 264,66 264,0 282,0 282,100 264,100 224,34 224,100"/><polygon points="300,0 318,0 338,70 358,0 376,0 347,100 329,100"/></g><g fill="currentColor"><rect x="394" y="0" width="16" height="100"/><path d="M428 0H492V16H444V42H486V58H444V84H492V100H428Z"/><path d="M510 0H526V84H570V100H510Z"/></g></svg><span class="bvis">DANVIEL Studio</span></h1>
+      <p class="by" translate="no">Studio · v16</p></div>
+      <p class="sub">Stems oder eine ZIP reinziehen, Spuren an- und ausschalten, reinhören und den fertigen Mix exportieren. Alles passiert lokal in deinem Browser, nichts wird hochgeladen.</p>
+    </div>
+  </header>
+
+  <div class="drop" id="drop">
+    <p><strong>Song oder Stems hier reinziehen</strong><small>MP3, WAV, FLAC, OGG, M4A oder eine ZIP mit Stems drin, zum Beispiel aus Suno. Nur ein fertiger Song? „Song in Stems zerlegen“ (Beta, mit Sicherheitsprüfung).</small></p>
+    <div class="btns">
+      <button class="primary" id="pick" title="Stems, einen fertigen Song oder eine ZIP von deinem Rechner öffnen">Dateien wählen</button>
+      <button id="demo" title="Ein kurzes Beispiel laden, um alles auszuprobieren">Demo-Stems laden</button><select id="demoSel" aria-label="Demo-Genre" title="Welche Demo geladen wird"><option value="pop">Demo: Pop</option><option value="rnb">Demo: R&amp;B</option><option value="trap">Demo: Trap</option><option value="house">Demo: House</option><option value="edm">Demo: EDM</option><option value="drill">Demo: Drill</option><option value="lofi">Demo: Lo-Fi</option><option value="reggaeton">Demo: Reggaeton</option><option value="ballad">Demo: Ballade</option><option value="afro">Demo: Afrobeats</option><option value="amapiano">Demo: Amapiano</option><option value="phonk">Demo: Phonk</option><option value="dancehall">Demo: Dancehall</option><option value="synthwave">Demo: Synthwave</option><option value="boombap">Demo: Boom Bap</option><option value="classic">Demo: Klassisch (kurz)</option></select>
+      <button id="splitBtn" title="Einen fertigen Song per KI in Gesang, Drums, Bass und Rest aufteilen. Läuft im Browser und dauert ein paar Minuten">Song in Stems zerlegen (KI, Beta)</button>
+      <label class="six quick" title="Zerlegt nur 60 Sekunden aus der Mitte des Songs. Geht viel schneller, ideal für einen Clip oder zum Ausprobieren"><input type="checkbox" id="splitQuick"> Nur 60 Sekunden (schnell)</label>
+      <label class="six" hidden title="Trennt zusätzlich Gitarre und Piano heraus (6 Stems statt 4). Größere KI (ca. 140 MB) und langsamer. Klappt es nicht, nimmt das Programm automatisch die 4-Stem-KI"><input type="checkbox" id="split6"> 6 Stems (+ Gitarre, Piano)</label>
+      <input type="file" id="splitFile" accept=".mp3,.mpeg,.mpga,.mp2,.wav,.wave,.flac,.ogg,.oga,.opus,.m4a,.aac,.mp4,.m4v,.webm,.weba,.aif,.aiff,.caf,audio/*,video/mpeg,video/mp4" hidden>
+      <input type="file" id="file" multiple accept=".mp3,.mpeg,.mpga,.mp2,.wav,.wave,.flac,.ogg,.oga,.opus,.m4a,.aac,.mp4,.m4v,.webm,.weba,.aif,.aiff,.caf,audio/*,video/mpeg,video/mp4,.zip" hidden>
+    </div>
+    <div class="dprog" id="dropProg" hidden><b id="dropProgTxt"></b><i><b id="dropProgBar"></b></i><small class="tnote">Der Fortschritt steht hier, du musst nicht scrollen. Tab bitte offen lassen.</small></div>
+  </div>
+
+  <div class="transport">
+    <button class="play" id="play" aria-label="Abspielen" disabled><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 4l13 8-13 8z"/></svg></button>
+    <span class="time"><b id="cur">0:00</b> / <span id="dur">0:00</span></span>
+    <input type="range" class="seek" id="seek" min="0" max="1000" value="0" disabled aria-label="Position">
+    <div class="mon" title="Abhör-Lautstärke: ändert nur, was du hörst, nicht den Export">
+      <button id="monMute" aria-label="Stumm schalten" aria-pressed="false"><svg viewBox="0 0 24 24" id="monIcon"></svg></button>
+      <input type="range" id="monVol" min="0" max="100" step="1" value="60" aria-label="Abhör-Lautstärke">
+      <span id="vMon">60 %</span>
+    </div>
+    <div class="meterbox">
+      <canvas id="spec" aria-label="Frequenz-Analyzer"></canvas>
+      <div class="mrow">
+        <div class="lr"><span>L</span><i id="mL"></i><span>R</span><i id="mR"></i></div>
+        <span class="time">Lautheit <b id="lufsNow">–</b> LUFS</span>
+        <span class="time">Peak <b id="pkNow">–</b> dB</span>
+        <span id="mHint">Drück Play, dann siehst du hier, was im Mix passiert.</span>
+      </div>
+    </div>
+    <div class="presets" id="presets">
+      <span class="label" style="align-self:center">Schnellwahl</span>
+      <button data-p="beat" title="Nur das Instrumental hören">Beat (ohne Vocals)</button>
+      <button data-p="vocals" title="Nur den Gesang hören (Acapella)">Nur Vocals</button>
+      <button data-p="lead" title="Alles außer der Hauptstimme, z. B. zum Drübersingen">Ohne Lead Vocal</button>
+      <button data-p="all" title="Alle Spuren einschalten">Alle an</button>
+      <button data-p="none" title="Alle Spuren ausschalten">Alle aus</button>
+    </div>
+  </div>
+
+  <div class="songbar">
+    <div class="facts">
+      <div class="fact"><span class="label">Tempo</span><b id="fBpm">–</b><small id="fBpmSub">BPM</small></div>
+      <div class="fact"><span class="label">Tonart</span><b id="fKey">–</b><small id="fKeySub">Camelot –</small></div>
+    </div>
+    <div class="tempo">
+      <div class="chips" id="tMode">
+        <button data-mode="pro" aria-pressed="true" title="Tempo ändern, die Stimme bleibt in der Original-Tonhöhe">Tonhöhe behalten</button>
+        <button data-mode="tape" aria-pressed="false" title="Wie eine Kassette: langsamer = tiefer, schneller = höher. Der typische Slowed- und Sped-up-Sound">Kassette (Slowed / Sped up)</button>
+      </div>
+      <span class="top"><span class="label">Tempo</span><span id="vRate">100 % · Original</span></span>
+      <input type="range" id="rate" min="70" max="130" step="1" value="100" aria-label="Tempo">
+      <div class="presets" id="ratePresets">
+        <button data-r="85">−15 %</button>
+        <button data-r="93">−7 %</button>
+        <button data-r="100">Original</button>
+        <button data-r="107">+7 %</button>
+        <button data-r="115">+15 %</button>
+        <label class="tbpm">Ziel-BPM <input type="number" id="targetBpm" min="40" max="250" step="1" placeholder="–"></label>
+      </div>
+      <div class="presets vibes" id="vibePresets"><span class="label">Ein Klick</span>
+        <button data-v="slowed" title="Kassette auf 85 %: tiefer und langsamer, dazu viel Hall. Der typische TikTok-Sound">🐢 Slowed + Reverb</button>
+        <button data-v="sped" title="Kassette auf 120 %: schneller und höher, ohne Hall">⚡ Sped Up</button>
+        <button data-v="night" title="Kassette auf 130 %: sehr schnell und hoch, wie Nightcore">🌙 Nightcore</button>
+        <button data-v="orig" title="Zurück zum Original-Tempo und ohne den Slowed-Hall">↺ Original</button>
+      </div>
+      <label id="keepVoxBox" hidden><input type="checkbox" id="keepVox"> Vocals in Originaltonhöhe (nur der Beat wird tiefer oder höher)</label>
+      <div id="semiBox" class="tempo">
+        <span class="top"><span class="label">Tonart</span><span id="vSemi">±0 Halbtöne</span></span>
+        <input type="range" id="semi" min="-6" max="6" step="1" value="0" aria-label="Tonart in Halbtönen">
+        <div class="presets" id="semiPresets"><button data-s="-2">−2</button><button data-s="-1">−1</button><button data-s="0">Original</button><button data-s="1">+1</button><button data-s="2">+2</button><small class="tnote">Halbtöne</small></div>
+      </div>
+      <small class="tnote" id="tNote">Tempo und Tonart lassen sich getrennt ändern. Nach dem Loslassen des Reglers wird kurz neu berechnet.</small>
+    </div>
+  </div>
+
+  <div class="secbox" id="secBox">
+    <div class="toolrow" id="loopRow">
+      <span class="label">Ausschnitt</span>
+      <button class="primary" id="findHook" disabled title="Sucht den Refrain: den Teil, der sich wiederholt und wo der Song nach einem Drop aufgeht. Startet kurz vor dem Einsatz">Hook finden</button>
+      <div class="chips" id="secLen"><button data-l="15" aria-pressed="false" title="Länge des Ausschnitts für Clips und Export">15 s</button><button data-l="30" aria-pressed="true">30 s</button><button data-l="45" aria-pressed="false">45 s</button><button data-l="60" aria-pressed="false">60 s</button></div>
+      <button id="nudgeL" disabled title="Einen Takt früher">◀ 1 Takt</button>
+      <button id="nudgeR" disabled title="Einen Takt später">1 Takt ▶</button>
+      <span class="time" id="abTxt">nicht gesetzt</span>
+    </div>
+    <div class="seczoom"><span class="tnote">Mausrad über der Wellenform = reinzoomen</span><button id="zIn" disabled title="Reinzoomen (Mausrad hoch)" aria-label="Reinzoomen">＋</button><button id="zOut" disabled title="Rauszoomen (Mausrad runter)" aria-label="Rauszoomen">－</button><button id="zFit" disabled title="Ganzen Song zeigen">Ganzer Song</button><button id="zSec" disabled title="Auf den markierten Ausschnitt zoomen">Auf Ausschnitt</button></div>
+    <canvas id="secCv" aria-label="Ausschnitt: ziehen zum Verschieben, Ränder ziehen zum Ändern der Länge, Mausrad zum Zoomen"></canvas>
+    <div class="toolrow">
+      <label><input type="checkbox" id="loopOn"> Loop</label>
+      <label><input type="checkbox" id="snapBar" checked> Auf Takt einrasten</label>
+      <button id="setA" disabled title="Ausschnitt beginnt an der aktuellen Abspielposition">Start hier</button>
+      <button id="setB" disabled title="Ausschnitt endet an der aktuellen Abspielposition">Ende hier</button>
+      <button id="clrAB" disabled>Entfernen</button>
+      <small class="tnote" id="secNote">„Hook finden“ sucht den Teil, der sich im Song am meisten wiederholt und dabei am meisten Energie und Gesang hat, meistens die Hook. Der Ausschnitt startet kurz bevor der Song nach dem Drop „aufgeht“. Den markierten Bereich kannst du verschieben oder an den Rändern länger und kürzer ziehen. Zum genauen Setzen mit dem Mausrad reinzoomen und „Auf Takt einrasten“ ausschalten.</small>
+    </div>
+  </div>
+
+  <div class="automix">
+    <button class="big amtog" id="automix" disabled aria-pressed="false" title="Einschalten: Lautstärken, Panorama, EQ, Effekte und Mastering passend zum gewählten Genre. Nochmal klicken schaltet alles wieder aus">Auto-Mix</button>
+    <div><b>Ein Klick für einen sauberen Mix, passend zum Genre.</b><small>Setzt Lautstärken, Panorama, Low-Cuts, Effekte und Mastering nach den Regeln des gewählten Genres. „Automatisch“ hört sich den Song an und erkennt das Genre selbst. Danach kannst du bei jeder Spur unter „Klang“ alles von Hand nachstellen.</small></div>
+    <div class="toolrow revamt"><span class="label">Hall beim Auto-Mix</span><div class="chips" id="revAmt"><button data-r="off" aria-pressed="true" title="Kein zusätzlicher Hall, die Stimme bleibt wie im Stem. Empfohlen für Suno-Stems, die schon Hall drauf haben">Aus</button><button data-r="low" aria-pressed="false" title="Nur ein Hauch Hall">Wenig</button><button data-r="norm" aria-pressed="false" title="Mehr Raum, passend zum Genre. Gut für trockene, selbst aufgenommene Vocals">Normal</button></div><button id="restoreLast" class="restbtn" hidden title="Holt Mix, Mastering und Video-Einstellungen vom letzten Mal mit diesen Stems zurück">↺ Letzte Einstellungen</button></div>
+    <div class="clipbar"><button class="hi" id="quickClip" disabled>🎬 TikTok / Reels / Shorts-Clip</button><small>Ein Klick: findet die Hook, stellt das Video auf 9:16 und springt direkt zum Video.</small></div>
+    <div class="genrebox"><div class="chips" id="genre"><span class="label" style="align-self:center">Genre</span>
+      <button data-g="auto" aria-pressed="true" title="Das Programm hört sich den Song an und erkennt das Genre selbst">Automatisch</button><button data-g="pop" aria-pressed="false">Pop</button><button data-g="rnb" aria-pressed="false">R&amp;B</button><button data-g="trap" aria-pressed="false">Hip-Hop / Trap</button><button data-g="drill" aria-pressed="false">Drill</button><button data-g="afro" aria-pressed="false">Afrobeats</button><button data-g="edm" aria-pressed="false">EDM / Big Room</button><button data-g="house" aria-pressed="false">House</button><button data-g="rock" aria-pressed="false">Rock / Band</button><button data-g="lofi" aria-pressed="false">Lo-Fi</button>
+    </div>
+    <details class="genremore" id="genreMore"><summary><b>Mehr Genres</b><small>Instrumental, Klassik, Film, Game, Jazz, Reggaeton, K-Pop, Amapiano, Techno, Drum &amp; Bass, Psytrance, Synthwave, Phonk, Metal …</small></summary>
+      <div class="chips" id="genre2"><div class="ggrp"><span class="glab">Instrumental &amp; Film</span><button data-g="inst" aria-pressed="false">Instrumental / Beat</button><button data-g="classic" aria-pressed="false">Klassik / Orchester</button><button data-g="cine" aria-pressed="false" title="Film-Score, Trailer, orchestral: viel Dynamik, breit und räumlich, −16 LUFS">🎬 Cinematic / Film</button><button data-g="game" aria-pressed="false" title="Game-Soundtrack: gleichmäßig, loop-tauglich, −16 LUFS (Standard für Mobile- und Handheld-Spiele)">🎮 Game-Musik</button><button data-g="bgm" aria-pressed="false" title="Musik unter Sprache, Vlogs und Videos: gleichmäßig, Platz für die Stimme, −16 LUFS">🎧 Hintergrundmusik</button><button data-g="jazz" aria-pressed="false">Jazz / Soul</button></div><div class="ggrp"><span class="glab">Global</span><button data-g="latin" aria-pressed="false">Reggaeton / Latin</button><button data-g="kpop" aria-pressed="false">K-Pop</button><button data-g="amapiano" aria-pressed="false">Amapiano</button><button data-g="gospel" aria-pressed="false">Gospel / Worship</button><button data-g="country" aria-pressed="false">Country</button></div><div class="ggrp"><span class="glab">Club &amp; Elektronik</span><button data-g="techno" aria-pressed="false">Techno</button><button data-g="dnb" aria-pressed="false">Drum &amp; Bass</button><button data-g="psy" aria-pressed="false">Psytrance / Goa</button><button data-g="synthwave" aria-pressed="false">Synthwave / Cyberpunk</button><button data-g="phonk" aria-pressed="false">Phonk</button></div><div class="ggrp"><span class="glab">Band</span><button data-g="metal" aria-pressed="false">Metal</button></div></div>
+      <small class="tnote">Cinematic lässt leise Stellen leise und laute laut (wie bei Soundtrack-Releases). Game-Musik ist gleichmäßig und klar, mit −16 LUFS und True Peak −1 dB nach dem Standard für Mobile- und Handheld-Spiele (Konsolen-Spiele nutzen −24 LUFS, das stellt die Engine meist selbst ein). Hintergrundmusik hält die Lautstärke ohne Sprünge und lässt in den Mitten Platz für eine Stimme.</small>
+    </details>
+    <small class="tnote" id="genreNote"></small>
+    <details class="ginfo"><summary>ⓘ Was ändert sich je Genre?</summary>
+      <div class="gtable"><table>
+        <thead><tr><th></th><th>Stimme</th><th>Beat</th><th>Effekte</th><th>Pumpen</th><th>Mastering</th></tr></thead>
+        <tbody>
+          <tr><th>Pop</th><td>vorne, klar</td><td>ausgewogen</td><td>Platten-Hall</td><td>leicht</td><td>−14 LUFS, breit, hell</td></tr>
+          <tr><th>R&amp;B</th><td>vorne, Harmonien lauter</td><td>Drums zurück</td><td>etwas mehr Hall, punktiertes Echo</td><td>kaum</td><td>−14 LUFS, warm</td></tr>
+          <tr><th>Hip-Hop / Trap</th><td>Rap trocken und vorne</td><td>808 kräftiger</td><td>kurzer Raum, 1/8-Echo</td><td>808 leicht</td><td>−14 LUFS, schmaler, mehr Sub</td></tr>
+          <tr><th>EDM / Big Room</th><td>im Mix</td><td>Kick und Synths dominant</td><td>langer, leiser Hall</td><td>stark</td><td>−14 LUFS, sehr breit, hell</td></tr>
+          <tr><th>House</th><td>im Mix</td><td>Kick ist König</td><td>Platte</td><td>Akkorde und Bass pumpen</td><td>−14 LUFS, druckvoll</td></tr>
+          <tr><th>Rock / Band</th><td>normal</td><td>Gitarren tragen</td><td>Platte</td><td>aus</td><td>−14 LUFS, warme Mitten</td></tr>
+          <tr><th>Afrobeats</th><td>vorne, Hall + punktiertes Echo</td><td>Percussion breit, Kick punchig</td><td>Platte, punktiertes Echo</td><td>leicht</td><td>−14 LUFS, warm, breit</td></tr>
+          <tr><th>Drill</th><td>trocken, aggressiv, vorne</td><td>Kick führt, 808 dahinter</td><td>kurzer Raum, 1/8-Echo</td><td>808 leicht</td><td>−14 LUFS, dunkel, druckvoll</td></tr>
+          <tr><th>Lo-Fi</th><td>im Mix, weich</td><td>Keys vorne, Drums sanft</td><td>kleiner Raum</td><td>sanft</td><td>−14 LUFS, warm, Höhen gedämpft</td></tr>
+          <tr><th>Klassik / Orchester</th><td>natürlich, im Raum</td><td>Orchester trägt</td><td>großer Saal</td><td>aus</td><td>−16 LUFS, volle Dynamik</td></tr>
+          <tr><th>Instrumental / Beat</th><td>–</td><td>Melodie und Drums gleichwertig</td><td>Platte</td><td>leicht</td><td>−14 LUFS, breit</td></tr>
+          <tr><th>Reggaeton / Latin</th><td>laut und vorne</td><td>Dembow-Snare knackig</td><td>Platte, 1/8-Echo</td><td>mittel</td><td>−14 LUFS, hell, druckvoll</td></tr>
+          <tr><th>K-Pop</th><td>viele Stimmen, dicht, vorne</td><td>punchy</td><td>Platte</td><td>mittel</td><td>−14 LUFS, sehr hell, breit</td></tr>
+          <tr><th>Amapiano</th><td>mit viel Raum</td><td>Log-Drum trägt, Shaker breit</td><td>Saal, punktiertes Echo</td><td>leicht</td><td>−14 LUFS, warm, tief</td></tr>
+          <tr><th>Gospel / Worship</th><td>groß, Chor lauter</td><td>Keys/Orgel tragen</td><td>großer Saal</td><td>aus</td><td>−14 LUFS, warm, breit</td></tr>
+          <tr><th>Country</th><td>vorne, natürlich</td><td>Gitarren tragen</td><td>Platte</td><td>aus</td><td>−14 LUFS, warm, klar</td></tr>
+          <tr><th>Jazz / Soul</th><td>warm, natürlich</td><td>Band im Raum</td><td>Saal</td><td>aus</td><td>−16 LUFS, viel Dynamik</td></tr>
+          <tr><th>Techno</th><td>im Hintergrund, viel Hall</td><td>Kick im Mittelpunkt</td><td>langer Saal, Echo</td><td>stark</td><td>−14 LUFS, druckvoll</td></tr>
+          <tr><th>Drum &amp; Bass</th><td>mit Hall</td><td>Breakbeats knackig, Sub schwer</td><td>Saal, 1/8-Echo</td><td>mittel</td><td>−14 LUFS, hell, energetisch</td></tr>
+          <tr><th>Psytrance / Goa</th><td>Samples mit Hall</td><td>Kick + rollender Bass</td><td>langer Saal, Echo</td><td>sehr stark</td><td>−14 LUFS, hell, breit</td></tr>
+          <tr><th>Synthwave / Cyberpunk</th><td>mit viel Hall</td><td>Synths tragen, große Snare</td><td>Saal, punktiertes Echo</td><td>mittel</td><td>−14 LUFS, sehr breit</td></tr>
+          <tr><th>Phonk</th><td>Samples im Hintergrund</td><td>808 verzerrt, Cowbell vorne</td><td>kurzer Raum</td><td>mittel</td><td>−14 LUFS, gesättigt</td></tr>
+          <tr><th>Metal</th><td>kräftig, im Mix</td><td>Gitarrenwand, Kick + Snare hart</td><td>Platte, kurz</td><td>aus</td><td>−14 LUFS, dicht</td></tr>
+        </tbody>
+      </table></div>
+      <small class="tnote">Außerdem passen sich Kompressor, De-Esser, Low-Cut der Stimme und das Klangziel fürs Mastering an. Bei einem fertigen Song (eine Spur) wirkt das Genre nur aufs Mastering. Auto-Mix mastert immer auf Streaming-Lautstärke (−14 LUFS). Lauter für Club und DJ: im Mastering „Laut (Club &amp; DJ)“ wählen.<br>
+      <b>„Automatisch“</b> hört sich den Song an: Tempo, ob die Kick auf jedem Schlag kommt (House/EDM) oder unregelmäßig (Trap), wie viel Sub-Bass drin ist und welche Instrumente es gibt (z. B. eine Spur „808“ oder Gitarren). Bei Mischformen kann sie danebenliegen, dann wähl das Genre einfach selbst. Am nächsten an einen Profi-Song kommst du mit „An Referenz anpassen“ im Mastering.</small>
+    </details></div>
+    <div class="toolrow">
+      <button id="autobal" disabled title="Bringt alle Spuren auf eine sinnvolle Lautstärke zueinander">Auto-Balance</button>
+      <button id="autopan" disabled title="Verteilt Spuren links und rechts, damit der Mix breiter klingt. Stimme, Bass und Kick bleiben in der Mitte">Auto-Pan</button>
+      <button id="autoeq" disabled title="Schneidet Frequenzen weg, wo sich Spuren gegenseitig verdecken, damit alles klarer klingt">Auto-EQ</button>
+      <button id="autodyn" disabled title="Kompressor und De-Esser auf die Stimmen, Bass macht bei jedem Kick kurz Platz">Auto-Dynamik</button>
+      <button id="resetvol" disabled title="Alle Mix-Einstellungen zurück auf Anfang, die Stems bleiben geladen">Mix zurücksetzen</button>
+      <small>Tipp: Stems vom Produzenten sind oft schon fertig gemischt. Hör nach dem Auto-Mix mit „Mix zurücksetzen“ gegen, was dir besser gefällt.</small>
+    </div>
+    <div class="autolog" id="autolog" hidden></div>
+  </div>
+
+  <div class="stripbar"><span class="kseg" role="group" aria-label="Regler-Art"><button id="kmSlide" aria-pressed="true" title="Regler als Schieber nach links und rechts">━ Schieber</button><button id="kmKnob" aria-pressed="false" title="Regler als Drehknöpfe wie am Mischpult: nach oben oder unten ziehen, Mausrad, Doppelklick = Standard">◉ Drehknöpfe</button></span><button id="proStrips" aria-pressed="false" title="Öffnet bei allen Spuren alle Regler auf einmal: Panorama, Low-Cut, EQ, Kompressor, De-Esser, Pegel-Ausgleich, Hall und Echo">⚙ Profi-Ansicht</button><small class="tnote">Keine Lust auf Details? Auto-Mix stellt alles nach den üblichen Standards der Branche ein. Profis öffnen hier alle Regler auf einmal.</small></div>
+  <div class="strips" id="strips"><div class="empty">Noch keine Stems geladen. Zieh deine Dateien oben rein oder probier die Demo.</div></div>
+
+  <section class="master rec" id="recsec">
+    <div class="mhead"><div class="l"><h2>🎙 Aufnahme</h2></div><small class="tnote">Sing, rap oder spiel etwas ein. Jede Aufnahme wird eine eigene Spur, die du wie jede andere mischen kannst.</small></div>
+    <div class="recrow">
+      <button class="recbtn" id="recBtn" title="Aufnahme starten: der Song läuft mit, du nimmst darüber auf. Ohne geladenen Song nimmst du einfach frei auf">● Aufnehmen</button>
+      <button id="recStop" hidden>■ Stopp</button>
+      <select id="recDev" aria-label="Mikrofon"><option value="">Standard-Mikrofon</option></select>
+      <label><input type="checkbox" id="recFromSec"> Ab Ausschnitt-Start</label>
+      <label><input type="checkbox" id="recCount" checked> 2 Sek. Vorlauf</label>
+      <div class="recmeter" title="Eingangspegel: sollte bei lauten Stellen gelb werden, aber nie rot"><i id="recLvl"></i></div><span id="recTime" class="rectime">0:00</span>
+    </div>
+    <small class="tnote" id="recNote">Setz Kopfhörer auf, sonst landet der Song mit auf der Aufnahme. Der Song läuft ab der aktuellen Position (oder ab dem Ausschnitt). Liegt die Aufnahme zeitlich nicht ganz richtig, verschieb sie in ihrer Spur mit „Versatz“.</small>
+  </section>
+  <section class="master build" id="buildsec">
+    <div class="mhead"><div class="l"><h2>🧱 Spur bauen</h2><span class="bnkick">Dein Song von Grund auf</span></div><small class="tnote">Beats, Melodien, Loops und Aufnahmen, alles im Takt und ohne Vorkenntnisse. Jede neue Spur wird eine normale Spur zum Mischen.</small></div>
+    <div class="bnmidi" id="bnMidi"><i class="lamp" id="bnLamp"></i><span id="bnMidiTxt">Kein Keyboard verbunden</span><button type="button" id="bnMidiBtn">Keyboard verbinden</button><span class="bnask" id="bnAsk" hidden><span id="bnAskTxt"></span><button type="button" id="bnAskNew">Instrument-Spur anlegen</button><button type="button" id="bnAskGo" hidden></button></span></div>
+    <div class="bnew">
+      <button class="bnbtn" id="bnDrums" type="button"><span class="bnic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="16" cy="12" rx="10" ry="4"/><path d="M6 12v9c0 2.2 4.5 4 10 4s10-1.8 10-4v-9"/><path d="M6 17l5 4.6M26 17l-5 4.6M16 16v9"/><path d="M9 3l5 7M23 3l-5 7"/></svg></span><b>Drum-Pattern</b><small>Kick, Snare und Hi-Hats per Klick setzen</small></button>
+      <button class="bnbtn" id="bnInst" type="button"><span class="bnic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="26" height="18" rx="2.5"/><path d="M9.5 7v18M16 7v18M22.5 7v18"/><path d="M7.5 7v10h3.5V7M14 7v10h3.5V7M20.5 7v10H24V7" fill="currentColor" stroke-width="1.2"/></svg></span><b>Instrument</b><small>Töne einspielen: USB-Keyboard, Computer-Tastatur oder Maus</small></button>
+      <button class="bnbtn" id="bnLoop" type="button"><span class="bnic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 11a9 9 0 0 0-15.5-1.5L6 12"/><path d="M6 6v6h6"/><path d="M8 21a9 9 0 0 0 15.5 1.5L26 20"/><path d="M26 26v-6h-6"/><circle cx="16" cy="16" r="2.2" fill="currentColor"/></svg></span><b>Loop / Sample</b><small>Audiodatei rein, sie passt sich dem Takt an</small></button>
+      <button class="bnbtn" id="bnSmp" type="button" aria-expanded="false"><span class="bnic" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="10" rx="2.5"/><rect x="18" y="4" width="10" height="10" rx="2.5" fill="currentColor"/><rect x="4" y="18" width="10" height="10" rx="2.5" fill="currentColor"/><rect x="18" y="18" width="10" height="10" rx="2.5"/></svg></span><b>Samples</b><small>40 One-Shots: Claps, 808s, Crowd-Rufe, FX und deine eigenen</small></button>
+      <input type="file" id="bnLoopFile" accept="audio/*,.wav,.mp3,.ogg,.flac,.m4a" hidden>
+    </div>
+    <div class="smpbox" id="smpBox" hidden>
+      <div class="smphead"><b>DANVIEL One-Shots</b><small class="tnote">Klick = anhören, „+ Drums“ legt das Sample als eigene Zeile ins Drum-Pattern. Alle Sounds sind hier im Studio erzeugt, frei verwendbar.</small></div>
+      <div class="chips smpg" id="smpGroups"></div>
+      <div class="smpgrid" id="smpGrid"></div>
+      <input type="file" id="smpFile" accept="audio/*,.wav,.mp3,.ogg,.flac,.m4a,.aif,.aiff" multiple hidden>
+    </div>
+    <div class="bninfo"><small class="tnote" id="bnInfo"></small>
+      <span class="bnnew" id="bnNew" hidden>Ohne Song: Tempo <input type="number" id="bnBpm" value="95" min="60" max="200" step="1"> BPM · Länge <input type="number" id="bnBars" value="16" min="4" max="128" step="1"> Takte</span></div>
+    <div class="bedit" id="bnEdit" hidden>
+      <div class="behead"><b id="beTitle"></b>
+        <span class="beseg" id="beBars" title="Wie viele Takte das Muster lang ist, bevor es sich wiederholt"><span>Muster</span><button data-b="1">1 Takt</button><button data-b="2">2</button><button data-b="4">4</button><button data-b="8">8</button></span>
+        <button id="beClear" type="button" title="Alle Töne bzw. Schläge in diesem Muster löschen">Muster leeren</button>
+        <span class="bemerge" title="Legt diese gebaute Spur in eine bestehende Spur, statt sie als eigene Spur zu behalten. Rückgängig geht bei der Ziel-Spur unter „Klang“"><select id="beMergeT" aria-label="Ziel-Spur"></select><button id="beMerge" type="button">⤵ In Spur legen</button></span>
+        <button id="beClose" class="primary" type="button">✓ Fertig</button></div>
+      <div id="beDrums" hidden>
+        <div class="row"><label class="knob" style="flex:0 1 220px"><span class="top">Vorlage</span><select id="beDPreset"><option value="">Vorlage wählen …</option><option value="trap">Trap</option><option value="boombap">Boom Bap / Hip-Hop</option><option value="pop">Pop</option><option value="house">House</option><option value="dembow">Reggaeton / Dembow</option><option value="afro">Afrobeats</option><option value="rnb">R&amp;B langsam</option></select></label>
+          <small class="tnote">Kästchen anklicken = Schlag an oder aus. Jede Zeile ist ein Instrument, jede Spalte ein Sechzehntel. Die hellen Spalten sind die Schläge 1, 2, 3, 4.</small></div>
+        <div class="dgrid" id="beDGrid"></div>
+        <small class="tnote" id="bePads">Drum-Pads oder Keyboard (Chrome/Edge): anschlagen = anhören. Läuft der Song, landet jeder Schlag direkt im Pattern, eingerastet aufs Sechzehntel.</small>
+      </div>
+      <div id="beInst" hidden>
+        <div class="row beirow">
+          <label class="knob" style="flex:0 1 170px"><span class="top">Sound</span><select id="beSound"></select></label>
+          <button id="beRec" class="recbtn" type="button" title="Der Song läuft einen Takt vorher los, dann spielst du dein Muster ein. Am Ende des Musters hört die Aufnahme von selbst auf">● Einspielen</button>
+          <label title="Eingespielte Töne rasten auf das nächste Sechzehntel ein"><input type="checkbox" id="beQuant" checked> Einrasten</label>
+          <label title="Klick auf jedem Schlag während des Einspielens"><input type="checkbox" id="beClick" checked> Metronom</label>
+          <span class="beoct"><button id="beOctDn" type="button" title="Eine Oktave tiefer">◀ Oktave</button><b id="beOctV">C3</b><button id="beOctUp" type="button" title="Eine Oktave höher">Oktave ▶</button></span>
+        </div>
+        <small class="tnote" id="beMidi">Spielen mit der Maus auf den Tasten, mit der Computer-Tastatur (A W S E D F T G Z H U J K) oder mit einem MIDI-Keyboard (Chrome/Edge).</small>
+        <canvas id="beRoll" height="300" aria-label="Piano-Roll"></canvas>
+        <small class="tnote">Piano-Roll: leeres Feld anklicken = Ton setzen, Ton ziehen = verschieben, rechten Rand ziehen = länger oder kürzer, Doppelklick oder Rechtsklick = löschen.</small>
+        <div class="bekeys" id="beKeys"></div>
+      </div>
+      <div id="beLoop" hidden>
+        <small class="tnote" id="beLoopInfo"></small>
+        <div class="row"><label><input type="checkbox" id="beFit" checked> Ans Song-Tempo anpassen (die Tonhöhe ändert sich dabei leicht)</label></div>
+      </div>
+    </div>
+    <div class="barr" id="bnArr" hidden>
+      <div class="row"><b>📍 Zeitleiste</b><small class="tnote">Takte anklicken oder darüber ziehen: orange = die Spur spielt dort. Klick auf einen Namen = bearbeiten.</small>
+        <span class="barrbtns"><button id="beAll" type="button">Ganzer Song</button><button id="beHook" type="button" title="Nur im Ausschnitt / in der Hook">Nur Ausschnitt</button><button id="beNone" type="button">Nirgends</button></span></div>
+      <canvas id="bnArrCv" aria-label="Zeitleiste der gebauten Spuren"></canvas>
+    </div>
+  </section>
+  <section class="master fx off" id="fxsec">
+    <div class="mhead">
+      <div class="l"><button class="toggle" id="fxOn" aria-pressed="false" aria-label="Effekte an" title="Effekte an/aus: Hall, Echo und Sidechain. Startet immer aus"></button><h2>Effekte</h2></div>
+      <button id="autofx" disabled title="Hall und Echo auf die Stimme, passend zum Tempo">Auto-Vocal-FX</button>
+    </div>
+    <div class="knobs">
+      <div class="knob"><span class="top">Hall-Art</span><div class="chips" id="revType"><button data-v="room" title="Kurzer, trockener Hall wie in einem kleinen Raum">Raum</button><button data-v="plate" title="Glatter, heller Hall, der Klassiker für Gesang">Platte</button><button data-v="hall" title="Langer, großer Hall für Balladen und Atmosphäre">Halle</button></div></div>
+      <label class="knob"><span class="top">Hall-Lautstärke<span id="vRevLvl"></span></span><input type="range" id="revLvl" min="0" max="150" step="5"></label>
+      <div class="knob"><span class="top">Echo im Takt<span id="vDlyMs"></span></span><div class="chips" id="dlyNote"><button data-v="e">1/8</button><button data-v="de">1/8 punktiert</button><button data-v="q">1/4</button></div></div>
+      <label class="knob"><span class="top">Wiederholungen<span id="vDlyFb"></span></span><input type="range" id="dlyFb" min="0" max="70" step="5"></label>
+      <label class="knob"><span class="top">Echo-Lautstärke<span id="vDlyLvl"></span></span><input type="range" id="dlyLvl" min="0" max="150" step="5"></label>
+    </div>
+    <div class="knobs sc">
+      <label class="knob"><span class="top">Sidechain (Kick duckt)<span id="vScAmt"></span></span><input type="range" id="scAmt" min="0" max="100" step="5" value="0"><small id="scInfo">Kick wird nach dem Laden gesucht.</small></label>
+      <div class="knob"><span class="top">Was duckt</span><div class="chips" id="scTarget"><button data-v="bass">Nur Bass</button><button data-v="music">Bass + Musik</button><button data-v="all">Alles außer Drums</button></div></div>
+    </div>
+    <small class="tnote">Wie viel Hall und Echo eine Spur bekommt, stellst du bei der Spur unter „Klang“ ein. Das Echo läuft automatisch im Takt des Songs. Tiefe Frequenzen werden aus Hall und Echo herausgefiltert, damit der Bass sauber bleibt.</small>
+  </section>
+
+  <section class="master off" id="master">
+    <div class="mhead">
+      <div class="l"><button class="toggle" id="mOn" aria-pressed="false" aria-label="Mastering an"></button><h2>Mastering</h2></div>
+      <div class="chips" id="mPresets">
+        <button data-m="dyn" aria-pressed="false" title="Leiser, mehr Dynamik (−16 LUFS), gut für Akustik, Balladen und Apple Music">Natürlich (mehr Dynamik)</button>
+        <button data-m="stream" aria-pressed="true" title="Genau die Lautstärke, auf die Spotify, YouTube und Co. alles angleichen (−14 LUFS)">Für Spotify &amp; YouTube</button>
+        <button data-m="loud" aria-pressed="false" title="So laut wie Club-Tracks und DJ-Sets (−9 LUFS)">Laut (Club &amp; DJ)</button>
+      </div>
+    </div>
+    <div class="mhead">
+      <div class="chips" id="mStyle"><span class="label" style="align-self:center">Stil</span>
+        <button data-s="warm" aria-pressed="false" title="Etwas mehr Tiefe und Wärme, weichere Höhen">Warm</button>
+        <button data-s="bal" aria-pressed="true" title="Neutral, ohne Färbung">Ausgewogen</button>
+        <button data-s="open" aria-pressed="false" title="Mehr Glanz und Luft in den Höhen">Offen</button>
+      </div>
+      <span class="sw"><button class="toggle" id="toneOn" aria-pressed="false" aria-label="Klangbalance automatisch angleichen"></button>Klangbalance automatisch</span>
+    </div>
+    <div class="mhead easy">
+      <div class="chips" id="mBass"><span class="label" style="align-self:center">Bass-Boost</span>
+        <button data-v="0" aria-pressed="true">Aus</button><button data-v="35" aria-pressed="false">Mehr</button><button data-v="65" aria-pressed="false">Viel</button><button data-v="100" aria-pressed="false">Maximal</button><button data-v="200" aria-pressed="false" class="bboost" title="Der alte „Bass Boosted“-Sound von YouTube: extrem viel Bass, mit Absicht übertrieben und angezerrt">🔊 Bass Boosted</button>
+      </div>
+      <div class="chips" id="mLevel" title="Gleicht große Lautstärke-Sprünge zwischen Songteilen sanft aus, damit der Song gleichmäßiger klingt"><span class="label" style="align-self:center">Lautstärke-Ausgleich</span>
+        <button data-v="0" aria-pressed="true">Aus</button><button data-v="50" aria-pressed="false">Sanft</button><button data-v="100" aria-pressed="false">Stark</button>
+      </div>
+    </div>
+    <button id="proTog" class="protog" aria-expanded="false">⚙ Profi-Einstellungen</button>
+    <div class="knobs pro">
+      <label class="knob"><span class="top">Ziel-Lautheit<span id="vTarget"></span></span><input type="range" id="mTarget" min="-18" max="-7" step="0.5"><small>Spotify normalisiert auf −14 LUFS</small></label>
+      <label class="knob"><span class="top">Wärme<span id="vWarm"></span></span><input type="range" id="mWarm" min="-3" max="3" step="0.25"><small>Bässe, Shelf bei 100 Hz</small></label>
+      <label class="knob"><span class="top">Glanz<span id="vAir"></span></span><input type="range" id="mAir" min="-3" max="3" step="0.25"><small>Höhen, Shelf ab 10 kHz</small></label>
+      <label class="knob"><span class="top">Glue<span id="vGlue"></span></span><input type="range" id="mGlue" min="0" max="100" step="5"><small>Bus-Kompressor 2:1, verklebt den Mix</small></label>
+      <label class="knob"><span class="top">Mehrband<span id="vMb"></span></span><input type="range" id="mMb" min="0" max="100" step="5"><small>Bass, Mitten, Höhen getrennt verdichtet</small></label>
+      <label class="knob"><span class="top">Sättigung<span id="vSat"></span></span><input type="range" id="mSat" min="0" max="100" step="5"><small>analoge Wärme, dezent</small></label>
+      <label class="knob"><span class="top">Stereo-Breite<span id="vWidth"></span></span><input type="range" id="mWidth" min="80" max="140" step="5"><small>Bass unter 100 Hz bleibt mono</small></label>
+    </div>
+    <div class="ref">
+      <button id="refPick" title="Lade einen fertigen Song, der so klingen soll wie dein Ziel. Das Mastering gleicht Klang und Lautstärke daran an">Referenz-Song laden</button>
+      <input type="file" id="refFile" accept=".mp3,.mpeg,.mpga,.mp2,.wav,.wave,.flac,.ogg,.oga,.opus,.m4a,.aac,.mp4,.m4v,.webm,.weba,.aif,.aiff,.caf,audio/*,video/mpeg,video/mp4" hidden>
+      <span class="nm" id="refName">Lade einen Profi-Song, der so klingen soll, wie du es willst. Lautheit, Klangbild und Breite werden daran angepasst.</span>
+      <span class="sw"><button class="toggle" id="refOn" aria-pressed="false" aria-label="An Referenz anpassen" disabled></button>An Referenz anpassen</span>
+      <label class="knob"><span class="top">Stärke<span id="vRefAmt"></span></span><input type="range" id="refAmt" min="0" max="100" step="5" value="70" disabled></label>
+    </div>
+    <div class="meters" id="meters">
+      <span class="pro">Mix <b id="mRaw">–</b> LUFS</span>
+      <span class="pro">Master <b id="mOut">–</b> LUFS</span>
+      <span class="pro">True Peak <b id="mTp">–</b> dBTP</span>
+      <span id="mNote"></span>
+      <button class="ab" id="mAB" aria-pressed="false" title="Den Song im Original hören: ohne Mix und ohne Mastering. Nochmal klicken für Nachher.">Vorher hören</button>
+    </div>
+  </section>
+
+  <section class="master vid" id="vidsec">
+    <div class="mhead"><div class="l"><h2>Video &amp; Lyrics</h2></div><small class="tnote">MP4 für Reels, TikTok und YouTube, mit Visualizer, Cover und Lyrics.</small></div>
+    <div class="vidgrid">
+      <div class="vidside">
+        <div class="knob"><span class="top">Format</span><div class="chips" id="vAspect"><button data-v="v" aria-pressed="true" title="Hochformat für TikTok, Reels und Shorts">9:16 Reels/TikTok</button><button data-v="s" aria-pressed="false" title="Quadratisch für den Instagram-Feed">1:1 Feed</button><button data-v="w" aria-pressed="false" title="Querformat für YouTube">16:9 YouTube</button></div></div>
+        <div class="knob vfullk"><span class="top">Bild</span><div class="chips" id="vFull"><button data-f="0" aria-pressed="true" title="Cover oder Platte in der Mitte, Hintergrund im Style">Cover in der Mitte</button><button data-f="1" aria-pressed="false" title="Dein Bild füllt das ganze Video von Ecke zu Ecke, mit langsamem Zoom">Vollbild (Ecke zu Ecke)</button></div>
+          <div class="row vshow2"><span class="vsl">Im Video:</span><label><input type="checkbox" class="sw16" data-for="vShowTitle"> Titel</label><label><input type="checkbox" class="sw16" data-for="vShowViz"> Visualizer</label><label><input type="checkbox" class="sw16" data-for="vLyr"> Lyrics</label></div>
+          <small class="tnote" id="vFullNote" hidden>Lade oben ein Bild oder Cover, dann füllt es das ganze Video.</small><div class="row vfreerow"><small class="tnote">In der Vorschau: Cover oder Platte, Titel, Lyrics und Visualizer mit der Maus verschieben, am goldenen Eck größer oder kleiner ziehen. In der Mitte rastet alles ein.</small><button type="button" id="vCovReset">Positionen zurücksetzen</button></div><div class="row vfreerow" id="vFreeRow" hidden><small class="tnote">Im Vollbild: Visualizer und Lyrics in der Vorschau verschieben, am goldenen Eck größer oder kleiner ziehen.</small><button type="button" id="vFreeReset">Zurück auf Standard</button></div></div>
+        <div class="knob"><span class="top">Hintergrund-Video</span><div class="row"><button id="vBgvBtn" class="hi2" title="Ein Video als Hintergrund, z. B. für Shorts mit echten Clips. Du kannst es auch einfach auf die Vorschau ziehen">Video wählen</button><button id="vBgvClr" hidden>Entfernen</button><small id="vBgvName" class="tnote">optional, oder Video auf die Vorschau ziehen</small></div><input type="file" id="vBgv" accept="video/*" hidden>
+          <div class="row vshow"><label><input type="checkbox" id="vShowViz" checked> Visualizer</label><label><input type="checkbox" id="vShowCover" checked> Cover</label><label><input type="checkbox" id="vShowTitle" checked> Titel</label></div></div>
+        <div class="knob"><span class="top">Visualizer-Style</span><div class="chips vstyles" id="vStyle"><button data-s="classic" aria-pressed="true" title="Balken in den Farben deines Covers">Klassisch</button><button data-s="neon" aria-pressed="false" title="Pink und Türkis, leuchtende Linien, gespiegelt">Neon</button><button data-s="cyber" aria-pressed="false" title="Gelb und Cyan, LED-Balken, Retro-Gitter, Scanlines und Glitch auf dem Titel">Cyberpunk</button><button data-s="night" aria-pressed="false" title="Dunkles Rot, Ring um das Cover der mit dem Bass pulsiert, Filmkorn, Serifen-Schrift">R&amp;B Nacht</button><button data-s="pastel" aria-pressed="false" title="Bunte, weiche Farbflächen und Punkte, fröhlich und hell">Pastell-Pop</button><button data-s="minimal" aria-pressed="false" title="Schwarz-weiß, eine feine Wellenlinie, sonst nichts">Minimal</button><button data-s="gold" aria-pressed="false" title="Gold und Creme, gespiegelte Balken, Bokeh-Lichter, Filmkorn">DANVIEL Gold</button><button data-s="rainy" aria-pressed="false" title="Kühles Blau, feine Linie, dezenter Regen über dem Bild">Regennacht</button><button data-s="ice" aria-pressed="false" title="Eisblau, Kreis-Balken ums Cover, Schnee und Sterne">Eis</button><button data-s="sunset" aria-pressed="false" title="Orange und Pink, Fläche, Farbwolken und warmer Lichteinfall">Sunset</button><button data-s="ember" aria-pressed="false" title="Feuerfarben, Funken-Visualizer, aufsteigende Glut">Glut</button><button data-s="vapor" aria-pressed="false" title="Pink, Cyan und Lila, Retro-Pixel, Gitter und Scanlines">Vaporwave</button><button data-s="film" aria-pressed="false" title="Schwarz-weiß, Filmkorn, Staub und Kratzer">Alter Film</button></div>
+          <details class="vsb" id="vsb"><summary>＋ Eigenen Style bauen oder importieren</summary>
+            <div class="vsbgrid">
+              <label class="knob"><span class="top">Name</span><input type="text" id="vsbName" maxlength="24" placeholder="z. B. Mein Sommer-Look"></label>
+              <label class="knob"><span class="top">Form</span><select id="vsbViz"><option value="bars">Balken</option><option value="neon">Leuchtende Linien</option><option value="led">LED-Balken</option><option value="ring">Ring um das Cover</option><option value="dots">Punkte</option><option value="line">Wellenlinie</option><option value="mirror">Gespiegelte Balken</option><option value="area">Fläche (Spektrum)</option><option value="pixel">Retro-Pixel</option><option value="circle">Kreis-Balken ums Cover</option><option value="sparkle">Funken</option><option value="none">Kein Visualizer</option></select></label>
+              <label class="knob"><span class="top">Farbe 1</span><input type="color" id="vsbC1" value="#ff2bd6"></label>
+              <label class="knob"><span class="top">Farbe 2</span><input type="color" id="vsbC2" value="#22e4ff"></label>
+              <label class="knob"><span class="top">Farbe 3</span><input type="color" id="vsbC3" value="#ffffff"></label>
+              <label class="knob"><span class="top">Hintergrund</span><input type="color" id="vsbBg" value="#0b0418"></label>
+              <label class="knob"><span class="top">Cover-Bewegung</span><select id="vsbCfx"><option value="none">Keine</option><option value="pulse">Pulsiert im Beat (schwillt an)</option><option value="breathe">Atmet langsam</option><option value="spin">Dreht sich langsam</option><option value="tilt">Schwingt hin und her</option><option value="shake">Wackelt im Beat</option></select></label>
+              <label class="knob"><span class="top">Stärke der Bewegung <span id="vvsbCamt">50 %</span></span><input type="range" id="vsbCamt" min="10" max="100" step="5" value="50"></label>
+              <label class="knob"><span class="top">Schrift</span><select id="vsbFont"></select></label>
+            </div>
+            <div class="row vsbfx"><label><input type="checkbox" id="vsbGlow" checked> Leuchten</label><label><input type="checkbox" id="vsbGrid"> Retro-Gitter</label><label><input type="checkbox" id="vsbScan"> Scanlines</label><label><input type="checkbox" id="vsbGrain"> Filmkorn</label><label><input type="checkbox" id="vsbVign"> Dunkler Rand</label><label><input type="checkbox" id="vsbGlitch"> Glitch-Titel</label><label><input type="checkbox" id="vsbBlobs"> Farbwolken</label><label><input type="checkbox" id="vsbRound"> Rundes Cover</label><label><input type="checkbox" id="vsbUpper" checked> Titel groß</label><label><input type="checkbox" id="vsbTglow"> Leuchtender Titel</label><label><input type="checkbox" id="vsbTpulse"> Titel pulsiert</label><label><input type="checkbox" id="vsbStars"> Funkelnde Sterne</label><label><input type="checkbox" id="vsbFlash"> Beat-Blitz</label><label><input type="checkbox" id="vsbRain"> Regen</label><label><input type="checkbox" id="vsbSnow"> Schnee</label><label><input type="checkbox" id="vsbEmbers"> Glut-Funken</label><label><input type="checkbox" id="vsbLeak"> Lichteinfall</label><label><input type="checkbox" id="vsbBokeh"> Bokeh-Lichter</label><label><input type="checkbox" id="vsbDust"> Staub &amp; Kratzer</label></div>
+            <div class="row"><button class="primary" id="vsbSave">Style speichern</button><button id="vsbDiscard" type="button" title="Änderungen verwerfen, zurück zum gewählten Style">Verwerfen</button><button id="vsbExport" title="Als .json-Datei speichern, um ihn weiterzugeben">Exportieren</button><button id="vsbImport" title="Einen Style (.json) von dir oder anderen laden">Importieren</button><button id="vsbDel" hidden>Style löschen</button><input type="file" id="vsbFile" accept=".json,application/json" hidden></div>
+            <small class="tnote" id="vsbNote">Änderungen siehst du sofort in der Vorschau. Gespeicherte Styles erscheinen oben mit ★ und bleiben in diesem Browser. Mit „Exportieren“ bekommst du eine kleine Datei, die andere mit „Importieren“ laden können.</small>
+          </details></div>
+        <label class="knob"><span class="top">Titel</span><input type="text" id="vTitle" placeholder="Songtitel"></label>
+        <label class="knob"><span class="top">Artist</span><input type="text" id="vArtist" value="DANVIEL"></label>
+        <div class="vtgrid">
+          <label class="knob"><span class="top">Titel-Position</span><select id="vTPos"><option value="auto">Automatisch</option><option value="top">Oben</option><option value="center">Mitte</option><option value="bottom">Unten</option><option value="free">Frei (verschoben)</option></select></label>
+          <label class="knob"><span class="top">Ausrichtung</span><select id="vTAlign"><option value="auto">Automatisch</option><option value="left">Links</option><option value="center">Mitte</option><option value="right">Rechts</option></select></label>
+          <label class="knob"><span class="top">Titel-Schrift</span><select id="vTFont"><option value="style">Wie der Style</option></select></label>
+          <label class="knob"><span class="top">Titel-Größe <span id="vvTSize">100 %</span></span><input type="range" id="vTSize" min="50" max="250" step="5" value="100"></label><label class="knob"><span class="top">Artist-Größe <span id="vvASize">100 %</span></span><input type="range" id="vASize" min="50" max="250" step="5" value="100"></label>
+        </div>
+        <small class="tnote">Tipp: Den Titel kannst du in der Vorschau auch einfach mit der Maus an jede Stelle ziehen.</small>
+        <div class="knob"><span class="top">Cover-Bild</span><div class="row"><button id="vCoverBtn" class="hi2">Bild wählen</button><button id="vCoverClr" hidden>Entfernen</button><small id="vCoverName" class="tnote">optional, sonst dreht sich eine Platte</small></div><input type="file" id="vCover" accept="image/*" hidden>
+          <label class="cxuse" id="vCxUseBox" hidden><input type="checkbox" id="vCxUse" checked> Cover so wie im Cover-Studio (mit Schrift und Filtern)</label></div>
+        <div class="row"><label><input type="checkbox" id="vLyr" checked> Lyrics im Video</label><label title="Die Zeile wird beim Singen mitlaufend markiert. Aus = die ganze Zeile steht sofort da"><input type="checkbox" id="vLyrSweep" checked> Mitlaufend</label><label hidden><input type="checkbox" id="vBrand" checked> DANVIEL-Branding (Name + Logo)</label></div>
+        <div class="row brandrow"><label class="knob"><span class="top">Eigenes Branding</span><input type="text" id="vBrandTxt" placeholder="z. B. dein Name, Label oder @handle"></label>
+          <div class="knob"><span class="top">Logo</span><div class="row"><button id="vLogoBtn" class="hi2">Logo wählen</button><button id="vLogoClr" hidden>Entfernen</button><small id="vLogoName" class="tnote">optional, PNG mit transparentem Hintergrund passt am besten</small></div><input type="file" id="vLogo" accept="image/*" hidden></div></div>
+        <div class="row"><button class="primary" id="vMake" disabled title="Erstellt das Video mit Cover, Visualizer und Lyrics als MP4-Datei">Video erstellen (MP4)</button><button id="vCancel" hidden>Abbrechen</button></div>
+        <small class="tnote" id="vNote">Tipp: Setz oben einen Ausschnitt und hak beim Export „Nur Ausschnitt“ an, dann wird nur dieser Teil zum Video, perfekt für Snippets.</small>
+      </div>
+      <div class="vidprev"><canvas id="vPrev" width="540" height="960" aria-label="Video-Vorschau"></canvas><button id="vAddImg" type="button" class="vaddimg" title="Bild oder Cover fürs Video laden (oder einfach auf die Vorschau ziehen)">🖼 Bild hinzufügen</button></div>
+    </div>
+    <button id="aiCoverBtn" class="hi covbtn">Cover-Studio: Cover mit KI erstellen und mit Schrift exportieren</button>
+    <div class="aic aicfull" id="aiBox" hidden>
+          <b>Cover-Studio</b>
+          <details class="cpbox" id="cpBox" open>
+            <summary><b>✍ Cover-Prompt aus den Lyrics</b> <small class="tnote">(zum Zu- und Aufklappen hier klicken)</small></summary>
+            <div class="cpin">
+            <div class="cpmode">
+              <span class="cpml">Schrift aufs Cover?</span>
+              <span class="cpseg" role="group" aria-label="Schrift aufs Cover"><button id="cpModeText" aria-pressed="true">🔤 Ja, ChatGPT schreibt Titel &amp; Künstler ins Bild</button><button id="cpModeClean" aria-pressed="false">🖼 Nein, Bild ohne Schrift</button></span>
+              <small class="cphint" id="cpModeHint"></small>
+            </div>
+            <small class="tnote">Aus deinem ganzen Songtext entsteht ein fertiger Bild-Prompt für dein Cover: passendes Hauptmotiv, Licht, Farben und groß lesbarer Titel. „Cover-Prompt erstellen“ schreibt ihn hier ins Feld (kostenlos, mit eigenem OpenAI-Schlüssel noch zuverlässiger). Dann „Prompt kopieren“, in ChatGPT einfügen, und ChatGPT malt dir das Cover.</small>
+            <div class="row">
+              <label class="knob" style="flex:1 1 180px"><span class="top">Songtitel</span><input type="text" id="cpTitle" placeholder="Titel des Songs"></label>
+              <label class="knob" style="flex:1 1 180px"><span class="top">Künstlername</span><input type="text" id="cpArtist" placeholder="Name des Künstlers"></label>
+              <label class="knob" style="flex:1 1 160px"><span class="top">Genre (optional)</span><input type="text" id="cpGenre" placeholder="z. B. R&amp;B, Trap, Pop"></label>
+            </div>
+            <label class="knob"><span class="top">Eigene visuelle Wünsche (optional)</span><input type="text" id="cpWish" placeholder="z. B. Illustration statt Foto, blaue Töne, Person von hinten"></label>
+            <small class="tnote" id="cpLyrInfo"></small>
+            <div class="row">
+              <input type="password" id="cpKey" placeholder="sk-… OpenAI-Schlüssel (optional)" autocomplete="off" style="flex:1 1 220px">
+              <label><input type="checkbox" id="cpKeySave"> Schlüssel in diesem Browser merken</label>
+            </div>
+            <div class="row">
+              <button id="cpCopy" title="Kopiert einen Auftrag mit deinen Lyrics für ChatGPT: ChatGPT liest den Song und malt das Cover direkt, in einem Schritt">📋 Direkt an ChatGPT (Bild in einem Schritt)</button>
+              <button class="primary" id="cpGo" title="Schreibt den fertigen Bild-Prompt hier ins Feld. Ohne Schlüssel über eine kostenlose KI, mit OpenAI-Schlüssel über OpenAI">✨ Cover-Prompt erstellen</button>
+              <button id="cpAgain" hidden title="Gleiche Songdaten, aber ein anderes Hauptmotiv">🔄 Neues Konzept erstellen</button>
+            </div>
+            <div class="cpwarn" id="cpWarn" hidden><span id="cpWarnTxt"></span><button id="cpWarnYes">Trotzdem fortfahren</button><button id="cpWarnNo">Abbrechen</button></div>
+            <small class="tnote" id="cpNote"></small>
+            <textarea id="cpOut" rows="8" spellcheck="false" hidden placeholder="Hier erscheint der fertige Cover-Prompt. Du kannst ihn bearbeiten."></textarea>
+            <div class="row" id="cpOutRow" hidden>
+              <button id="cpOutCopy">Prompt kopieren</button>
+              <button id="cpMake" title="Erstellt mit diesem Prompt ein Bild über die oben gewählte Bild-KI">🎨 Mit diesem Prompt Cover erstellen</button>
+            </div>
+            <small class="tnote" id="cpOutHint" hidden>Kopiere diesen Prompt in ChatGPT oder einen Bildgenerator, um dein Cover erstellen zu lassen.</small>
+            </div>
+          </details>
+          <div class="row">
+            <label class="knob" style="flex:1 1 200px"><span class="top">Cover-Style</span><select id="aiStyleSel" aria-label="Cover-Style"></select></label>
+            <button id="aiStyleNew">Eigenen Style erstellen</button>
+            <button id="aiStyleDel" hidden>Style löschen</button>
+          </div>
+          <div class="aiguide" id="aiGuide" hidden>
+            <b>Deinen eigenen Style erstellen, so hat jeder seinen eigenen Look</b>
+            <ol>
+              <li>Kopier diesen Text und füg ihn in deine KI ein (ChatGPT, Gemini, Claude oder was du nutzt).</li>
+              <li>Beantworte ihre Fragen zu deinem Geschmack.</li>
+              <li>Am Ende bekommst du einen Block von „===STYLE START===“ bis „===STYLE ENDE===“. Den fügst du unten ein.</li>
+            </ol>
+            <textarea id="aiMeta" rows="6" readonly></textarea>
+            <div class="row"><button id="aiMetaCopy">Text kopieren</button><small class="tnote" id="aiMetaNote"></small></div>
+            <textarea id="aiStyleIn" rows="6" spellcheck="false" placeholder="Hier den Block aus deiner KI einfügen (===STYLE START=== … ===STYLE ENDE===)"></textarea>
+            <div class="row"><button class="primary" id="aiStyleSave">Style speichern</button><button id="aiGuideClose">Abbrechen</button></div>
+            <small class="tnote">Deine Styles werden nur in diesem Browser gespeichert und landen nicht in Projekt-Dateien, die du weitergibst.</small>
+          </div>
+          <div class="row">
+            <label class="knob" style="flex:1 1 200px"><span class="top">Bildidee (optional)</span><input type="text" id="aiIdea" placeholder="z. B. altes Telefon im Morgenlicht"></label>
+            <label class="knob" style="flex:1 1 200px"><span class="top">Musik-Style (optional)</span><input type="text" id="aiGenre" placeholder="z. B. R&amp;B, nachts, warme Synths"></label>
+            <label class="knob" style="flex:1 1 160px"><span class="top">Widmung (optional)</span><input type="text" id="aiDedic" placeholder="nur wenn gewünscht"></label>
+          </div>
+          <details><summary>Prompt-Vorlage des Styles ansehen / anpassen</summary>
+            <textarea id="aiPrompt" rows="6" spellcheck="false"></textarea>
+            <small class="tnote">Platzhalter: {titel} {artist} {stimmung} {tempo} {tonart} {lyrics} {bildidee} {musikstil} {widmung}</small>
+          </details>
+          <div class="row">
+            <select id="aiEngine" aria-label="Bild-KI"><option value="poll">Kostenlos (Pollinations, Flux)</option><option value="manual">ChatGPT / eigene KI (Prompt kopieren, Bild hier laden)</option><option value="openai">OpenAI mit eigenem API-Schlüssel</option></select>
+            <input type="password" id="aiPkey" placeholder="Pollinations-Schlüssel (optional, kostenlos auf enter.pollinations.ai)" autocomplete="off">
+            <button id="aiOwn" hidden>Fertiges Bild laden</button><input type="file" id="aiOwnFile" accept="image/*" hidden>
+            <input type="password" id="aiKey" placeholder="sk-… (OpenAI API-Schlüssel)" hidden autocomplete="off">
+            <select id="aiQual" aria-label="Qualität" hidden><option value="low">Schnell · ~1 Cent</option><option value="medium" selected>Gut · ~3 Cent</option><option value="high">Beste · ~13 Cent</option></select>
+            <label id="aiKeySaveL" hidden><input type="checkbox" id="aiKeySave"> Schlüssel in diesem Browser merken</label>
+          </div>
+          <div class="row"><button class="primary" id="aiGo">Cover erstellen</button><button id="aiClose">Schließen</button><small class="tnote" id="aiNote"></small></div>
+          <div class="aithumbs" id="aiThumbs"></div>
+          <details id="aiUsedBox" hidden><summary>Verwendeter Bild-Prompt</summary><textarea id="aiUsed" rows="5" readonly></textarea></details>
+          <div class="covx">
+            <canvas id="coverPrev" width="600" height="600" aria-label="Cover-Vorschau mit Schrift"></canvas>
+            <div class="covxside">
+              <b>Fertiges Cover mit Schrift</b>
+              <div class="cxtexttog"><button id="cxAddImg" type="button" class="hi2" title="Ein eigenes Bild als Cover laden (oder einfach auf die Vorschau ziehen)">🖼 Bild hinzufügen</button><button id="cxTextOn" aria-pressed="true" title="Schaltet die Schrift des Studios auf dem Cover an oder aus. Aus, wenn das Bild schon Titel und Künstler enthält (z. B. von ChatGPT)">🔤 Studio-Schrift: An</button><small class="tnote" id="cxTextNote"></small></div>
+              <small class="tnote cxhint">Tipp: Titel und Artist kannst du im Bild mit der Maus (oder dem Finger) frei verschieben. Ein Bild aus ChatGPT kannst du einfach hier reinziehen oder kopieren und mit Strg+V einfügen.</small>
+              <div class="cxgrid">
+                <label class="knob"><span class="top">Position</span><select id="cxPos"><option value="bottom">Unten</option><option value="top">Oben</option><option value="center">Mitte</option><option value="bottomleft">Unten links</option><option value="topleft">Oben links</option><option value="free">Frei (selbst verschoben)</option><option value="none">Ohne Schrift</option></select></label>
+                <label class="knob"><span class="top">Schriftart</span><select id="cxFont"><option value="auto">Automatisch (nach Stimmung)</option><option value="serif">Elegant (Serif)</option><option value="playfair">Elegant kursiv</option><option value="cinzel">Klassisch (Cinzel)</option><option value="narrow">Markant (Schmal)</option><option value="bebas">Plakat (Bebas)</option><option value="anton">Fett (Anton)</option><option value="unbounded">Modern breit</option><option value="clean">Klar (Sans)</option><option value="marker">Handschrift (Marker)</option><option value="caveat">Handschrift (fein)</option><option value="gothic">Gotisch (Drill / Rap)</option><option value="oswald">Kompakt (Oswald)</option><option value="archivo">Fett breit (Archivo)</option><option value="abril">Magazin (Abril)</option><option value="montserrat">Modern fett (Montserrat)</option><option value="cormorant">Edel kursiv (Cormorant)</option><option value="orbitron">Futuristisch (Orbitron)</option><option value="monoton">Retro-Neon (Monoton)</option><option value="pacifico">Sommer-Schreibschrift (Pacifico)</option><option value="glitch">Glitch (Rubik)</option><option value="bungee">Street (Bungee)</option><option value="syne">Kunst (Syne)</option><option value="pixel">Pixel / 8-Bit</option><option value="dancing">Schreibschrift (Dancing)</option><option value="lobster">Retro-Schreibschrift (Lobster)</option><option value="righteous">Retro rund (Righteous)</option><option value="bangers">Comic (Bangers)</option><option value="teko">Sportlich schmal (Teko)</option><option value="blackops">Military (Black Ops)</option><option value="greatvibes">Hochzeit (Great Vibes)</option><option value="satisfy">Locker kursiv (Satisfy)</option><option value="fredoka">Rund und süß (Fredoka)</option><option value="rye">Western (Rye)</option><option value="sixcaps">Extra schmal (Six Caps)</option><option value="shrikhand">Fett retro (Shrikhand)</option><option value="creepster">Horror (Creepster)</option><option value="rocksalt">Rau gekritzelt (Rock Salt)</option><option value="typewriter">Schreibmaschine (Special Elite)</option><option value="audiowide">Sci-Fi (Audiowide)</option><option value="alfaslab">Fett mit Serifen (Alfa Slab)</option><option value="boogaloo">Funky 70er (Boogaloo)</option><option value="nosifer">Blut-Horror (Nosifer)</option><option value="codystar">Lichterkette (Codystar)</option><option value="kaushan">Pinsel (Kaushan)</option><option value="yellowtail">Retro-Schwung (Yellowtail)</option><option value="staatliches">Kräftig schmal (Staatliches)</option><option value="bowlby">Extra fett (Bowlby)</option><option value="majormono">Futuristisch mono (Major Mono)</option><option value="faster">Speed (Faster One)</option><option value="vibur">Neon-Schild (Vibur)</option><option value="silkscreen">Pixel klein (Silkscreen)</option><option value="sedgwick">Graffiti (Sedgwick)</option><option value="spray">Spraydose (Rubik)</option><option value="wetpaint">Tropfende Farbe</option><option value="distressed">Abgenutzt (Rubik)</option><option value="saira">Schablone (Saira)</option><option value="wallpoet">Street (Wallpoet)</option><option value="pirata">Gotisch schmal (Pirata)</option><option value="grenze">Gotisch modern (Grenze)</option><option value="dela">Japan fett (Dela Gothic)</option><option value="metalmania">Metal (Metal Mania)</option><option value="newrocker">Rocker (New Rocker)</option><option value="bodoni">Mode-Magazin (Bodoni)</option><option value="italiana">Luxus dünn (Italiana)</option><option value="marcellus">Antik (Marcellus)</option><option value="tenor">Edel schlicht (Tenor)</option><option value="allura">Hochzeit (Allura)</option><option value="sacramento">Signatur (Sacramento)</option><option value="homemade">Kugelschreiber (Homemade)</option><option value="bungeeshade">3D-Schatten (Bungee)</option><option value="bungeeinline">Linien (Bungee Inline)</option><option value="rampart">Umriss 3D (Rampart)</option><option value="tiltwarp">Schräg (Tilt Warp)</option><option value="bagel">Bubble (Bagel)</option><option value="michroma">Tech breit (Michroma)</option><option value="russo">Sport (Russo One)</option><option value="krona">Breit modern (Krona)</option></select></label>
+                <label class="knob"><span class="top">Titel-Größe <span id="vcxTs">100 %</span></span><input type="range" id="cxTs" min="50" max="200" step="5" value="100"></label>
+                <label class="knob"><span class="top">Artist-Größe <span id="vcxAs">100 %</span></span><input type="range" id="cxAs" min="50" max="250" step="5" value="100"></label>
+                <label class="knob"><span class="top">Schriftfarbe</span><select id="cxColor"><option value="auto">Automatisch</option><option value="white">Weiß</option><option value="black">Schwarz</option><option value="accent">Farbe aus dem Cover</option><option value="gold">Gold</option><option value="silver">Silber</option><option value="red">Rot</option><option value="orange">Orange</option><option value="pink">Pink</option><option value="purple">Lila</option><option value="blue">Blau</option><option value="cyan">Türkis</option><option value="green">Grün</option><option value="custom">Eigene Farbe …</option></select></label>
+                <label class="knob" id="cxCcolBox" hidden><span class="top">Eigene Farbe</span><input type="color" id="cxCcol" value="#ffffff"></label>
+                <div class="knob"><span class="top">Schrift-Effekte</span><div class="row"><label><input type="checkbox" id="cxShadow" checked> Schatten</label><label><input type="checkbox" id="cxBand" checked> Dunkler Verlauf dahinter</label><label><input type="checkbox" id="cxOutline"> Umriss</label></div></div>
+                <label class="knob"><span class="top">Groß / klein</span><select id="cxCase"><option value="auto">Wie die Schrift</option><option value="upper">GROSSBUCHSTABEN</option><option value="normal">Normal</option></select></label>
+                <label class="knob"><span class="top">Buchstaben-Abstand <span id="vcxSpace">0</span></span><input type="range" id="cxSpace" min="-5" max="40" step="1" value="0"></label>
+              </div>
+              <details class="cxfx" open><summary>Bild-Filter</summary>
+                <div class="cxgrid">
+                  <label class="knob"><span class="top">Rand <span id="vcxVign">aus</span></span><input type="range" id="cxVign" min="-100" max="100" step="5" value="0"><small>links heller · rechts dunkler</small></label>
+                  <label class="knob"><span class="top">Helligkeit <span id="vcxBright">0</span></span><input type="range" id="cxBright" min="-50" max="50" step="1" value="0"></label>
+                  <label class="knob"><span class="top">Kontrast <span id="vcxContrast">0</span></span><input type="range" id="cxContrast" min="-50" max="50" step="1" value="0"></label>
+                  <label class="knob"><span class="top">Farbe <span id="vcxSat">0</span></span><input type="range" id="cxSat" min="-100" max="100" step="5" value="0"><small>links blasser · rechts kräftiger</small></label>
+                  <label class="knob"><span class="top">Körnung (Film) <span id="vcxGrain">aus</span></span><input type="range" id="cxGrain" min="0" max="100" step="5" value="0"></label>
+                  <label class="knob"><span class="top">Wärme <span id="vcxWarm">0</span></span><input type="range" id="cxWarm" min="-100" max="100" step="5" value="0"><small>links kühler · rechts wärmer</small></label>
+                  <label class="knob"><span class="top">Farbton <span id="vcxHue">0°</span></span><input type="range" id="cxHue" min="-180" max="180" step="5" value="0"></label>
+                  <label class="knob"><span class="top">Verblassen (Matt) <span id="vcxFade">aus</span></span><input type="range" id="cxFade" min="0" max="100" step="5" value="0"></label>
+                  <label class="knob"><span class="top">Weichzeichnen <span id="vcxBlur">aus</span></span><input type="range" id="cxBlur" min="0" max="20" step="1" value="0"></label>
+                  <label class="knob"><span class="top">Leuchten (Glow) <span id="vcxGlow">aus</span></span><input type="range" id="cxGlow" min="0" max="100" step="5" value="0"></label>
+                  <label class="knob"><span class="top">RGB-Versatz (VHS) <span id="vcxRgb">aus</span></span><input type="range" id="cxRgb" min="0" max="100" step="5" value="0"></label>
+                  <label class="knob"><span class="top">Lichtlecks (Film) <span id="vcxLeak">aus</span></span><input type="range" id="cxLeak" min="0" max="100" step="5" value="0"></label>
+                  <label class="knob"><span class="top">Duoton</span><select id="cxDuo"><option value="off">Aus</option><option value="redblk">Rot / Schwarz</option><option value="bluepink">Blau / Pink</option><option value="goldpurple">Gold / Lila</option><option value="cyanmag">Cyan / Magenta</option><option value="greenblk">Grün / Schwarz</option><option value="orangeblue">Orange / Blau</option></select></label>
+                  <div class="knob"><span class="top">Look</span><div class="row"><label><input type="checkbox" id="cxBw"> Schwarz-Weiß</label><label><input type="checkbox" id="cxSepia"> Sepia</label><button id="cxReset" type="button">Alles zurücksetzen</button></div></div>
+                </div>
+              </details>
+              <button class="primary" id="cxExport" disabled>Cover als PNG speichern (3000×3000)</button>
+              <small class="tnote" id="cxNote">Titel, Künstler und Widmung werden exakt so gesetzt, wie du sie eingetippt hast.</small>
+            </div>
+          </div>
+        </div>
+    <div class="lyr">
+      <div class="row">
+        <span class="label">Lyrics</span>
+        <select id="lLang" aria-label="Sprache 1">
+          <option value="">Sprache automatisch</option><option value="german">Deutsch</option><option value="english">Englisch</option><option value="albanian">Albanisch</option>
+          <option value="turkish">Türkisch</option><option value="bosnian">Bosnisch</option><option value="croatian">Kroatisch</option><option value="serbian">Serbisch</option>
+          <option value="spanish">Spanisch</option><option value="french">Französisch</option><option value="italian">Italienisch</option><option value="portuguese">Portugiesisch</option>
+          <option value="polish">Polnisch</option><option value="dutch">Niederländisch</option><option value="romanian">Rumänisch</option><option value="greek">Griechisch</option>
+          <option value="russian">Russisch</option><option value="ukrainian">Ukrainisch</option><option value="arabic">Arabisch</option>
+        </select>
+        <select id="lLang2" aria-label="Zweite Sprache (optional)">
+          <option value="">+ 2. Sprache (optional)</option><option value="german">Deutsch</option><option value="english">Englisch</option><option value="albanian">Albanisch</option>
+          <option value="turkish">Türkisch</option><option value="bosnian">Bosnisch</option><option value="croatian">Kroatisch</option><option value="serbian">Serbisch</option>
+          <option value="spanish">Spanisch</option><option value="french">Französisch</option><option value="italian">Italienisch</option><option value="portuguese">Portugiesisch</option>
+          <option value="polish">Polnisch</option><option value="dutch">Niederländisch</option><option value="romanian">Rumänisch</option><option value="greek">Griechisch</option>
+          <option value="russian">Russisch</option><option value="ukrainian">Ukrainisch</option><option value="arabic">Arabisch</option>
+        </select>
+        <select id="lModel" aria-label="Genauigkeit"><option value="onnx-community/whisper-base">Schnell (~80 MB)</option><option value="onnx-community/whisper-small">Genauer (~250 MB)</option></select>
+        <button id="lRun" disabled title="Die KI hört den Gesang ab und schreibt die Lyrics mit Zeiten auf. Danach am besten kurz korrigieren">Lyrics erkennen</button>
+        <button id="lCp" class="hi" title="Aus deinen Lyrics einen fertigen Bild-Prompt für dein Cover machen (ChatGPT oder eigener OpenAI-Schlüssel)">✍ Cover-Prompt aus Lyrics</button>
+        <button id="lSrt" disabled title="Lyrics als Untertitel-Datei für YouTube oder Videoschnitt">Als Untertitel (SRT) speichern</button>
+        <button id="archBtn" title="Den Ordner wählen, in dem dein Suno-Archiv die Textdateien speichert („<Titel>.txt“ und „<Titel> - Lyrics.txt“). Danach findet das Studio Lyrics, Genre und Tempo zu jedem geladenen Song automatisch">📂 Suno-Archiv verbinden</button>
+        <button id="lPasteBtn" title="Deinen Songtext einfügen und dann automatisch oder per Mittippen synchronisieren">Eigene Lyrics einfügen</button><button id="lAutoTop" class="primary" type="button" title="Verteilt die vorhandenen Lyrics automatisch auf die Stellen, an denen gesungen wird" hidden>Automatisch an den Gesang anpassen</button><button id="lTap3Top" type="button" title="Du tippst nur die ersten 3 Zeilen mit der Leertaste, danach verteilt die Automatik den Rest" hidden>Anfang tippen, Rest automatisch</button>
+      </div>
+      <div class="paste" id="lPasteBox" hidden>
+        <b>Deinen Songtext einfügen</b>
+        <textarea id="lPaste" rows="7" spellcheck="false" placeholder="Füg hier deinen Songtext ein, eine Zeile pro Zeile, ohne Zeiten. Du kannst auch die ganzen Suno-Infos einfügen (Style + Lyrics), dann wird auch das Genre gesetzt.&#10;Leere Zeilen und Überschriften wie [Hook] oder [Strophe 1] werden übersprungen."></textarea>
+        <div class="row">
+          <button class="primary" id="lAuto" title="Verteilt deine Zeilen automatisch auf die Stellen, an denen gesungen wird">Automatisch an den Gesang anpassen</button>
+          <button id="lTapStart" title="Der Song läuft, du drückst bei jeder Zeile die Leertaste. Am genauesten">Selbst mittippen (genauer)</button><button id="lTap3" type="button" title="Du tippst nur die ersten 3 Zeilen mit der Leertaste, danach verteilt die Automatik den Rest. Gut, wenn die Automatik am Anfang einen falschen Einsatz erwischt">Anfang tippen, Rest automatisch</button>
+          <button id="lPasteClose">Abbrechen</button>
+        </div>
+        <small class="tnote">Automatisch: Das Programm erkennt, wo gesungen wird, und verteilt deine Zeilen darauf. Mittippen: Der Song läuft von vorne, und du drückst bei jeder Zeile genau dann die Leertaste, wenn sie beginnt. Nur ein paar Wörter falsch erkannt? Nicht alles neu einfügen: In der Liste unten läuft beim Abspielen die aktuelle Zeile mit, klick daneben auf ✎ (oder doppelt auf die Zeile) und korrigier sie direkt.</small>
+      </div>
+      <div class="tap" id="tapBox" hidden>
+        <div class="taphead"><span class="label" id="tapCount">Zeile 1 von 1</span><span class="tapclock" translate="no" id="tapTime" aria-live="off">0:00.000</span></div>
+        <div class="tapCur" id="tapCur"></div>
+        <div class="tapNext" id="tapNext"></div>
+        <div class="beatrow">
+          <div class="beats" id="beats" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <label><input type="checkbox" id="clickOn"> Klick hörbar</label>
+          <div class="cue"><span id="cueTxt">Gesang-Einsätze werden gesucht …</span><i><b id="cueBar"></b></i></div>
+        </div>
+        <div class="row">
+          <button class="primary big" id="tapHit">Jetzt! (Leertaste)</button>
+          <button id="tapBack">Eine zurück (←)</button>
+          <span class="tapnudge"><small id="tapLast">Letzte Zeile: –</small><button id="tapEarly" title="Letzte getippte Zeile 0,1 s früher (↓)" translate="no">−100 ms</button><button id="tapLate" title="Letzte getippte Zeile 0,1 s später (↑)" translate="no">+100 ms</button></span>
+          <button id="tapEnd">Fertig (Esc)</button>
+        </div>
+        <small class="tnote">Drück die Leertaste genau, wenn die angezeigte Zeile anfängt. Vertippt? Mit ← gehst du eine Zeile zurück und der Song springt kurz davor. Zu spät oder zu früh gedrückt? Mit −100 ms / +100 ms (oder ↓ / ↑) schiebst du die letzte Zeile nach, ohne neu anzufangen.</small>
+      </div>
+      <div class="lview" id="lView" hidden aria-label="Lyrics zum Mitlesen"></div>
+      <textarea id="lText" rows="7" spellcheck="false" placeholder="Hier landen die erkannten Lyrics, eine Zeile pro Zeile im Video, z. B.&#10;0:12.4  Erste Zeile vom Song&#10;0:15.9  Zweite Zeile&#10;Du kannst alles korrigieren oder eigene Lyrics einfügen. Zeilen ohne Zeit werden gleichmäßig verteilt."></textarea>
+      <small class="tnote" id="lNote">Die Erkennung hört nur auf die Vocal-Spuren, deshalb funktioniert sie mit Stems viel besser als mit einem fertigen Song. Beim ersten Mal wird das KI-Modell geladen (einmalig, danach im Browser gespeichert).</small>
+    </div>
+  </section>
+
+  <section class="export">
+    <span class="label">Export</span>
+    <div class="summary" id="summary">Noch nichts ausgewählt.</div>
+    <div class="row">
+      <input type="text" id="fname" value="Mix" aria-label="Dateiname">
+      <select id="fmt" aria-label="Format">
+        <option value="mp3">MP3 · 320 kbps</option>
+        <option value="mp3-192">MP3 · 192 kbps</option>
+        <option value="m4a">M4A · AAC 256 kbps</option>
+        <option value="wav">WAV · 16 bit</option>
+        <option value="wav24">WAV · 24 bit (Studio)</option>
+      </select>
+      <label id="normLbl"><input type="checkbox" id="norm" checked> Übersteuern verhindern</label>
+      <button class="primary" id="export" disabled title="Den fertigen Mix als Datei speichern, mit Mastering wenn es an ist">Mix exportieren</button>
+    </div>
+    <div class="row">
+      <label>Fade-In <input type="number" id="fadeIn" min="0" max="20" step="0.5" value="0"> s</label>
+      <label>Fade-Out <input type="number" id="fadeOut" min="0" max="30" step="0.5" value="0"> s</label>
+      <label><input type="checkbox" id="onlyAB" disabled> Nur Ausschnitt</label>
+      <button id="exportMidi" disabled title="Die erkannten Kick-Schläge und das Tempo als MIDI-Datei, zum Weiterbauen in deiner DAW">Kick als MIDI</button>
+      <button id="exportStems" disabled title="Jede eingeschaltete Spur als eigene WAV-Datei, mit deiner Lautstärke und Geschwindigkeit">Stems einzeln exportieren (ZIP)</button>
+    </div>
+    <div class="rel">
+      <div class="row"><span class="label">Release</span>
+        <button id="relCheck" disabled title="Prüft Lautstärke, True Peak, Übersteuerung, Mono und Stille vor dem Release">Release-Check</button>
+        <button class="primary" id="relPack" disabled title="Master, Instrumental, Acapella, Cover, Lyrics und Shorts-Video in einer ZIP">Release-Paket erstellen</button>
+        <label><input type="checkbox" id="relVideo" checked> inkl. Shorts-Video der Hook (dauert länger)</label>
+      </div>
+      <small class="tnote">Release-Paket: Master (WAV 24 bit + MP3), Instrumental, Acapella, Cover 3000 px, Lyrics als LRC (synchronisierte Lyrics für Spotify/Apple über deinen Distributor) und SRT, Shorts-Video und das Prüfprotokoll, alles in einer ZIP.</small>
+      <div class="relsum" id="relSum"></div>
+      <div class="chklist" id="relList" hidden></div>
+    </div>
+    <div class="row verrow">
+      <span class="label">Versionen</span>
+      <label><input type="checkbox" class="ver" value="main" checked> Main</label>
+      <label><input type="checkbox" class="ver" value="inst" checked> Instrumental</label>
+      <label><input type="checkbox" class="ver" value="tv" checked> TV-Mix</label>
+      <label><input type="checkbox" class="ver" value="acap" checked> Acapella</label>
+      <label><input type="checkbox" class="ver" value="vup"> Vocal Up +1 dB</label>
+      <button id="exportVers" disabled title="Mehrere Versionen auf einmal: Mix, Instrumental, Acapella, TV-Mix">Versionen exportieren (ZIP)</button>
+    </div>
+    <div class="projrow">
+      <button class="primary" id="projZip" disabled title="Alle Spuren, Einstellungen, Cover und Cover-Entwürfe, Logo, Lyrics, Hintergrund-Video und deine fertigen Videos in einer ZIP-Datei">Projekt speichern (ZIP)</button>
+      <button id="projLoad" title="Ein gespeichertes Projekt (ZIP) wieder öffnen">Projekt laden</button>
+      <button id="projSave" hidden disabled title="Nur die Einstellungen ohne Audio, kleine Datei">Nur Einstellungen (.json)</button>
+      <input type="file" id="projFile" accept=".zip,.json,application/zip,application/json" hidden>
+      <small>„Projekt speichern“ packt alles in eine ZIP-Datei: Spuren, Einstellungen, Cover, Logo, Lyrics und Hook. Genau diese ZIP weiterschicken. Mit „Projekt laden“ (oder einfach reinziehen) ist beim Empfänger alles wieder da.</small>
+    </div>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="status" id="status"></div>
+  </section>
+
+  <section class="artist" id="artistBox" hidden>
+    <div><span class="label">Mehr Musik von</span><h2 id="artistName" translate="no"></h2><p class="tnote">Dir gefällt DANVIEL Studio? Hör in meine Songs rein und folg mir, das hilft mir sehr.</p></div>
+    <div class="links" id="artistLinks"></div>
+  </section>
+
+  <footer><span>Tipp: Leertaste = Play/Pause, ? = alle Tastenkürzel. S beim Kanal = Solo (nur diese Spur hören, ändert den Export nicht).</span><button id="logBtn" class="logbtn" title="Speichert ein Protokoll aller Schritte und Fehler als Textdatei, zum Weiterschicken bei Problemen">Fehler-Log speichern</button><span class="credit">DANVIEL Studio <b>v15.7</b> · © 2026 <b>DANVIEL</b> · Alle Rechte vorbehalten · <a href="https://github.com/0zoon/danviel-studio/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">Lizenzen</a></span></footer>
+</div>
+
+<dialog id="packs" aria-labelledby="packsTitle">
+  <button class="dlgx" type="button" aria-label="Schließen" title="Schließen">✕</button>
+  <h2 id="packsTitle">📦 Pakete</h2>
+  <p class="tnote">Pakete sind fertige Einstellungen zum Teilen: Mastering, Effekte, Ketten für einzelne Spuren (z. B. „Trap Vocal“), Visualizer- und Cover-Styles. Einfach eine Paket-Datei (.json) laden oder hier reinziehen. Pakete enthalten nur Einstellungen, keinen Code, deshalb sind sie sicher.</p>
+  <div class="row pkload"><button class="primary" id="pkLoad">📂 Paket laden</button><input type="file" id="pkFile" accept=".json,application/json" hidden><small class="tnote" id="pkNote"></small></div>
+  <div id="pkList"></div>
+  <details class="pkmake"><summary><b>✚ Eigenes Paket erstellen und teilen</b></summary>
+    <div class="pkin">
+      <div class="row">
+        <label class="knob" style="flex:1 1 200px"><span class="top">Name des Pakets</span><input type="text" id="pkName" maxlength="40" placeholder="z. B. Mein Trap-Pack"></label>
+        <label class="knob" style="flex:1 1 160px"><span class="top">Von</span><input type="text" id="pkAuthor" maxlength="40" placeholder="dein Name"></label>
+      </div>
+      <label class="knob"><span class="top">Beschreibung (optional)</span><input type="text" id="pkDesc" maxlength="160" placeholder="wofür ist das Paket gut?"></label>
+      <div class="pkchecks">
+        <label><input type="checkbox" id="pkMkMaster" checked> Aktuelles Mastering</label>
+        <label><input type="checkbox" id="pkMkFx" checked> Aktuelle Effekte (Hall, Echo, Sidechain)</label>
+        <label><input type="checkbox" id="pkMkChain"> Kette dieser Spur: <select id="pkMkTrack"></select></label>
+        <label><input type="checkbox" id="pkMkVs"> Meine Visualizer-Styles</label>
+        <label><input type="checkbox" id="pkMkCs"> Meine Cover-Styles</label>
+      </div>
+      <div class="row"><button class="primary" id="pkSave">📦 Paket speichern</button><small class="tnote" id="pkMkNote"></small></div>
+    </div>
+  </details>
+</dialog>
+<dialog id="pro" aria-labelledby="proTitle">
+  <button class="dlgx" type="button" aria-label="Schließen" title="Schließen">✕</button>
+  <h2 id="proTitle"><span class="dn" translate="no">DAN</span><span class="vl" translate="no">VIEL</span> Studio <span>Pro</span></h2>
+  <p class="tnote">Kommt bald: die Desktop-App für Windows, einmal kaufen, kein Abo.</p>
+  <p><b>Hier im Browser ist alles freigeschaltet und kostenlos.</b> Pro ist die Desktop-Version mit etwas mehr Leistung und ein paar Extras. Vor allem ist sie eine Möglichkeit, mich und das Projekt zu unterstützen. Darüber würde ich mich sehr freuen 💛</p>
+  <ul>
+    <li><b>Echte Desktop-App:</b> startet wie ein normales Programm, auch ohne Browser</li>
+    <li><b>Mehr Leistung:</b> schnellere KI, 6+ Stems mit Gitarre, Piano und mehr</li>
+    <li><b>Browser-Erweiterung für Suno:</b> ein Klick auf Suno schickt Stems, Lyrics und Style direkt ins Studio</li>
+    <li><b>Mehrere Songs auf einmal</b> mastern und exportieren</li>
+    <li><b>Zerlegen über die Grafikkarte:</b> ein ganzer Song in unter einer Minute</li>
+    <li><b>🔌 VST3-Plugins:</b> deine eigenen Plugins auf jeder Spur, wie in einer echten DAW</li>
+    <li><b>Seitenfenster für große Bildschirme:</b> Datei-Browser mit Musik, Stems und Suno-Archiv, Projekte, Notizen und Lyrics, schwebende Video-Vorschau</li>
+    <li><b>Studio-Schreibtisch-Look</b> mit Holz, Ledermappe, Pflanze und Boxen</li>
+    <li><b>Mehr Visualizer-Styles, Schriften und Cover-Looks</b></li>
+  </ul>
+  <div class="free tnote">Die Browser-Version bleibt kostenlos, mit allem, was sie heute kann. — DANVIEL</div>
+  <div class="row"><a class="ghbtn" id="proLink" href="https://0zoon.github.io/danviel-studio/pro.html" target="_blank" rel="noopener">Mehr Infos &amp; Download-Seite</a><button id="proClose">Schließen</button></div>
+</dialog>
+<dialog id="changes" aria-labelledby="chgTitle">
+  <button class="dlgx" type="button" aria-label="Schließen" title="Schließen">✕</button>
+  <h2 id="chgTitle">Changelog</h2>
+  <div class="chg-de">
+  <h3>Neu in v16.5</h3>
+  <ul>
+    <li><b>Schriften mit Live-Vorschau:</b> das Schrift-Menü zeigt deinen Titel in jeder Schrift, beim Drüberfahren siehst du sie sofort groß auf dem Cover, ein Klick übernimmt sie. Gruppen, Suche und ★ Favoriten, auch für die Titel-Schrift im Video</li>
+    <li><b>26 neue Schriften:</b> Graffiti, Spraydose, tropfende Farbe, Schablone, gotisch, Mode-Magazin, Luxus, Hochzeit, Signatur, 3D-Schatten, Bubble, Tech und mehr, jetzt über 75</li>
+    <li><b>Vollbild-Video frei gestalten:</b> Visualizer und Lyrics in der Vorschau verschieben und am goldenen Eck größer oder kleiner ziehen, „Zurück auf Standard“ setzt alles zurück, wird im Projekt gespeichert</li>
+    <li><b>Mitlaufende Lyrics hören mit dem Gesang auf:</b> die Markierung endet dort, wo der Lead-Gesang pausiert, und läuft nicht mehr bis ins Instrumental. Neuer Schalter „Mitlaufend“ zum Abschalten</li>
+    <li><b>Ohne Lyrics größeres Cover</b> im Video</li>
+    <li><b>DANVIEL wie im Logo:</b> der voreingestellte Artist erscheint in Video, Platte und Cover weiß-gold wie das Logo, jeder andere Name in normaler Schrift</li>
+    <li><b>Eigenen Style bauen ändert beim Öffnen nichts mehr:</b> der Baukasten startet mit dem gewählten Style, nur was du änderst (z. B. Cover pulsiert) kommt obendrauf. Speichern oder Verwerfen</li>
+    <li><b>„Bild hinzufügen“</b> direkt im Cover-Studio unter der Vorschau und beim Video unter der Vorschau</li>
+    <li><b>„Automatisch an den Gesang anpassen“ immer griffbereit:</b> sobald Lyrics da sind (aus dem Suno-Archiv, eingefügt oder erkannt), steht der Knopf direkt in der Lyrics-Leiste. Lyrics aus dem Suno-Archiv klappen den Bereich automatisch auf</li>
+    <li><b>„Anfang tippen, Rest automatisch“:</b> du tippst nur die ersten 3 Zeilen mit der Leertaste, danach verteilt die Automatik den Rest auf den Gesang, nach deinem Rhythmus. Gut, wenn die Automatik am Anfang einen falschen Ton als erste Zeile erwischt. Geht auch, wenn schon Lyrics mit Zeiten da sind</li>
+    <li><b>Cover, Platte, Titel, Lyrics und Visualizer im Video verschieben:</b> in jedem Format in der Vorschau mit der Maus ziehen, am goldenen Eck größer oder kleiner. Das Cover bleibt immer im Bild und nie über Wasserzeichen oder Signatur. In der Nähe der Bildmitte rastet alles genau ein, eine goldene Linie zeigt es. Steht das Cover bei 16:9 in der Mitte, rückt der Titel darüber. Neuer Regler „Artist-Größe“</li>
+    <li><b>Logo als polierte Bronze-Plakette:</b> mit Fase und Schrauben, DANVIEL weiß-gold mit dunkler Kontur, die Version passt sich automatisch an</li>
+  </ul>
+  <h3>v16.4</h3>
+  <ul>
+    <li><b>15 Demo-Songs statt kurzer Schleifen:</b> jede Demo ist ein kleiner Song von etwa 1 bis 1,5 Minuten mit Intro, Strophe, Hook, Break und Outro, mit Fills, Riser und Impact vor der Hook und einzelnen Stems (Drums, Bass, Keys, Pad, Lead, FX). Neu dabei: Afrobeats, Amapiano, Phonk (mit Cowbell-Melodie), Dancehall (mit Air Horn), Synthwave und Boom Bap</li>
+    <li><b>Samples:</b> 40 One-Shots in Gruppen, Drums, 808 &amp; Bass, Crowd-Rufe („Hey!“, „Ho!“, „Yeah!“, „Uh!“), Hits wie Air Horn und Orchester-Hit, FX wie Riser, Impact und Tape-Stop, Atmo wie Vinyl-Knistern und Regen. Alle im Studio erzeugt und frei verwendbar. „+ Drums“ legt ein Sample als eigene Zeile ins Drum-Pattern</li>
+    <li><b>Eigene Samples:</b> One-Shots reinziehen, sie bleiben im Browser gespeichert und kommen beim Projekt-Speichern mit</li>
+    <li><b>10 neue Hintergründe:</b> Walnuss, Studio-Holzwand, Graphit-Waben, Vinyl, Nachtstadt, Aurora, Sunset, Granit, Carbon-Gold und Mattes Leder, alles ohne Bilder und ohne die Seite langsamer zu machen</li>
+    <li><b>Video mit Bild im Vollbild:</b> unter „Bild“ wählst du „Vollbild (Ecke zu Ecke)“, dann füllt dein Bild das ganze Video mit langsamem Zoom, die Schrift rückt nach unten. Daneben schaltest du Titel, Visualizer und Lyrics mit einem Klick an oder aus</li>
+    <li><b>Besser lesbar:</b> die Schalter-Beschriftungen (z. B. Kompakt / Alles offen) und die Hover-Infos sind größer und kontrastreicher</li>
+    <li><b>„So geht's“ komplett neu:</b> alle Bilder aus der aktuellen Oberfläche, goldene Nummern, neue Bilder für den Monitor und die Samples, Titel mit dem DANVIEL-Logo</li>
+  </ul>
+  <h3>v16.3</h3>
+  <ul>
+    <li><b>Pakete legen sich obendrauf:</b> „Deep 808“ gibt dem Bass mehr Sub, setzt aber nichts anderes zurück. Lautheit, Lautstärken und Balance vom Auto-Mix bleiben (nur „laute“ Pakete wie „Club laut“ heben die Lautheit an). Nach dem Klick steht da, was sich geändert hat, mit „Rückgängig“. Aktive Pakete werden gemerkt und nach jedem neuen Auto-Mix wieder obendrauf gelegt</li>
+    <li><b>Keyboard einstecken und spielen:</b> ein USB-Keyboard wird überall im Studio erkannt, ein Lämpchen zeigt „Keyboard verbunden“ und ein Klick legt eine Instrument-Spur an. Anschlagstärke, Sustain-Pedal und Pitch-Bend, Start/Stopp am Keyboard nimmt auf (Chrome/Edge)</li>
+    <li><b>Drum-Pads:</b> Pads wie Akai MPD (oder ein Keyboard) spielen das Drum-Pattern. Läuft der Song, landet jeder Schlag direkt im Raster, eingerastet aufs Sechzehntel. Werden Pads erkannt, bietet das Studio an, eine Drum-Spur anzulegen</li>
+    <li><b>„Spur bauen“ hervorgehoben:</b> dein Song von Grund auf, mit Gold-Rahmen und eigenen Symbolen für Drums, Instrument und Loop</li>
+    <li><b>Projekt speichern nimmt alles mit:</b> Cover und alle Cover-Entwürfe, das fertige Cover mit Schrift, Lyrics, Hintergrund-Video und deine fertigen Videos. Beim Öffnen ist alles wieder da</li>
+    <li><b>MIDI-Spuren ausgeblendet:</b> ausgeschaltete MIDI-Spuren sind versteckt, „MIDI anzeigen“ oben rechts bei den Spuren holt sie zurück. Eingeschaltete bleiben immer sichtbar</li>
+    <li><b>7 neue Video-Stile:</b> DANVIEL Gold, Regennacht, Eis, Sunset, Glut, Vaporwave und Alter Film. Der Visualizer endet jetzt in allen Stilen über der Signatur, beides bleibt klar sichtbar</li>
+    <li><b>6 neue Effekte im eigenen Stil:</b> Regen, Schnee, Glut-Funken, Lichteinfall, Bokeh-Lichter, Staub &amp; Kratzer</li>
+    <li><b>Neue Hintergründe</b> Smaragd, Bordeaux, Studio-Nebel, Gold-Linien und Chrom, <b>8 neue Cover-Stile</b> (z. B. DANVIEL Gold Noir, Regen-Stadt, Afro Sunset, Drill Dark) und <b>Schalter</b> statt Häkchen bei Ein/Aus-Optionen</li>
+    <li><b>Eigene Symbole überall:</b> auch in Fenstern, Hilfe und Changelog stehen jetzt DANVIEL-Symbole statt Emojis. Der Pakete-Knopf im Cover-Studio ist raus</li>
+  </ul>
+  <h3>v16.2</h3>
+  <ul>
+    <li><b>17 neue Genres für den Auto-Mix:</b> Drill, Afrobeats und Lo-Fi in der ersten Reihe. Unter „Mehr Genres“ (neu und übersichtlich in Gruppen): Instrumental, Klassik / Orchester, Jazz / Soul, Reggaeton / Latin, K-Pop, Amapiano, Gospel, Country, Techno, Drum &amp; Bass, Psytrance / Goa, Synthwave / Cyberpunk, Phonk und Metal</li>
+    <li><b>Nach Studio-Praxis eingestellt:</b> bei Drill führt die Kick und die 808 sitzt dahinter (anders als bei Trap), Afrobeats bekommt breite Percussion und punktiertes Echo, Lo-Fi gedämpfte Höhen und Tape-Wärme, Klassik bleibt fast unkomprimiert bei −16 LUFS und True Peak −1 dB</li>
+    <li><b>Tabelle „Was ändert sich je Genre?“</b> zeigt jetzt alle Genres</li>
+    <li><b>Neues DANVIEL Genre-Pack:</b> Mastering „Club laut“, „Spotify sauber“, „Vinyl warm“, „Lo-Fi weich“, „Cinema dynamisch“, „Drill dunkel“, Effekte „Afro Bounce“, „Dark Drill“, „Lo-Fi Tape“, „Wide Hook“, „Club Pump“ und Spur-Ketten wie „Trap Vocal Chain“, „Drill Vocal“, „Radio-Stimme“ und „Ad-Libs breit“</li>
+    <li><b>Wichtige Reparatur, doppeltes Abspielen:</b> lief der Song schon und wurde „Abspielen“ noch einmal ausgelöst (z. B. wenn eine Bearbeitung im Hintergrund fertig wurde, während du Play gedrückt hast), lief eine zweite Kopie mit, die sich nicht mehr stoppen ließ und alles doppelt so laut machte. Jetzt stoppt ein zweites Play immer zuerst sauber</li>
+    <li><b>Projekt löschen mit Nachfrage:</b> roter Knopf jetzt auch unten rechts im Monitor, beide fragen vorher in einem Fenster „Wirklich löschen?“</li>
+    <li><b>Packs exportieren:</b> jedes Paket hat jetzt „Exportieren“ und wird als .json-Datei gespeichert. Importieren wie bisher mit „Paket laden“ oder per Drag &amp; Drop</li>
+  </ul>
+  <h3>v16.1</h3>
+  <ul>
+    <li><b>Monitor ausgebaut:</b> der Player zeigt den ganzen Mix als Wellenform zum Klicken und Spulen, mit Zeit, Knöpfen für Anfang, Loop, Vorher/Nachher und Stumm</li>
+    <li><b>Bausteine:</b> Angeklickt, Spuren-Übersicht (jede Spur als kleine Wellenform), großer Visualizer und Schnellwahl lassen sich ausblenden und mit dem Griff ⠿ verschieben. Video und Player bleiben immer drin</li>
+    <li><b>Vier Monitor-Designs:</b> Edelstahl, Chrom, Schwarzes Glas und Leder, über das Zahnrad oben im Monitor</li>
+    <li><b>MIDI bleibt aus:</b> Schnellwahl wie „Alle an“ oder „Beat“ schaltet MIDI-Spuren nie ein, nur du selbst</li>
+    <li><b>Breitere Mappe auf großen Bildschirmen,</b> Changelog, GitHub und Pro oben rechts, eigene Symbole statt Emojis, wichtige Knöpfe leuchten dezent</li>
+    <li><b>Auto-Mix-Bericht</b> klappt nach 10 Sekunden zu einer Zeile ein, „Details“ öffnet ihn wieder</li>
+    <li><b>„Zum Video“</b> öffnet den Video-Bereich und landet genau auf der Video-Karte</li>
+  </ul>
+  <h3>v16</h3>
+  <ul>
+    <li><b>Neues Design, dunkel als Standard:</b> Anthrazit-Karten mit Gold auf der Ledermappe. Wer es hell mag: Hintergrund „☀ Hell“</li>
+    <li><b>Der Monitor:</b> auf breiten Bildschirmen steht rechts eine Edelstahl-Ablage, die beim Scrollen mitfährt: große Live-Vorschau vom Video, darunter der Player mit Lautheit, Peak, Analyzer und Schnellwahl, und „Angeklickt“ mit Lautstärke, Hall und Rauschen der Spur, die du zuletzt angefasst hast</li>
+    <li><b>Schrittleiste:</b> breite Felder mit eigenem Symbol und Namen. Was ein Schritt macht, steht beim Darüberfahren</li>
+    <li><b>Infos beim Darüberfahren:</b> jede Erklärung erscheint sofort als kleine Karte, wenn die Maus auf einem Knopf steht</li>
+    <li><b>Aufgeräumter Kopf:</b> Rückgängig und Wiederholen als Pfeile, „So geht’s“ in Blau, „Kompakt / Alles offen“ als Schalter</li>
+    <li><b>Projekt-Leiste unten:</b> Speichern, Öffnen und der rote Knopf „Projekt löschen“ stehen jetzt am Ende der Mappe</li>
+    <li><b>Auto-Mix in Gold, Packs in Türkis:</b> die wichtigen Knöpfe stechen heraus. Auto-Werkzeuge und „Schnell anpassen“ stehen in einem gleichmäßigen Raster, jeder Knopf mit eigenem Symbol</li>
+    <li><b>Wellenformen repariert:</b> die Wellenform der Spuren blieb nach dem Wechsel in den Mix-Schritt manchmal leer</li>
+    <li><b>Signatur im Video:</b> kleiner in der Ecke, der Visualizer läuft darüber</li>
+  </ul>
+  <h3>v15.8</h3>
+  <ul>
+    <li><b>Neues Logo:</b> DANVIEL Studio hat ein eigenes, modernes Logo: „DΛNVIEL“ aus eigenen Buchstaben, Λ, N und V bilden eine goldene Schallwelle. Dazu ein neues App-Symbol (D mit goldenem Gipfel) im Browser-Tab und auf dem Handy</li>
+    <li><b>Branding im Video:</b> oben links steht das DANVIEL-Zeichen, unten rechts die Signatur „Danviel Studio“, das ganze Video lang. Mit eigenem Logo oder Namen rutscht das Zeichen nach oben rechts und dein Branding bekommt den Platz oben</li>
+    <li><b>Tastenkürzel:</b> A = Auto-Mix, M = Mastering an/aus, B = Vorher/Nachher, L = Dateien laden, V = Video erstellen, E = Exportieren, ? = alle Kürzel. Der Tastatur-Knopf links in der Schrittleiste zeigt sie alle, ein Klick auf eine Zeile führt sie aus</li>
+    <li><b>Schrittleiste mit eigenen Symbolen:</b> Laden, Mix, Master, Video & Cover und Release zeigen jetzt ein Symbol statt einer Nummer</li>
+    <li><b>Farbwähler:</b> bei Cover, Visualizer und Titel mit Farbfeld, Hex-Code zum Eintippen und 12 fertigen Farben</li>
+    <li><b>Aufgeräumt:</b> Häkchen-Gruppen stehen sauber im Raster, Löschen- und Zurücksetzen-Knöpfe sind rot, Knöpfe in einer Reihe sind gleich hoch</li>
+    <li><b>Spuren zuklappen repariert:</b> der Knopf „Zuklappen“ bei den Spuren verschwand nach dem Laden der Stems. Jetzt lassen sich alle Spuren mit einem Klick einklappen, die Zeile zeigt dann z. B. „5 Spuren · 5 an“</li>
+  </ul>
+  <h3>v15.7</h3>
+  <ul>
+    <li><b>Neue Auto-Mix-Profile für Instrumentals:</b> unter „Mehr Genres“ gibt es 🎬 Cinematic / Film (viel Dynamik, breit und räumlich, sanfte Kompression), 🎮 Game-Musik (gleichmäßig, loop-tauglich, −16 LUFS und True Peak −1 dB nach dem Standard für Mobile- und Handheld-Spiele) und 🎧 Hintergrundmusik (Lautstärke ohne Sprünge, Platz in den Mitten für eine Stimme). Gehen auch bei einem fertigen Song</li>
+    <li><b>Zuschneiden:</b> die Wellenform erscheint sofort beim Öffnen, auch in der Profi-Ansicht. Ein Klick in die noch leere Grafik konnte vorher das Ende der Spur abschneiden</li>
+  </ul>
+  <h3>v15.6</h3>
+  <ul>
+    <li><b>Spuren zuschneiden und verschieben:</b> bei jeder Spur unter „Klang“ reinzoomen, Anfang und Ende mit den gelben Griffen abschneiden (mit kurzer Blende) und die Spur um 10 ms bis einen Takt früher oder später einsetzen lassen. Das Original bleibt erhalten, „Zurücksetzen“ holt es zurück</li>
+    <li><b>Gebaute Spuren in eine bestehende Spur legen:</b> Drums, Instrument oder Loop im Editor mit „⤵ In Spur legen“ in eine vorhandene Spur mischen, statt eine neue Spur zu behalten. Rückgängig bei der Ziel-Spur unter „Klang“</li>
+    <li><b>Schnell anpassen:</b> Vocals lauter / leiser, Mehr Bass, Mehr Punch, Radio-Mix, Breiter, Clean, Wärmer, Heller mit einem Klick, Strg+Z nimmt es zurück</li>
+    <li><b>Dateiname zeigt den Inhalt:</b> sind nur der Beat oder nur die Vocals an, heißt der Export automatisch z. B. „Artist - Titel (Beat)“ oder „(Vocals)“, auch beim Video</li>
+    <li><b>Eigenen Visualizer bauen:</b> 6 neue Formen (gespiegelte Balken, Fläche, Retro-Pixel, Kreis-Balken ums Cover, Funken, ohne Visualizer), eine dritte Farbe, Cover-Bewegung (pulsiert im Beat, atmet, dreht sich, schwingt, wackelt) mit einstellbarer Stärke, funkelnde Sterne, Beat-Blitz, leuchtender und pulsierender Titel und alle Schriften des Cover-Studios</li>
+    <li><b>Lyrics:</b> die laufende Zeit mit Millisekunden steht oben rechts in der mitlaufenden Liste</li>
+    <li><b>Projekt laden repariert:</b> Projekte mit Cover oder Logo wurden ohne ihre Einstellungen geöffnet (die Projektdatei war zu groß für eine alte Grenze). Jetzt kommen Mix, Mastering und alles andere wieder genau so, wie gespeichert</li>
+  </ul>
+  <h3>v15.5</h3>
+  <ul>
+    <li><b>Pakete dort, wo du sie brauchst:</b> türkise „📦 Pakete“-Knöpfe beim Auto-Mix, bei den Effekten, beim Mastering, bei den Visualizer-Styles und im Cover-Studio. Das Paket-Fenster zeigt gleich die passenden Presets hervorgehoben</li>
+    <li><b>Eigenes Foto als Hintergrund:</b> unter Hintergrund „📷 Eigenes Foto …“ wählen. Es bleibt nur in deinem Browser gespeichert, nichts wird hochgeladen</li>
+    <li><b>15 weitere Schriften</b> im Cover-Studio und für den Video-Titel (z. B. Schreibmaschine, Pinsel, Neon-Schild, Lichterkette, Blut-Horror, Speed), jetzt über 50</li>
+    <li><b>Cover-Studio:</b> die Vorschau sitzt groß und mittig über den Reglern</li>
+    <li><b>Video:</b> eigenes Branding und Logo stehen rechts neben „Video erstellen“, Klapp-Boxen wie „Eigenen Style bauen“ und „Mehr Einstellungen“ sind deutlich farbig hervorgehoben</li>
+  </ul>
+  <h3>v15.4</h3>
+  <ul>
+    <li><b>Knöpfe oben wieder alle sichtbar:</b> Hintergrund, Sprache, Pakete, Changelog, GitHub und Projekt löschen stehen wieder direkt oben, kein Menü mehr</li>
+    <li><b>Cover-Studio:</b> 12 neue Schriften (z. B. Comic, Western, Hochzeit, Horror, Military), 9 neue Schriftfarben plus eigene Farbe, Umriss, Groß-/Kleinschreibung und Buchstaben-Abstand. Die Vorschau bleibt beim Scrollen durch die Filter im Blick</li>
+    <li><b>Eigenen Visualizer bauen</b> steht wieder direkt unter Visualizer-Style</li>
+    <li><b>DANVIEL-Branding im Video</b> (Name und Logo) ist deutlich größer</li>
+    <li><b>5 neue Demo-Songs:</b> EDM, Drill, Lo-Fi, Reggaeton und Ballade</li>
+    <li><b>6 neue Hintergründe:</b> Beton, Schwarzer Marmor, Neon-Nacht, Sternenhimmel, Roter Samt und Akustik-Schaum</li>
+  </ul>
+  <h3>v15.3</h3>
+  <ul>
+    <li><b>Übersichtlicher:</b> jeder Schritt hat seine Farbe (Laden blau, Mix grün, Master gold, Video & Cover lila, Release rot), mit den Tasten 1–5 springst du direkt hin, und oben steht in einem Satz, was als Nächstes zu tun ist</li>
+    <li><b>Klappen sieht man jetzt:</b> jeder Bereich hat einen klaren Knopf „Aufklappen / Zuklappen“, eingeklappt steht in einer Zeile, was drin eingestellt ist. Im Mix sind Effekte, Tempo, Aufnahme und Spur bauen als Werkzeuge eingeklappt</li>
+    <li><b>Video & Cover in drei Karten:</b> 4a Lyrics, 4b Cover (mit Cover-Prompt und Cover-Studio), 4c Video. Selten gebrauchte Video-Einstellungen liegen unter „Mehr Einstellungen“. Bei 16:9 sitzt die Vorschau jetzt oben über den Einstellungen statt daneben</li>
+    <li><b>Pakete</b> direkt beim Auto-Mix und beim Mastering</li>
+    <li><b>Zerlegen:</b> der Fortschritt steht direkt unter den Knöpfen, ohne Scrollen</li>
+    <li><b>Hook finden</b> startet eine halbe Sekunde früher, damit der Clip den Einsatz sicher mitnimmt</li>
+    <li><b>Farbige Knöpfe:</b> Gold für die Hauptaktion, Grün für Play und Auto-Mix, Lila für KI, Blau für Hilfe und Demo</li>
+  </ul>
+  <h3>v15.2</h3>
+  <ul>
+    <li><b>Rauschen entfernen:</b> neuer Regler pro Spur unter „Klang“. Nimmt das typische KI-Rauschen und Zischen raus, vor allem in Pausen, ohne die Musik dumpf zu machen. Auto-Mix erkennt verrauschte Gesangs- und Instrumenten-Stems und schaltet ihn dort selbst ein, Drums und Bass bleiben unberührt</li>
+    <li><b>Auto-Mix klingt sauberer:</b> der Kompressor auf Gesang und Bass hat leise Stellen (Atmer, Rauschen) heimlich um 4–8 dB angehoben und die Stimme lauter gemacht als geplant. Jetzt bleibt sie genau dort, wo der Auto-Mix sie hinstellt. Bei Rauschen hebt das Mastering die obersten Höhen nicht mehr an, und die Vorschau ist so laut wie der Export</li>
+    <li><b>Lautstärke in der unteren Leiste:</b> beim Scrollen einfach unten lauter oder leiser machen</li>
+    <li><b>De-Esser repariert, weniger Rauschen im Mastering:</b> die Kompressoren des Browsers haben heimlich nachverstärkt. Dadurch hat der De-Esser leises Rauschen um bis zu 15 dB angehoben, statt S-Laute abzusenken, und das Mastering hat die Höhen bei leisen Stellen angehoben. Jetzt senkt der De-Esser nur noch ab und das Mastering bleibt neutral</li>
+    <li><b>Stems am iPhone:</b> braucht beim Einlesen nur noch etwa ein Drittel des Speichers, dadurch stürzt Safari bei vielen Stems nicht mehr ab. Falls das Wiederherstellen doch mal zu groß ist, lädt die Seite normal statt in einer Schleife neu</li>
+    <li><b>KI-Zerlegen am Handy:</b> nutzt am Handy nur einen Kern und lädt die KI sparsamer, damit Safari nicht mehr abstürzt. Falls es doch passiert, schaltet die App beim nächsten Mal „Nur 60 Sekunden“ ein</li>
+    <li><b>Suno-Archiv in Brave, Firefox und Safari:</b> dort wird der Ordner jetzt einmal eingelesen und im Browser gemerkt</li>
+    <li><b>Cover-Studio:</b> Titel und Artist lassen sich wieder mit der Maus verschieben</li>
+  </ul>
+  <h3>v15.1</h3>
+  <ul>
+    <li><b>Handy-Version:</b> kleiner Kopf mit ☰-Menü, der Player bleibt beim Scrollen oben, größere Knöpfe zum Tippen und eine einfache Ansicht mit dem Wichtigsten. „＋ Alle Funktionen anzeigen“ blendet den Rest ein</li>
+    <li><b>Neu laden löscht nichts mehr:</b> Spuren, Mix, Lyrics, Cover und Einstellungen bleiben in deinem Browser gespeichert und sind nach einem Refresh sofort wieder da. Nur „Projekt löschen“ fängt neu an. Nichts wird hochgeladen</li>
+  </ul>
+  <h3>v15.0</h3>
+  <ul>
+    <li>🎙 Aufnahme: über den Song singen, rappen oder einspielen. Jede Aufnahme wird eine eigene Spur mit allen Mix-Reglern, Versatz zum Nachschieben und Löschen. Ohne Song nimmst du frei auf und baust deinen Song von null</li>
+    <li>🔊 Bass Boosted: der alte, absichtlich übertriebene YouTube-Bass als eigene Stufe beim Bass-Boost</li>
+    <li>Ein Klick für 🐢 Slowed + Reverb, ⚡ Sped Up und 🌙 Nightcore</li>
+    <li>Tonart-Knöpfe −2, −1, Original, +1, +2 wie beim Tempo</li>
+    <li>⚙ Profi-Ansicht: öffnet bei allen Spuren alle Regler auf einmal</li>
+    <li>Spuren umbenennen: Doppelklick auf den Namen oder ✎</li>
+    <li>Suno-Archiv: „📂 Suno-Archiv verbinden“ einmal den Archiv-Ordner wählen, danach werden zu jedem geladenen Song Titel, Lyrics und Genre automatisch übernommen. Text- und JSON-Dateien neben den Stems oder in der ZIP gehen auch, ebenso Einfügen ins Lyrics-Feld</li>
+    <li>Release-Paket enthält jetzt auch den Suno-Prompt und die reinen Lyrics</li>
+    <li>Neue Demos: Pop, R&amp;B, Trap und House</li>
+    <li>Mikrofon-Freigabe nur noch einmal pro Sitzung</li>
+    <li>💎 Get Pro: Infos zur kommenden Desktop-Version</li>
+    <li>Das im Cover-Studio bearbeitete Cover (mit Schrift und Filtern) erscheint automatisch auch im Video</li>
+    <li>„So geht's“ ist jetzt eine ausführliche Anleitung mit Bildern zu jedem Bereich (Ausschnitt &amp; Zoomen, Suno-Archiv, Aufnahme …)</li>
+    <li>Neuer Look: Flächen wie Studio-Hardware mit Lichtkante, beleuchtete Knöpfe, Metall-Regler, LED-Schalter und das rot-blaue Licht vom Logo im Hintergrund</li>
+    <li>DANVIEL in den Logo-Farben: DAN rot, VIEL blau (edel abgestuft), im Kopf der Seite, in der Anleitung und im Video und Cover</li>
+    <li>Song zerlegen: Anzeige läuft ab der ersten Sekunde (Stück x von y, vergangene Zeit, Restzeit), und neu „Nur 60 Sekunden (schnell)“ für Clips</li>
+    <li>Song zerlegen auf mehreren Prozessor-Kernen gleichzeitig: der Song wird in Teile geschnitten, jeder Kern rechnet einen Teil, danach werden sie nahtlos zusammengesetzt. Geht nichts, rechnet es automatisch mit einem Kern</li>
+    <li>Cover-Studio: <b>Cover-Prompt aus den Lyrics</b>. Eine KI liest den ganzen Songtext und schreibt einen fertigen Bild-Prompt (Hauptmotiv, Licht, Farben, groß lesbarer Titel). „Cover-Prompt erstellen“ kostenlos oder mit eigenem OpenAI-Schlüssel, oder „Direkt an ChatGPT“: ChatGPT liest die Lyrics und malt das Cover in einem Schritt, „Neues Konzept erstellen“ für ein anderes Motiv. Zu finden mit dem Knopf „✍ Cover-Prompt aus Lyrics“ im Lyrics-Bereich oder ganz oben im Cover-Studio</li>
+    <li>Cover-Prompt: oben wählen „Schrift aufs Cover?“ Ja = ChatGPT schreibt Titel und Künstler fest ins Bild, Nein = Bild ohne Schrift, die Schrift kommt danach verschiebbar aus dem Studio. Der Kasten lässt sich zuklappen. Neuer Schalter „🔤 Studio-Schrift: An / Aus“ im Cover-Studio</li>
+    <li><b>📦 Pakete</b> (oben): fertige Einstellungen laden, anwenden und teilen. Mastering, Effekte, Ketten für einzelne Spuren (z. B. „Trap Lead Vocal“, „Deep 808“), Visualizer- und Cover-Styles. Mit dabei: das DANVIEL Starter-Pack. Eigene Pakete erstellen und als Datei weitergeben. Pakete enthalten nur Einstellungen, keinen Code</li>
+    <li>Projekt speichern / laden übernimmt jetzt wirklich alles: auch Auto-Mix an/aus, Bildidee, Musik-Style, Widmung, alle Felder vom Cover-Prompt samt fertigem Prompt, den Cover-Style und das Cover in voller Auflösung (Cover.png in der ZIP)</li>
+    <li><b>🧱 Spur bauen</b> (bei 2 · Mix): <b>Drum-Pattern</b> per Klick mit Vorlagen (Trap, Boom Bap, Pop, House, Dembow, Afrobeats, R&amp;B), <b>Instrument</b> einspielen mit Maus, Computer-Tastatur oder MIDI-Keyboard, mit Metronom und Einrasten, <b>Piano-Roll</b> zum Setzen, Verschieben und Verlängern von Tönen, <b>Loop / Sample</b> ans Tempo angepasst und eine <b>Zeitleiste</b>, in der du per Klick festlegst, in welchen Takten jede Spur spielt. Funktioniert auch ganz ohne Song</li>
+    <li><b>Neue Kompakt-Ansicht (Standard):</b> oben die Schritt-Leiste 1 Laden · 2 Mix · 3 Master · 4 Video &amp; Cover · 5 Release, es ist immer nur ein Schritt offen, weniger scrollen. „☰ Alles offen“ zeigt wie bisher alles auf einer Seite. Am Handy sitzt die Leiste unten</li>
+    <li>Hintergrund wählbar (oben bei 🎨): Carbon (Standard), Studio-Licht, Dunkles Holz, Gebürstetes Metall oder schlicht schwarz</li>
+    <li>Das ganze Studio liegt jetzt auf einer anthrazitfarbenen Leder-Schreibtischunterlage mit grauer Ziernaht</li>
+    <li>Mastering aus: kein Übersteuern mehr. Mit „Übersteuern verhindern“ wird der Mix beim Abspielen genauso wie beim Export so weit leiser gestellt, dass die lauteste Stelle bei −1 dB bleibt</li>
+    <li>Mastering an: wird nicht mehr kurz viel zu laut, während es den Song analysiert. Bis die Analyse fertig ist, läuft der normale Mix weiter</li>
+    <li>Regler wahlweise als <b>Drehknöpfe</b> wie am Mischpult (bei „Spuren“ umschalten: ━ Schieber / ◉ Drehknöpfe). Ziehen nach oben/unten, Mausrad, Doppelklick = Standard</li>
+    <li>„So geht’s“ neu: in 5 Schritten zum fertigen Song, mit Bildern, gelben Nummern und Erklärungen zu jedem Knopf. Bild anklicken = groß</li>
+  </ul>
+  <h3>Neu in v14.9</h3>
+  <ul>
+    <li>MIDI-Stems (z. B. von Suno neben WAV und MP3) werden mitgeladen und von einem eingebauten Synth gespielt: Piano, E-Piano, Pad, Streicher, Pluck, Lead, Bass, 808 und Drums. Sie starten ausgeschaltet, damit nichts doppelt klingt, und lassen sich dazumischen</li>
+    <li>Von mehreren Formaten desselben Stems wird immer die beste Qualität genommen (WAV vor MP3)</li>
+  </ul>
+  <h3>Neu in v14.8</h3>
+  <ul>
+    <li>Hintergrund-Video kommt jetzt zuverlässig ins exportierte Video, auch beim TikTok-Clip: was die Vorschau zeigt, wird exportiert</li>
+    <li>Jede Spur hat eine deutlich sichtbare Lautstärke mit − / + (je 1 dB), Doppelklick auf den Regler setzt auf 0 dB zurück</li>
+    <li>Neues Vorschaubild für Links (Discord, WhatsApp usw.)</li>
+  </ul>
+  <h3>Neu in v14.7</h3>
+  <ul>
+    <li>Video: Titel-Position (oben, Mitte, unten), Ausrichtung (links, Mitte, rechts), eigene Titel-Schrift und Titel-Größe. Den Titel kannst du in der Vorschau auch mit der Maus verschieben</li>
+    <li>Titel und Artist bekommen über einem Hintergrund-Video einen Schatten, damit sie lesbar bleiben</li>
+  </ul>
+  <h3>Neu in v14.6</h3>
+  <ul>
+    <li>Effekte haben jetzt einen eigenen Schalter wie Mastering: Hall, Echo und Sidechain sind nach dem Laden aus. Auto-Mix schaltet sie nicht mehr ein, sanfteres Sidechain</li>
+    <li>Hintergrund-Video: ein Video wählen oder auf die Vorschau ziehen, Visualizer, Cover und Titel lassen sich einzeln ausblenden, z. B. nur Video mit Lyrics für Shorts</li>
+    <li>Eigene Visualizer-Styles bauen (Form, Farben, Schrift, Effekte), speichern, als Datei exportieren und importieren</li>
+    <li>Cover-Studio: 13 neue Schriften und neue Filter: Wärme, Farbton, Verblassen, Weichzeichnen, Glow, RGB-Versatz (VHS), Lichtlecks, Duoton und Sepia</li>
+    <li>Lyrics: falsch erkannte Wörter direkt in der mitlaufenden Liste korrigieren (✎ oder Doppelklick auf die Zeile), ohne alles neu einzufügen</li>
+  </ul>
+  <h3>Neu in v14.5</h3>
+  <ul>
+    <li>Die Video-Vorschau läuft beim Abspielen live mit: Visualizer, Lyrics und Fortschritt bewegen sich zur Musik</li>
+    <li>„Stems“ am Ende des Dateinamens landet nicht mehr im Songtitel</li>
+    <li>Auto-Mix klingt nicht mehr hallig: Pegel-Ausgleich und Kompressor ziehen den Hall, der schon in Suno-Vocals steckt, nicht mehr hoch. Sanftere Kompression, schmaleres Stereobild, „Hall beim Auto-Mix“ steht jetzt standardmäßig auf Aus</li>
+  </ul>
+  <h3>Neu in v14.4</h3>
+  <ul>
+    <li>6 Visualizer-Styles fürs Video: Klassisch, Neon, Cyberpunk, R&amp;B Nacht, Pastell-Pop und Minimal</li>
+    <li>Auto-Mix ist jetzt ein Schalter: grau = aus, orange = an. Nochmal klicken schaltet ihn aus, die Stems klingen wieder original</li>
+    <li>Nach dem Laden ist nichts eingeschaltet, kein Auto-Mix und kein Mastering. Die Einstellungen vom letzten Mal holst du mit „↺ Letzte Einstellungen“ zurück</li>
+    <li>Ein Genre auswählen mischt nicht mehr sofort, nur wenn Auto-Mix an ist</li>
+    <li>„Hall beim Auto-Mix“: Aus, Wenig (Standard) oder Normal</li>
+  </ul>
+  <h3>Neu in v14.3</h3>
+  <ul>
+    <li>Viel weniger Hall beim Auto-Mix: etwa halb so viel auf der Stimme, Echo dezenter. Suno-Vocals haben oft schon eigenen Hall drauf</li>
+    <li>Saubererer Hall: mehr Pre-Delay (die Stimme bleibt vorne), kürzere Hallfahne, kein Matsch in den tiefen Mitten und kein Zischen bei S-Lauten</li>
+  </ul>
+  <h3>Neu in v14.2</h3>
+  <ul>
+    <li>Hook finden startet jetzt kurz bevor der Song nach dem Drop aufgeht, statt einen halben Takt zu spät</li>
+    <li>Ausschnitt-Wellenform zoomen: Mausrad, ＋ / －, „Ganzer Song“ und „Auf Ausschnitt“. Seitwärts wischen oder Shift + Mausrad scrollt durch den Song</li>
+    <li>Erklärungen beim Drüberfahren mit der Maus auf fast allen Knöpfen</li>
+    <li>Logo im Granit-Look</li>
+  </ul>
+  <h3>Neu in v14.1</h3>
+  <ul>
+    <li>Sanfterer Auto-Mix: mastert bei jedem Genre auf Streaming-Lautstärke (−14 LUFS), weniger Bass-Boost und Sättigung. Lauter geht weiter mit „Laut (Club &amp; DJ)“</li>
+    <li>Mittippen der Lyrics: laufende Uhr mit Millisekunden direkt neben der Zeile, letzte Zeile mit −100 ms / +100 ms (↓ / ↑) nachschieben</li>
+    <li>Fenster wie Changelog und Anleitung schließen mit ✕ oben rechts oder Klick daneben</li>
+    <li>DANVIEL-Logo im Kopf der Seite</li>
+  </ul>
+  <h3>Neu in v14.0</h3>
+  <ul>
+    <li>Gleichmäßigerer Sound: Limiter mit automatischer Release-Zeit (kein Pumpen mehr), ruhigere Kompressoren, sanfteres Sidechain bei EDM und House</li>
+    <li>Lautstärke-Ausgleich im Mastering: gleicht große Sprünge zwischen Songteilen sanft aus</li>
+    <li>Pegel-Ausgleich (Vocal-Rider) für Stimmen: hält den Gesang gleichmäßig laut, der Auto-Mix schaltet ihn automatisch ein</li>
+    <li>Bass-Boost im Mastering: Aus, Mehr, Viel, Maximal, mit Obertönen, damit der Bass auch auf dem Handy zu hören ist</li>
+    <li>Doppelte Stems (z. B. WAV und MP3 vom selben Stem aus Suno) werden erkannt, es wird immer die beste Qualität genommen</li>
+    <li>Changelog: Knopf „📋 Changelog“ oben</li>
+  </ul>
+  <h3>Neu in v13.8</h3>
+  <ul>
+    <li>⭐ GitHub-Knopf oben: Updates verfolgen und das Projekt mit einem Stern unterstützen</li>
+    <li>Mastering für Einsteiger: Knöpfe nach Ziel („Für Spotify &amp; YouTube“, „Laut (Club &amp; DJ)“), Regler und LUFS-Zahlen unter „⚙ Profi-Einstellungen“</li>
+    <li>Lyrics-Mittippen gleicht die Audio-Verzögerung des Geräts aus; das Fehler-Log zeigt die Audio-Latenz</li>
+  </ul>
+  <h3>Neu in v13.7</h3>
+  <ul>
+    <li>Release-Check zeigt, wie laut Spotify, YouTube, Apple Music, Amazon, Tidal und Deezer deinen Song abspielen</li>
+    <li>Release-Check vergleicht die Klangbalance mit dem Genre</li>
+    <li>Genre-Erkennung zeigt, wie sicher sie ist (in Prozent)</li>
+  </ul>
+  <h3>Neu in v13.6</h3>
+  <ul>
+    <li>🎬 TikTok / Reels / Shorts-Clip: ein Klick findet die Hook, stellt 9:16 ein und springt zum Video</li>
+  </ul>
+  <h3>Neu in v13.5</h3>
+  <ul>
+    <li>Sprache: oben zwischen Deutsch und Englisch umschalten. Startsprache ist Englisch, deine Wahl wird gemerkt.</li>
+  </ul>
+  <h3>Neu in v13.4</h3>
+  <ul>
+    <li>Jeden Bereich zuklappen: Pfeil oben rechts an jedem Kasten. Das Programm merkt sich, was du zugeklappt hast.</li>
+    <li>Die Spuren haben eine eigene Überschrift, die Genre-Info ist rot hervorgehoben</li>
+  </ul>
+  <h3>Neu in v13.3</h3>
+  <ul>
+    <li>Auto-Mix und Mastering nach Genre: Pop, R&amp;B, Hip-Hop/Trap, EDM/Big Room, House, Rock. Jedes Genre hat eigene Lautstärke-Verhältnisse, Vocal-Effekte, Kompression, Sidechain-Pumpen, Stereobreite, Lautheit und Klangziel.</li>
+    <li>„Automatisch“ hört sich den Song an (Tempo, Kick-Muster, Sub-Bass, Instrumente) und wählt das passende Genre</li>
+  </ul>
+  <h3>Neu in v13.2</h3>
+  <ul>
+    <li>Cover per Drag & Drop: Bild aus ChatGPT (oder vom Rechner) einfach reinziehen, oder „Bild kopieren“ und Strg+V</li>
+    <li>Ganze Ordner mit Stems reinziehen, auch mit Unterordnern; ZIPs werden noch gründlicher durchsucht</li>
+  </ul>
+  <h3>Neu in v13.1</h3>
+  <ul>
+    <li>Cover-Editor: Titel und Artist im Bild frei hinziehen, wohin du willst (passt sich automatisch an den Rand an)</li>
+    <li>12 Schriftarten, Größe für Titel und Artist, Schriftfarbe (auch Gold oder Farbe aus dem Cover), Schatten und Verlauf an/aus</li>
+    <li>Bild-Filter: Rand dunkler oder heller, Helligkeit, Kontrast, Farbe, Film-Körnung, Schwarz-Weiß</li>
+    <li>Alle Cover-Einstellungen werden im Projekt mitgespeichert</li>
+  </ul>
+  <h3>Neu in v13.0</h3>
+  <ul>
+    <li>Mini-Player unten: Sobald du runterscrollst, erscheint eine Leiste mit Play/Pause, Zeitleiste und Vorher/Nachher. Kein Hoch- und Runterscrollen mehr. Der Pfeil ↑ bringt dich zurück zum großen Player.</li>
+    <li>Tipp: Die Leertaste startet und stoppt überall</li>
+  </ul>
+  <h3>Neu in v12.9</h3>
+  <ul>
+    <li>„Vorher hören“ spielt den Song im Original, ohne Mix und ohne Mastering. Nochmal klicken für Nachher, so hörst du sofort den Unterschied.</li>
+  </ul>
+  <h3>Neu in v12.8</h3>
+  <ul>
+    <li>Stem-ZIPs werden komplett entpackt, auch mit Unterordnern und ZIPs in der ZIP (typisch nach WhatsApp, Drive oder WeTransfer)</li>
+    <li>„Projekt löschen“ ganz oben (rot): zweimal klicken, dann ist alles leer und du startest ein neues Projekt. Deine Cover-Styles und die Hör-Lautstärke bleiben erhalten.</li>
+  </ul>
+  <h3>Neu in v12.7</h3>
+  <ul>
+    <li>Cover-Studio öffnet sich unter der Video-Vorschau über die ganze Breite</li>
+    <li>„Cover-Studio“, „Bild wählen“ und „Logo wählen“ farbig umrandet, damit man sie sofort findet</li>
+  </ul>
+  <h3>Neu in v12.6</h3>
+  <ul>
+    <li>Alle Knöpfe sind besser zu sehen</li>
+    <li>Musik-Links in den Farben der Apps (Spotify grün, YouTube rot …)</li>
+    <li>Cover-Studio erklärt, was beim kostenlosen Server passieren kann (Wasserzeichen, ab und zu Buchstaben im Bild)</li>
+  </ul>
+  <h3>Neu in v12.5</h3>
+  <ul>
+    <li>Cover über ChatGPT: Bild-KI auf „ChatGPT / eigene KI“ stellen, Prompt kopieren, Bild in ChatGPT erstellen lassen und mit „Fertiges Bild laden“ übernehmen. Titel und Name setzt das Programm exakt.</li>
+    <li>Kostenloser Bild-Server: neue Adresse, automatische weitere Versuche, optional ein kostenloser eigener Schlüssel</li>
+  </ul>
+  <h3>Neu in v12.4</h3>
+  <ul>
+    <li>Projekt weitergeben ist jetzt eindeutig: Es gibt nur noch „Projekt speichern (ZIP)“, das alles enthält (Spuren, Einstellungen, Lyrics, Cover, Logo, Hook). Die alte Einstellungs-Datei (.json) ohne Spuren gibt es nicht mehr, sie lässt sich aber weiterhin laden.</li>
+    <li>Umlaute werden überall richtig angezeigt, und am Handy passt die Größe</li>
+  </ul>
+  <h3>Neu in v12.3</h3>
+  <ul>
+    <li>Fehler-Log: ganz unten „Fehler-Log speichern“. Die Textdatei zeigt Schritt für Schritt, was passiert ist (Browser, Grafikkarte, jede Meldung, beim Zerlegen eine genaue Analyse). Ideal zum Weiterschicken, wenn etwas nicht klappt. Es enthält keine Audiodaten.</li>
+    <li>Dein Logo als Icon im Browser-Tab, für Lesezeichen und den Handy-Startbildschirm</li>
+    <li>Video: Mit DANVIEL-Branding erscheint das DANVIEL-Logo neben dem Namen. Ohne Branding bleibt nur ein kleines Logo rechts oben.</li>
+    <li>Song zerlegen: erkennt, wenn die KI-Ausgabe zeitlich verschoben oder zu laut ist, und gleicht das automatisch aus (nur wenn das Ergebnis danach genau zum Original passt)</li>
+    <li>Cover-Studio aufgeräumt: nutzt die volle Breite, normale Auswahlfelder, übersichtlicher</li>
+  </ul>
+  <h3>Neu in v12.2</h3>
+  <ul>
+    <li>Song in Stems zerlegen: rechnet jetzt über den Prozessor statt über die Grafikkarte, weil die Grafikkarten-Berechnung bei diesem KI-Modell fehlerhafte Ergebnisse liefert. Dauert länger, ist aber zuverlässig.</li>
+  </ul>
+  <h3>Neu in v12.1</h3>
+  <ul>
+    <li>Neuer Name: aus dem Stem Mixer wird <b>DANVIEL Studio</b>, weil er längst mehr kann als mischen. Deine Einstellungen, Styles und Projekte bleiben erhalten.</li>
+  </ul>
+  <h3>Neu in v12.0</h3>
+  <ul>
+    <li>Release-Check: prüft Lautheit, True Peak, Clipping, Mono-Kompatibilität, Bass und Stille wie ein Profi</li>
+    <li>Release-Paket: Master, Instrumental, Acapella, Cover, LRC-Lyrics und Shorts-Video in einer ZIP</li>
+    <li>Taktlicht 1-2-3-4 mit optionalem Klick und „Gesang setzt ein in …“ beim Mittippen</li>
+    <li>Projekt mit Audio als eine ZIP, inklusive Cover, Logo, Lyrics und Hook</li>
+    <li>Eigenes Branding im Video: Text und Logo</li>
+    <li>Abhör-Lautstärke, Gehörschutz, Mastering mit Mehrband und Stil, WhatsApp-Dateien (.mpeg)</li>
+    <li>Neu: Cover-Studio mit eigenem KI-Style und fertigem Cover-Export (3000 × 3000 mit Schrift), Pegelkorrektur beim Song-Zerlegen</li>
+  </ul>
+  </div>
+  <div class="chg-en" hidden>
+  <h3>v16.5</h3><ul>
+    <li><b>Fonts with live preview:</b> the font menu shows your title in every font, hover and you see it big on the cover right away, a click takes it. Groups, search and ★ favourites, also for the video title font</li>
+    <li><b>26 new fonts:</b> graffiti, spray can, dripping paint, stencil, gothic, fashion magazine, luxury, wedding, signature, 3D shadow, bubble, tech and more, now over 75</li>
+    <li><b>Design the full-screen video freely:</b> move the visualizer and lyrics in the preview and drag the gold corner to resize, “Back to default” resets, saved with the project</li>
+    <li><b>Karaoke lyrics stop with the vocal:</b> the highlight ends where the lead vocal pauses instead of running into the instrumental. New “Karaoke sweep” switch to turn it off</li>
+    <li><b>Bigger cover without lyrics</b> in the video</li>
+    <li><b>DANVIEL as in the logo:</b> the default artist appears in video, record and cover in white and gold like the logo, any other name in normal type</li>
+    <li><b>Build your own style no longer changes anything when it opens:</b> it starts from the chosen style, only what you change (e.g. pulsing cover) goes on top. Save or discard</li>
+    <li><b>“Add picture”</b> right under the preview in the cover studio and in the video section</li>
+    <li><b>“Fit to the vocals” always at hand:</b> as soon as there are lyrics (from the Suno archive, pasted or recognised) the button sits right in the lyrics bar. Lyrics from the Suno archive open the section automatically</li>
+    <li><b>“Tap the start, rest automatic”:</b> you tap only the first 3 lines with the space bar, then the automatic spreads the rest over the vocals, following your rhythm. Good when the automatic takes a wrong note as the first line. Also works when timed lyrics are already there</li>
+    <li><b>Move the cover, record, title, lyrics and visualizer in the video:</b> drag them in the preview in every format, the gold corner resizes. The cover always stays in the frame and never covers the watermark or signature. Near the exact middle everything snaps into place, a gold line shows it. With the cover centred in 16:9 the title moves above it. New “Artist size” slider</li>
+    <li><b>Logo as a polished bronze nameplate:</b> with bevel and screws, DANVIEL in white and gold with a dark outline, the version updates automatically</li>
+  </ul>
+  <h3>v16.4</h3><ul>
+    <li><b>15 demo songs instead of short loops:</b> every demo is a little song of about 1 to 1.5 minutes with intro, verse, hook, break and outro, with fills, a riser and impact before the hook and separate stems (drums, bass, keys, pad, lead, FX). New: afrobeats, amapiano, phonk (with a cowbell melody), dancehall (with air horn), synthwave and boom bap</li>
+    <li><b>Samples:</b> 40 one-shots in groups, drums, 808 &amp; bass, crowd shouts (“Hey!”, “Ho!”, “Yeah!”, “Uh!”), hits like air horn and orchestra hit, FX like riser, impact and tape stop, atmo like vinyl crackle and rain. All made in the studio and free to use. “+ Drums” puts a sample into the drum pattern as its own row</li>
+    <li><b>Your own samples:</b> drop in one-shots, they stay saved in your browser and travel with the saved project</li>
+    <li><b>10 new backgrounds:</b> walnut, studio wood wall, graphite honeycomb, vinyl, night city, aurora, sunset, granite, carbon gold and matte leather, no images and no slowdown</li>
+    <li><b>Video with a full-screen picture:</b> under “Picture” choose “Full screen (corner to corner)”, your picture fills the whole video with a slow zoom and the text moves down. Next to it you switch title, visualizer and lyrics on or off with one click</li>
+    <li><b>Easier to read:</b> switch labels (e.g. Compact / Everything open) and the hover info are bigger and higher in contrast</li>
+    <li><b>“How it works” completely new:</b> every picture from the current interface, golden numbers, new pictures for the monitor and the samples, title with the DANVIEL logo</li>
+  </ul>
+  <h3>v16.3</h3><ul>
+    <li><b>Packs go on top:</b> “Deep 808” gives the bass more sub but resets nothing else. Loudness, levels and balance from Auto-Mix stay (only “loud” packs like “Club loud” raise the loudness). After the click you see what changed, with “Undo”. Active packs are remembered and added on top again after every new Auto-Mix</li>
+    <li><b>Plug in a keyboard and play:</b> a USB keyboard is detected anywhere in the studio, a light shows “Keyboard connected” and one click creates an instrument track. Velocity, sustain pedal and pitch bend, start/stop on the keyboard records (Chrome/Edge)</li>
+    <li><b>Drum pads:</b> pads like Akai MPD (or a keyboard) play the drum pattern. While the song plays every hit lands straight in the grid, snapped to the 16th. When pads are detected, the studio offers to create a drum track</li>
+    <li><b>“Build a track” stands out:</b> your song from scratch, with a gold frame and own icons for drums, instrument and loop</li>
+    <li><b>Save project takes everything:</b> cover and all cover drafts, the finished cover with text, lyrics, background video and your finished videos. Everything is back when you open it</li>
+    <li><b>MIDI tracks hidden:</b> switched-off MIDI tracks are hidden, “Show MIDI” at the top right of the tracks brings them back. Switched-on ones always stay visible</li>
+    <li><b>7 new video styles:</b> DANVIEL Gold, Rainy night, Ice, Sunset, Embers, Vaporwave and Old film. In every style the visualizer now ends above the signature, both stay clearly visible</li>
+    <li><b>6 new effects for your own style:</b> rain, snow, embers, light leak, bokeh lights, dust &amp; scratches</li>
+    <li><b>New backgrounds</b> emerald, bordeaux, studio fog, gold lines and chrome, <b>8 new cover styles</b> (e.g. DANVIEL Gold Noir, Rain City, Afro Sunset, Drill Dark) and <b>switches</b> instead of checkboxes for on/off options</li>
+    <li><b>Own icons everywhere:</b> dialogs, help and changelog now use DANVIEL icons instead of emojis. The packs button in the cover studio is gone</li>
+  </ul>
+  <h3>v16.2</h3><ul>
+    <li><b>17 new genres for Auto-Mix:</b> drill, afrobeats and lo-fi in the first row. Under “More genres” (new and tidy in groups): instrumental, classical / orchestral, jazz / soul, reggaeton / Latin, K-pop, amapiano, gospel, country, techno, drum &amp; bass, psytrance / Goa, synthwave / cyberpunk, phonk and metal</li>
+    <li><b>Set up like in the studio:</b> in drill the kick leads and the 808 sits behind it (unlike trap), afrobeats gets wide percussion and a dotted echo, lo-fi rolled-off highs and tape warmth, classical stays almost uncompressed at −16 LUFS and −1 dB true peak</li>
+    <li><b>Table “What changes per genre?”</b> now shows every genre</li>
+    <li><b>New DANVIEL genre pack:</b> mastering “Club loud”, “Spotify clean”, “Vinyl warm”, “Lo-fi soft”, “Cinema dynamic”, “Drill dark”, effects “Afro Bounce”, “Dark Drill”, “Lo-Fi Tape”, “Wide Hook”, “Club Pump” and track chains like “Trap Vocal Chain”, “Drill Vocal”, “Radio voice” and “Ad-libs wide”</li>
+    <li><b>Important fix, double playback:</b> when the song was already playing and “Play” was triggered again (e.g. a background job finished while you pressed play), a second copy kept playing that could not be stopped and made everything twice as loud. Now a second play always stops cleanly first</li>
+    <li><b>Delete project with a question:</b> red button now also at the bottom right of the monitor, both ask first in a window “Really delete?”</li>
+    <li><b>Export packs:</b> every pack now has “Export” and is saved as a .json file. Import as before with “Load pack” or drag &amp; drop</li>
+  </ul>
+  <h3>v16.1</h3><ul>
+    <li><b>Monitor upgraded:</b> the player shows the whole mix as a waveform to click and seek, with time, keys for start, loop, before/after and mute</li>
+    <li><b>Building blocks:</b> Selected, track overview (each track as a small waveform), big visualizer and quick select can be hidden and moved with the grip ⠿. Video and player always stay</li>
+    <li><b>Four monitor designs:</b> stainless steel, chrome, black glass and leather, via the gear at the top of the monitor</li>
+    <li><b>MIDI stays off:</b> quick select like “All on” or “Beat” never switches MIDI tracks on, only you do</li>
+    <li><b>Wider folder on big screens,</b> changelog, GitHub and Pro at the top right, own icons instead of emojis, important buttons glow softly</li>
+    <li><b>Auto-Mix report</b> folds into one line after 10 seconds, “Details” opens it again</li>
+    <li><b>“To the video”</b> opens the video section and lands right on the video card</li>
+  </ul>
+  <h3>v16</h3><ul>
+    <li><b>New design, dark by default:</b> charcoal cards with gold on the leather folder. If you like it light: background “☀ Light”</li>
+    <li><b>The monitor:</b> on wide screens a stainless steel tray sits on the right and follows you while scrolling: a big live preview of the video, below it the player with loudness, peak, analyzer and quick select, and “Selected” with volume, reverb and noise of the track you touched last</li>
+    <li><b>Step bar:</b> wide tiles with their own icon and name. What a step does shows when you hover</li>
+    <li><b>Info on hover:</b> every explanation shows right away as a small card when the mouse rests on a button</li>
+    <li><b>Tidy header:</b> undo and redo as arrows, “How it works” in blue, “Compact / Everything open” as a switch</li>
+    <li><b>Project bar at the bottom:</b> save, open and the red “Delete project” button now sit at the end of the folder</li>
+    <li><b>Auto-Mix in gold, packs in teal:</b> the important buttons stand out. Auto tools and quick tweaks sit in an even grid, each button with its own icon</li>
+    <li><b>Waveforms fixed:</b> the track waveforms sometimes stayed empty after switching to the Mix step</li>
+    <li><b>Signature in the video:</b> smaller in the corner, the visualizer runs over it</li>
+  </ul>
+  <h3>v15.8</h3><ul>
+    <li><b>New logo:</b> DANVIEL Studio has its own modern logo: “DΛNVIEL” built from its own letters, Λ, N and V form a golden sound wave. Plus a new app icon (D with a golden peak) in the browser tab and on your phone</li>
+    <li><b>Branding in the video:</b> the DANVIEL mark sits top left and the signature “Danviel Studio” bottom right, for the whole video. With your own logo or name the mark moves to the top right and your branding takes the top spot</li>
+    <li><b>Keyboard shortcuts:</b> A = Auto-Mix, M = mastering on/off, B = before/after, L = load files, V = create video, E = export, ? = all shortcuts. The keyboard button on the left of the step bar lists them all, clicking a row runs it</li>
+    <li><b>Step bar with its own icons:</b> Load, Mix, Master, Video & Cover and Release now show an icon instead of a number</li>
+    <li><b>Colour pickers:</b> for cover, visualizer and title with a swatch, a hex code to type in and 12 ready colours</li>
+    <li><b>Tidied up:</b> checkbox groups sit neatly in a grid, delete and reset buttons are red, buttons in one row have the same height</li>
+    <li><b>Folding tracks fixed:</b> the “Collapse” button on the tracks disappeared after loading stems. Now all tracks fold with one click, the line then shows e.g. “5 tracks · 5 on”</li>
+  </ul>
+  <h3>v15.7</h3><ul>
+    <li><b>New Auto-Mix profiles for instrumentals:</b> under “More genres” there are 🎬 Cinematic / film (lots of dynamics, wide and spacious, gentle compression), 🎮 Game music (even, loop-friendly, −16 LUFS and −1 dB true peak per the standard for mobile and handheld games) and 🎧 Background music (steady level, room in the mids for a voice). They work for a finished song too</li>
+    <li><b>Trimming:</b> the waveform shows right away when opened, also in the pro view. A click into the still empty picture could cut off the end of the track before</li>
+  </ul>
+  <h3>v15.6</h3><ul>
+    <li><b>Trim and move tracks:</b> under “Sound” on any track, zoom in, cut the start and end with the yellow handles (with a short fade) and make the track come in 10 ms up to a bar earlier or later. The original is kept, “Reset” brings it back</li>
+    <li><b>Put built tracks into an existing track:</b> mix drums, instrument or loop into a track you already have with “⤵ Put into track” instead of keeping a new track. Undo at the target track under “Sound”</li>
+    <li><b>Quick tweaks:</b> vocals louder / quieter, more bass, more punch, radio mix, wider, clean, warmer, brighter in one click, Ctrl+Z takes it back</li>
+    <li><b>File name shows what's inside:</b> with only the beat or only the vocals on, the export is named e.g. “Artist - Title (Beat)” or “(Vocals)” automatically, the video too</li>
+    <li><b>Build your own visualizer:</b> 6 new shapes (mirrored bars, filled spectrum, retro pixels, circle bars around the cover, sparks, no visualizer), a third colour, cover motion (pulses with the beat, breathes, spins, sways, shakes) with adjustable strength, twinkling stars, beat flash, glowing and pulsing title and every font of the cover studio</li>
+    <li><b>Lyrics:</b> the running time with milliseconds sits at the top right of the scrolling list</li>
+    <li><b>Loading projects fixed:</b> projects with a cover or logo opened without their settings (the project file was too big for an old limit). Now mix, mastering and everything else come back exactly as saved</li>
+  </ul>
+  <h3>v15.5</h3><ul>
+    <li><b>Packs where you need them:</b> teal “📦 Packs” buttons at Auto-Mix, effects, mastering, visualizer styles and in the cover studio. The packs window highlights the matching presets right away</li>
+    <li><b>Your own photo as background:</b> pick “📷 Own photo …” under background. It stays saved in your browser only, nothing is uploaded</li>
+    <li><b>15 more fonts</b> in the cover studio and for the video title (e.g. typewriter, brush, neon sign, string lights, blood horror, speed), now over 50</li>
+    <li><b>Cover studio:</b> the preview sits big and centred above the controls</li>
+    <li><b>Video:</b> own branding and logo sit to the right of “Create video”, foldable boxes like “Build your own style” and “More settings” are clearly highlighted</li>
+  </ul>
+  <h3>v15.4</h3><ul>
+    <li><b>All header buttons visible again:</b> background, language, packs, changelog, GitHub and delete project are back on top, no menu</li>
+    <li><b>Cover studio:</b> 12 new fonts (e.g. comic, western, wedding, horror, military), 9 new text colours plus a custom colour, outline, upper/lower case and letter spacing. The preview stays in view while you scroll through the filters</li>
+    <li><b>Build your own visualizer</b> is back right under Visualizer style</li>
+    <li><b>DANVIEL branding in the video</b> (name and logo) is clearly bigger</li>
+    <li><b>5 new demo songs:</b> EDM, Drill, Lo-Fi, Reggaeton and Ballad</li>
+    <li><b>6 new backgrounds:</b> concrete, black marble, neon night, starry sky, red velvet and acoustic foam</li>
+  </ul>
+  <h3>v15.3</h3><ul>
+    <li><b>Clearer layout:</b> every step has its colour (Load blue, Mix green, Master gold, Video & Cover purple, Release red), keys 1–5 jump straight there, and one line on top says what to do next</li>
+    <li><b>Folding you can see:</b> every section has a clear “Expand / Collapse” button, folded sections show in one line what's set inside. In Mix, effects, tempo, recording and build tracks are folded as tools</li>
+    <li><b>Video & Cover in three cards:</b> 4a Lyrics, 4b Cover (with cover prompt and cover studio), 4c Video. Rarely used video settings are under “More settings”. With 16:9 the preview now sits above the settings instead of next to them</li>
+    <li><b>Packs</b> right at Auto-Mix and Mastering</li>
+    <li><b>Splitting:</b> the progress shows right under the buttons, no scrolling</li>
+    <li><b>Find hook</b> starts half a second earlier so the clip safely catches the entry</li>
+    <li><b>Coloured buttons:</b> gold for the main action, green for play and Auto-Mix, purple for AI, blue for help and demo</li>
+  </ul>
+  <h3>v15.2</h3><ul>
+    <li><b>Remove noise:</b> new slider per track under “Sound”. Takes out the typical AI hiss, especially in pauses, without making the music dull. Auto-Mix detects noisy vocal and instrument stems and switches it on there, drums and bass stay untouched</li>
+    <li><b>Auto-Mix sounds cleaner:</b> the compressor on vocals and bass secretly lifted quiet parts (breaths, hiss) by 4–8 dB and made the voice louder than planned. Now it stays exactly where Auto-Mix puts it. With hiss, the mastering no longer lifts the very top, and the preview is as loud as the export</li>
+    <li><b>De-esser fixed, less hiss from mastering:</b> the browser's compressors secretly added make-up gain, so the de-esser lifted quiet hiss by up to 15 dB instead of taming S sounds. Now it only turns down and the mastering stays neutral</li>
+    <li><b>Volume in the bottom bar:</b> turn it up or down at the bottom while you scroll</li>
+    <li><b>Stems on iPhone:</b> loading needs only about a third of the memory, so Safari no longer crashes with many stems. A session that is too big no longer reloads in a loop</li>
+    <li><b>AI splitting on phones:</b> uses one core and loads the AI more economically so Safari doesn't crash. If it still happens, the app switches on “Only 60 seconds” next time</li>
+    <li><b>Suno archive in Brave, Firefox and Safari:</b> the folder is read once and remembered in the browser</li>
+    <li><b>Cover studio:</b> title and artist can be dragged with the mouse again</li>
+  </ul>
+  <h3>v15.1</h3><ul>
+    <li><b>Phone version:</b> a small header with a ☰ menu, the player stays at the top while scrolling, bigger buttons to tap and a simple view with the essentials. “＋ Show all features” shows the rest</li>
+    <li><b>A refresh no longer loses anything:</b> tracks, mix, lyrics, cover and settings stay saved in your browser and come back right away after a refresh. Only “Delete project” starts over. Nothing is uploaded</li></ul>
+  <h3>v15.0</h3><ul>
+    <li>🎙 Recording: sing, rap or play over the song. Every take becomes its own track with all mix controls, an offset to nudge it and delete. Without a song you record freely and build your song from scratch</li>
+    <li>🔊 Bass Boosted: the old, deliberately overdone YouTube bass as its own bass boost level</li>
+    <li>One click for 🐢 Slowed + Reverb, ⚡ Sped Up and 🌙 Nightcore</li>
+    <li>Key buttons −2, −1, Original, +1, +2 like for tempo</li>
+    <li>⚙ Pro view: opens all controls on every track at once</li>
+    <li>Rename tracks: double-click the name or ✎</li>
+    <li>Suno archive: choose the archive folder once with “📂 Connect Suno archive”, then title, lyrics and genre are taken over automatically for every loaded song. Text and JSON files next to the stems or in the ZIP work too, as does pasting into the lyrics box</li>
+    <li>The release package now also contains the Suno prompt and the clean lyrics</li>
+    <li>New demos: Pop, R&amp;B, Trap and House</li>
+    <li>Microphone permission only once per session</li>
+    <li>💎 Get Pro: info about the upcoming desktop version</li>
+    <li>The cover you edit in the cover studio (with text and filters) automatically shows up in the video too</li>
+    <li>“How it works” is now a full guide with pictures for every part (section &amp; zoom, Suno archive, recording …)</li>
+    <li>New look: panels like studio hardware with a lit edge, illuminated buttons, metal knobs, LED switches and the red/blue light of the logo in the background</li>
+    <li>DANVIEL in the logo colours: DAN red, VIEL blue (with a rich gradient), in the page header, the guide, the video and the cover</li>
+    <li>Split song: the display runs from the first second (piece x of y, time elapsed, time left), and new “Only 60 seconds (fast)” for clips</li>
+    <li>Split song on several processor cores at once: the song is cut into parts, each core splits one part, then they are joined seamlessly. If that fails it automatically continues with one core</li>
+    <li>Cover studio: <b>cover prompt from the lyrics</b>. An AI reads the whole lyrics and writes a ready image prompt (main motif, light, colours, big readable title). “Create cover prompt” for free or with your own OpenAI key, or “Straight to ChatGPT”: ChatGPT reads the lyrics and paints the cover in one step, “Create new concept” for a different motif. Open it with “✍ Cover prompt from lyrics” in the lyrics section or at the top of the cover studio</li>
+    <li>Cover prompt: choose “Text on the cover?” at the top. Yes = ChatGPT paints title and artist into the picture, No = picture without text, the movable text comes from the studio afterwards. The box can be folded. New “🔤 Studio text: on / off” switch in the cover studio</li>
+    <li><b>📦 Packs</b> (at the top): load, apply and share ready-made settings. Mastering, effects, chains for single tracks (e.g. “Trap Lead Vocal”, “Deep 808”), visualizer and cover styles. Includes the DANVIEL Starter Pack. Create your own packs and share them as a file. Packs contain only settings, no code</li>
+    <li>Save / load project now really keeps everything: also Auto-Mix on/off, image idea, music style, dedication, all cover prompt fields including the finished prompt, the cover style and the cover in full resolution (Cover.png in the ZIP)</li>
+    <li><b>🧱 Build a track</b> (in 2 · Mix): <b>drum pattern</b> by clicking with templates (trap, boom bap, pop, house, dembow, afrobeats, R&amp;B), play an <b>instrument</b> with the mouse, computer keyboard or MIDI keyboard, with metronome and snap, a <b>piano roll</b> to set, move and lengthen notes, a <b>loop / sample</b> fitted to the tempo and a <b>timeline</b> where you click in which bars each track plays. Also works without any song</li>
+    <li><b>New compact view (default):</b> a step bar at the top 1 Load · 2 Mix · 3 Master · 4 Video &amp; Cover · 5 Release, only one step is open at a time, less scrolling. “☰ Everything open” shows everything on one page like before. On phones the bar sits at the bottom</li>
+    <li>Choose the background (🎨 at the top): carbon (default), studio light, dark wood, brushed metal or plain black</li>
+    <li>The whole studio now lies on an anthracite leather desk pad with a grey stitched edge</li>
+    <li>Mastering off: no more clipping. With “Prevent clipping” the mix is turned down in playback exactly like in the export, so the loudest peak stays at −1 dB</li>
+    <li>Mastering on: no longer gets far too loud while it analyses the song. The normal mix keeps playing until the analysis is done</li>
+    <li>Controls optionally as <b>rotary knobs</b> like on a mixing desk (switch at “Tracks”: ━ Sliders / ◉ Knobs). Drag up/down, mouse wheel, double-click = default</li>
+    <li>New “How it works”: 5 steps to a finished song, with pictures, yellow numbers and an explanation for every control. Click a picture to enlarge</li></ul>
+  <h3>v14.9</h3><ul>
+    <li>MIDI stems (e.g. from Suno next to WAV and MP3) are loaded too and played by a built-in synth: piano, e-piano, pad, strings, pluck, lead, bass, 808 and drums. They start switched off so nothing doubles, and you can layer them in</li>
+    <li>When a stem comes in several formats, the best quality is always used (WAV before MP3)</li></ul>
+  <h3>v14.8</h3><ul>
+    <li>The background video now reliably ends up in the exported video, also for the TikTok clip: what the preview shows is what gets exported</li>
+    <li>Every track has a clearly visible volume control with − / + (1 dB each), double-click the slider to reset to 0 dB</li>
+    <li>New preview image for links (Discord, WhatsApp etc.)</li></ul>
+  <h3>v14.7</h3><ul>
+    <li>Video: title position (top, center, bottom), alignment (left, center, right), its own title font and size. You can also drag the title in the preview</li>
+    <li>Title and artist get a shadow over a background video so they stay readable</li></ul>
+  <h3>v14.6</h3><ul>
+    <li>Effects have their own switch like mastering: reverb, echo and sidechain are off after loading. Auto-Mix no longer switches them on, gentler sidechain</li>
+    <li>Background video: choose a video or drag it onto the preview, visualizer, cover and title can be hidden one by one, e.g. just video with lyrics for Shorts</li>
+    <li>Build your own visualizer styles (shape, colours, font, effects), save them, export them as a file and import them</li>
+    <li>Cover studio: 13 new fonts and new filters: warmth, hue, fade, blur, glow, RGB split (VHS), light leaks, duotone and sepia</li>
+    <li>Lyrics: fix misheard words right in the scrolling list (✎ or double-click the line), no need to paste everything again</li></ul>
+  <h3>v14.5</h3><ul>
+    <li>The video preview runs live while you play: visualizer, lyrics and progress move with the music</li>
+    <li>“Stems” at the end of a file name no longer ends up in the song title</li>
+    <li>Auto-Mix no longer sounds washed out: the vocal rider and compressor no longer pull up the reverb that is already in Suno vocals. Gentler compression, narrower stereo, “Reverb in Auto-Mix” is now Off by default</li></ul>
+  <h3>v14.4</h3><ul>
+    <li>6 visualizer styles for videos: Classic, Neon, Cyberpunk, Late Night R&amp;B, Pastel Pop and Minimal</li>
+    <li>Auto-Mix is now a switch: grey = off, orange = on. Click again to switch it off and the stems sound original again</li>
+    <li>Nothing is switched on after loading, no Auto-Mix and no mastering. “↺ Last settings” brings back your settings from last time</li>
+    <li>Choosing a genre no longer mixes right away, only when Auto-Mix is on</li>
+    <li>“Reverb in Auto-Mix”: Off, A little (default) or Normal</li></ul>
+  <h3>v14.3</h3><ul>
+    <li>Much less reverb from Auto-Mix: about half as much on the vocals, subtler echo. Suno vocals often already have their own reverb</li>
+    <li>Cleaner reverb: more pre-delay (the voice stays in front), shorter tail, no mud in the low mids and no hiss on S sounds</li></ul>
+  <h3>v14.2</h3><ul>
+    <li>Find hook now starts just before the song opens up after the drop, instead of half a bar late</li>
+    <li>Zoom the section waveform: mouse wheel, ＋ / －, “Whole song” and “To section”. Swipe sideways or Shift + mouse wheel scrolls through the song</li>
+    <li>Explanations when you hover over almost every button</li>
+    <li>Logo in granite look</li></ul>
+  <h3>v14.1</h3><ul>
+    <li>Gentler Auto-Mix: masters every genre to streaming loudness (−14 LUFS), less bass boost and saturation. Louder is still one click away with “Loud (Club &amp; DJ)”</li>
+    <li>Lyrics tap-along: running clock with milliseconds right next to the line, nudge the last line by −100 ms / +100 ms (↓ / ↑)</li>
+    <li>Windows like Changelog and the guide close with ✕ at the top right or a click outside</li>
+    <li>DANVIEL logo in the page header</li></ul>
+  <h3>v14.0</h3><ul>
+    <li>Smoother sound: limiter with program-dependent release (no more pumping), calmer compressors, gentler sidechain for EDM and House</li>
+    <li>Volume leveling in mastering: gently evens out big jumps between song parts</li>
+    <li>Vocal rider: keeps the vocals at an even level, switched on automatically by Auto-Mix</li>
+    <li>Bass boost in mastering (off, more, lots, maximum), with harmonics so the bass is heard on phones too</li>
+    <li>Duplicate stems (e.g. WAV and MP3 of the same stem from Suno) are detected, the best quality is used</li>
+    <li>Changelog (this window)</li></ul>
+  <h3>v13.8</h3><ul>
+    <li>Beginner-friendly mastering: goals like “For Spotify &amp; YouTube”, knobs and LUFS numbers under “Advanced settings”</li>
+    <li>Lyrics tap-sync compensates the device's audio latency</li>
+    <li>⭐ GitHub button</li></ul>
+  <h3>v13.7</h3><ul>
+    <li>Release check shows how loud Spotify, YouTube, Apple Music, Amazon, Tidal and Deezer will play your song</li>
+    <li>Release check compares the tonal balance with the genre</li>
+    <li>Genre detection shows its confidence</li></ul>
+  <h3>v13.6</h3><ul><li>🎬 One-click TikTok / Reels / Shorts clip</li><li>Copyright notice and license</li></ul>
+  <h3>v13.5</h3><ul><li>English language</li></ul>
+  <h3>v13.4</h3><ul><li>Collapse any panel with the arrow at its top right</li></ul>
+  <h3>v13.3</h3><ul><li>Auto-Mix and mastering by genre (Pop, R&amp;B, Hip-Hop/Trap, EDM, House, Rock) with automatic genre detection</li></ul>
+  <h3>v13.2</h3><ul><li>Drag &amp; drop or paste (Ctrl+V) a cover image, drop whole folders of stems</li></ul>
+  <h3>v13.1</h3><ul><li>Cover editor: drag title and artist anywhere, 12 fonts, image filters</li></ul>
+  <h3>v13.0</h3><ul><li>Mini player at the bottom while you scroll</li></ul>
+  <h3>v12.x</h3><ul>
+    <li>“Hear before” plays the original without mix and mastering</li>
+    <li>“Delete project”, stem ZIPs with folders and ZIPs inside ZIPs</li>
+    <li>Cover via ChatGPT, error log, safer stem splitter, DANVIEL logo, release check and release package, project ZIP</li></ul>
+</div>
+  <div class="row"><button class="primary" id="chgClose">OK</button></div>
+</dialog>
+<dialog id="help" aria-labelledby="helpTitle">
+  <button class="dlgx" type="button" aria-label="Schließen" title="Schließen">✕</button>
+  <h2 id="helpTitle" class="htitle16"><svg class="hword" viewBox="-6 -6 582 112" role="img" aria-label="DANVIEL"><path d="M0 0H44A50 50 0 0 1 44 100H0Z M16 16V84H44A34 34 0 0 0 44 16Z" fill-rule="evenodd" fill="currentColor"/><g class="hwg"><polygon points="112,100 141,0 159,0 188,100 170,100 150,30 130,100"/><polygon points="206,100 206,0 224,0 264,66 264,0 282,0 282,100 264,100 224,34 224,100"/><polygon points="300,0 318,0 338,70 358,0 376,0 347,100 329,100"/></g><g fill="currentColor"><rect x="394" y="0" width="16" height="100"/><path d="M428 0H492V16H444V42H486V58H444V84H492V100H428Z"/><path d="M510 0H526V84H570V100H510Z"/></g></svg><span class="hst" translate="no">Studio · v16.5</span></h2>
+  <div class="hlp-de">
+<!--HELPDE--><!--/HELPDE-->
+  </div>
+  <div class="hlp-en" hidden><!--HELPEN--><!--/HELPEN--></div>
+  <div class="row"><button class="primary" id="helpClose">Los geht's</button></div>
+</dialog>
+<div class="mini" id="mini" hidden>
+  <button class="play" id="miniPlay" aria-label="Abspielen"><svg viewBox="0 0 24 24" id="miniIcon"><path d="M7 4l13 8-13 8z"/></svg></button>
+  <div class="minimid"><div class="minititle" id="miniTitle" translate="no"></div><input type="range" class="seek" id="miniSeek" min="0" max="1000" value="0" aria-label="Position"></div>
+  <span class="time" id="miniTime">0:00 / 0:00</span>
+  <span class="minivol"><button id="miniMute" aria-label="Stumm schalten" title="Stumm schalten"><svg viewBox="0 0 24 24" id="miniMonIcon"></svg></button><input type="range" id="miniVol" min="0" max="100" step="1" value="60" aria-label="Abhör-Lautstärke" title="Abhör-Lautstärke: ändert nur, was du hörst, nicht den Export"></span>
+  <button class="ab" id="miniAB" aria-pressed="false" title="Original ohne Mix und Mastering hören">Vorher</button>
+  <button id="miniTop" title="Nach oben zum Player" aria-label="Nach oben zum Player">↑</button>
+</div>
+<div id="hud" class="hud" role="status" aria-live="polite" hidden><span id="hudTxt"></span><i><b id="hudBar"></b></i><button id="hudX" aria-label="Meldung schließen">✕</button></div>
+<script>
+/* =====================================================================
+   FEHLER-PROTOKOLL: collects everything the program logs (and every error) so a
+   user can send one text file that shows exactly what happened. Nothing leaves the
+   computer unless the user saves the file and sends it.
+   ===================================================================== */
+const LOG = [], LOG_T0 = Date.now();
+function logStr(x, d){
+  d = d||0;
+  if(x == null || typeof x !== "object") return typeof x === "string" ? x : String(x);
+  if(x instanceof Error) return x.name + ": " + x.message + (x.stack ? "\n      " + x.stack.split("\n").slice(1,6).map(l=>l.trim()).join("\n      ") : "");
+  if(ArrayBuffer.isView(x)) return `${x.constructor.name}(${x.length})`;
+  if(x instanceof ArrayBuffer) return `ArrayBuffer(${x.byteLength})`;
+  if(d > 2) return Array.isArray(x) ? "[…]" : "{…}";
+  if(Array.isArray(x)) return "[" + x.slice(0,8).map(v=>logStr(v,d+1)).join(", ") + (x.length>8 ? `, … (${x.length})` : "") + "]";
+  try{ return "{" + Object.keys(x).slice(0,24).map(k=>k + ": " + logStr(x[k], d+1)).join(", ") + "}"; }catch(e){ return "[Objekt]"; }
+}
+function log(...a){
+  let s = ((Date.now()-LOG_T0)/1000).toFixed(1).padStart(7) + "s  " + a.map(v=>logStr(v)).filter(v=>v!=="").join(" ");
+  if(s.length > 3000) s = s.slice(0,3000) + " …";
+  LOG.push(s); if(LOG.length > 4000) LOG.splice(0, 1000);
+}
+for(const k of ["log","info","warn","error"]){ const o = console[k].bind(console); console[k] = (...a)=>{ try{ log(k==="log"||k==="info" ? "" : k.toUpperCase()+":", ...a); }catch(e){} o(...a); }; }
+addEventListener("error", e=>log("FEHLER:", e.message || "", e.filename ? "(" + e.filename.split("/").pop() + ":" + e.lineno + ")" : "", e.error || ""));
+addEventListener("unhandledrejection", e=>log("FEHLER (async):", e.reason));
+async function envInfo(){
+  const o = [];
+  o.push("Version:      " + (window.__CREDIT || "?"));
+  o.push("Zeit:         " + new Date().toLocaleString("de-DE"));
+  o.push("Browser:      " + navigator.userAgent);
+  o.push("Geöffnet als: " + (location.protocol === "file:" ? "Datei vom Rechner" : location.host || location.protocol) + (window.claude && window.claude.use ? " (claude.ai)" : ""));
+  o.push("Prozessor:    " + (navigator.hardwareConcurrency || "?") + " Kerne, Arbeitsspeicher ca. " + (navigator.deviceMemory ? navigator.deviceMemory + " GB" : "?"));
+  o.push("Isoliert:     " + (self.crossOriginIsolated ? "ja (mehrere Threads möglich)" : "nein (KI läuft mit 1 Thread)"));
+  let g = "nicht vorhanden";
+  try{ if(navigator.gpu){ const a = await navigator.gpu.requestAdapter(); if(a){ const i = a.info || (a.requestAdapterInfo ? await a.requestAdapterInfo() : {}); g = "ja · " + [i.vendor, i.architecture, i.description, i.device].filter(Boolean).join(" / "); } else g = "API da, aber kein Adapter"; } }catch(e){ g = "Fehler: " + e.message; }
+  o.push("WebGPU:       " + g);
+  const ac = window.__ac; o.push("Audio:        " + (ac ? `${ac.sampleRate} Hz, baseLatency ${((ac.baseLatency||0)*1000).toFixed(1)} ms, outputLatency ${((ac.outputLatency||0)*1000).toFixed(1)} ms, Status ${ac.state}` : "noch nicht gestartet"));
+  o.push("WebCodecs:    " + (window.VideoEncoder ? "ja" : "nein") + " · Speicher: " + (performance.memory ? Math.round(performance.memory.usedJSHeapSize/1048576) + " / " + Math.round(performance.memory.jsHeapSizeLimit/1048576) + " MB" : "?"));
+  return o.join("\n");
+}
+async function saveLog(){
+  const txt = "DANVIEL Studio · Fehler-Protokoll\n" + "=".repeat(40) + "\n" + await envInfo() + "\n\nVerlauf (Sekunden seit dem Öffnen):\n" + LOG.join("\n") + "\n";
+  try{ navigator.clipboard && navigator.clipboard.writeText(txt).catch(()=>{}); }catch(e){}
+  const d = new Date(), pad = n => String(n).padStart(2,"0");
+  await window.__deliver(new Blob([txt], {type:"text/plain"}), `DANVIEL Studio Fehler-Log ${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}-${pad(d.getMinutes())}.txt`);
+}
+log("Programm geöffnet");
+</script>
+<script>
+@@JS@@
+</script>
+<!--I18N--><!--/I18N-->

@@ -1,0 +1,58 @@
+/* v15.5 */
+#packsBtn{display:none!important}
+.packsin{display:inline-flex;align-items:center;gap:6px;font-weight:700;border:1.5px solid #14b8a6!important;background:linear-gradient(color-mix(in srgb,#14b8a6 26%,var(--panel)),color-mix(in srgb,#14b8a6 14%,var(--panel)))!important;color:var(--fg)!important;box-shadow:0 0 16px rgba(20,184,166,.25)}
+.packsin:hover{box-shadow:0 0 22px rgba(20,184,166,.45)}
+.knob > .packsin,.covxside > .packsin{align-self:flex-start;width:auto;margin:2px 0 4px}
+.vmakerow .brandrow{flex:0 1 auto}
+.vmakerow .brandrow > .knob{flex:0 0 auto}
+.vmakerow .brandrow input[type=text]{width:210px}
+.vmakerow #vLogoName{display:none}
+.trimbox{grid-column:1 / -1;display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--sc,var(--accent)) 45%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--sc,var(--accent)) 6%,transparent)}
+.trimhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.trimhead .tinfo{flex:1;min-width:160px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tzoom{display:inline-flex;gap:4px}.tzoom button,.trimrow button{font-size:13px;padding:6px 10px}
+.trimcv{width:100%;height:96px;border-radius:8px;background:color-mix(in srgb,var(--fg) 5%,var(--panel));cursor:crosshair;touch-action:none}
+.trimrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.trimrow .tlab{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.trimrow .tplay{margin-left:auto}
+.bemerge{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.bemerge select{max-width:180px}
+.lvwrap{position:relative}
+/* colour pickers: swatch + hex field + ready colours */
+.colx{display:flex;flex-direction:column;gap:6px}
+.colx .colrow{display:flex;align-items:center;gap:8px}
+.colx input[type=color]{width:44px;height:38px;padding:3px;border-radius:10px;border:1px solid var(--line);background:var(--panel);cursor:pointer;flex:none}
+.colx input.hex{flex:1;min-width:0;max-width:130px;font:500 14px/1 var(--f-mono);text-transform:uppercase;padding:9px 10px;border-radius:10px}
+.colx input.hex.bad{border-color:#e5484d;box-shadow:0 0 0 1px #e5484d}
+.colx .sw{display:flex;flex-wrap:wrap;gap:5px}
+.colx .sw button{width:20px;height:20px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.25);box-shadow:0 0 0 1px rgba(0,0,0,.35);min-height:0;cursor:pointer}
+.colx .sw button:hover{transform:scale(1.15)}
+/* checkbox groups in a tidy grid, all on one height */
+.vsbfx,.cxfxchecks,.pkchecks{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px 14px;align-items:center}
+.vsbfx label,.cxfxchecks label,.pkchecks label{display:flex!important;align-items:center;justify-content:flex-start!important;gap:8px;margin:0;min-height:30px;text-align:left}
+.vsbfx label input,.cxfxchecks label input,.pkchecks label input{flex:none;margin:0;width:auto!important;min-width:0}
+.vsbgrid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))!important}
+.colx input.hex{min-width:96px;font-size:13px}
+/* delete / remove / reset: red so they stand out */
+button.c-red{background:color-mix(in srgb,#e5484d 16%,var(--panel))!important;border-color:#e5484d!important;color:#ff8f93!important}
+button.c-red:hover{background:color-mix(in srgb,#e5484d 28%,var(--panel))!important;color:#fff!important}
+.lclock{position:absolute;top:6px;right:22px;z-index:2;font:500 12px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);border:1px solid var(--line);border-radius:999px;padding:4px 9px;pointer-events:none;opacity:.85}
+.lvwrap:has(#lView[hidden]) .lclock{display:none}
+.mixvars{display:flex;flex-wrap:wrap;align-items:center;gap:8px;grid-column:1 / -1}
+.mixvars .label{margin-right:4px}
+.mixvars button{font-size:14px}
+.pk .grp.pkhl{outline:2px solid #14b8a6;outline-offset:4px;border-radius:8px;background:color-mix(in srgb,#14b8a6 10%,transparent)}
+#pkFocus{font-size:13px;color:#14b8a6;font-weight:600}
+details.foldy > summary{background:linear-gradient(color-mix(in srgb,var(--accent) 20%,var(--panel)),color-mix(in srgb,var(--accent) 10%,var(--panel)))!important;border:1.5px solid color-mix(in srgb,var(--accent) 70%,var(--line))!important;font-size:15px!important;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+details.foldy > summary::before{content:"▸";font-size:14px;color:var(--accent);transition:transform .2s}
+details.foldy[open] > summary::before{transform:rotate(90deg)}
+details.foldy > summary:hover{filter:brightness(1.08)}
+.vmakerow{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.vmakerow .brandrow{margin-left:auto;display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px}
+.vmakerow .brandrow .knob{margin:0}
+.covx{flex-direction:column;align-items:center}
+.covx canvas{width:min(460px,100%)!important;position:static!important}
+.covx .covxside{width:100%;flex:none}
+html[data-bg="foto"] body{background:#08090c}
+html[data-bg="foto"] body::before{opacity:1;mix-blend-mode:normal;background-size:cover;background-position:center;background-image:linear-gradient(rgba(5,6,9,.5),rgba(5,6,9,.62)), var(--bgphoto, linear-gradient(#111,#000))}
+@media (max-width:700px){header .hist #hMenuBtn{display:none!important}header .hist .hmenu{display:flex;position:static;box-shadow:none;border:0;padding:0;min-width:0;background:transparent}}

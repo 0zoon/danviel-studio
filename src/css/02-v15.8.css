@@ -1,0 +1,7 @@
+/* v15.8: buttons in one row share one height (40 px), segment chips stay 34 px; tips go on their own line */
+.toolrow > button,.toolrow > .packsin,.mixvars > button,.row > button,.btns > button,.hist > button,.projrow > button,.ref > button,.stripbar > button,.stripbar .kseg > button,.export .row > button,.mhead .l > .packsin,.mhead > button:not(.ctog),.stepnext > button{height:40px;min-height:40px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;line-height:1.1;padding-top:0;padding-bottom:0}
+.row > select,.btns > select,.hist > select,.row > input[type=text],.row > input[type=number]{height:40px;min-height:40px;box-sizing:border-box}
+.toolrow > small{flex:1 1 100%;order:9}
+.strip > .more,.strip > .solo{height:32px;min-height:32px;box-sizing:border-box}
+.toolrow .chips button{height:34px;min-height:34px}
+@media (max-width:700px){.row > select,.btns > select,.hist > select,.row > input[type=text],.row > input[type=number]{height:42px;min-height:42px}}

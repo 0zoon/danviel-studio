@@ -1,0 +1,17 @@
+/* v16.3: single on/off options are switches, more page backgrounds */
+input[type=checkbox].sw16{-webkit-appearance:none;appearance:none;width:40px!important;height:22px!important;min-height:22px!important;margin:0 8px 0 0;flex:none;border-radius:999px;cursor:pointer;vertical-align:middle;
+  background:radial-gradient(circle 8px at 11px 50%,#fff 96%,transparent 100%),color-mix(in srgb,var(--fg) 24%,transparent);box-shadow:inset 0 1px 2px rgba(0,0,0,.35);transition:background .15s}
+input[type=checkbox].sw16:checked{background:radial-gradient(circle 8px at calc(100% - 11px) 50%,#fff 96%,transparent 100%),#e8a93a}
+input[type=checkbox].sw16:disabled{opacity:.45;cursor:default}
+input[type=checkbox].sw16:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+html[data-bg="smaragd"] body{background:#03100b}
+html[data-bg="smaragd"] body::before{opacity:1;mix-blend-mode:normal;background-size:auto,auto,6px 6px;background-image:radial-gradient(ellipse at 50% 20%,rgba(16,140,90,.45),rgba(2,20,12,.95) 70%),radial-gradient(900px 500px at 90% 100%,rgba(232,169,58,.10),transparent 60%),repeating-linear-gradient(45deg,rgba(255,255,255,.015) 0 1px,transparent 1px 6px)}
+html[data-bg="bordeaux"] body{background:#140306}
+html[data-bg="bordeaux"] body::before{opacity:1;mix-blend-mode:normal;background-size:auto,auto;background-image:radial-gradient(ellipse at 50% 25%,rgba(120,16,34,.6),rgba(20,2,6,.96) 72%),radial-gradient(1000px 600px at 10% 110%,rgba(232,169,58,.08),transparent 60%)}
+html[data-bg="nebel"] body{background:#0d0e11}
+html[data-bg="nebel"] body::before{opacity:1;mix-blend-mode:normal;background-size:auto,auto,auto;background-image:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.05) 45%,transparent 60%),radial-gradient(1200px 700px at 50% -10%,rgba(200,210,230,.16),transparent 60%),radial-gradient(ellipse at 50% 120%,rgba(120,130,150,.18),rgba(10,11,14,.98) 70%)}
+html[data-bg="goldlinien"] body{background:#07070a}
+html[data-bg="goldlinien"] body::before{opacity:1;mix-blend-mode:normal;background-size:auto,120px 120px,auto;background-image:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.8) 100%),repeating-linear-gradient(135deg,rgba(232,169,58,.07) 0 1px,transparent 1px 60px),linear-gradient(160deg,#121117,#07070a)}
+html[data-bg="chrom"] body{background:#101215}
+html[data-bg="chrom"] body::before{opacity:1;mix-blend-mode:normal;background-size:auto,auto,auto;background-image:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.75) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,rgba(0,0,0,.03) 1px 2px),linear-gradient(115deg,#1b1e23 0%,#2c3138 40%,#16181c 55%,#262a30 75%,#121418 100%)}
+

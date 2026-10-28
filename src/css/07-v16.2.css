@@ -1,0 +1,22 @@
+/* v16.2: icons never catch a click, nicer genre drawer */
+.dic{pointer-events:none}
+.genremore{border-radius:16px!important;border:1px solid color-mix(in srgb,#e8a93a 45%,transparent)!important;background:linear-gradient(180deg,color-mix(in srgb,#e8a93a 9%,var(--panel)),var(--panel))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 20px -12px rgba(0,0,0,.6)!important;padding:0!important;overflow:hidden}
+.genremore > summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:13px 16px!important}
+.genremore > summary::-webkit-details-marker{display:none}
+.genremore > summary::before{content:none!important;display:none!important}
+.genremore > summary b{font-family:var(--f-display);font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#f0b85a}
+.genremore > summary small{color:var(--muted)}
+#genre2{display:flex!important;flex-direction:column;gap:12px;padding:4px 16px 16px!important}
+#genre2 .ggrp{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+#genre2 .glab{flex:0 0 100%;font:800 10px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:2px 0}
+.pk header .pkexp{font-size:12px;padding:4px 10px;margin-left:auto}
+.pk header .pkexp + .rm{margin-left:6px}
+/* delete project: red button at the bottom of the monitor, and a real "are you sure?" window for both */
+.mprog .mdel{margin-left:auto;height:30px;min-height:30px!important;padding:0 11px!important;border-radius:999px!important;border:1px solid #c0392b!important;background:linear-gradient(180deg,#8c2a22,#6e1f19)!important;color:#ffe1dc!important;font:700 11.5px var(--f-body)!important;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(0,0,0,.3)!important}
+#delAsk{border:1px solid #c0392b;border-radius:16px;background:var(--panel);color:var(--fg);padding:22px 24px;max-width:420px;width:calc(100% - 32px);box-shadow:0 30px 80px rgba(0,0,0,.7)}
+#delAsk::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(3px)}
+#delAsk h2{margin:0 0 8px;font:800 20px var(--f-body)}
+#delAsk p{margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.45}
+#delAsk .row{display:flex;justify-content:flex-end;gap:8px}
+#delAsk .row button{height:42px;min-height:42px;padding:0 16px}
+#delAsk #delYes{background:linear-gradient(180deg,#c0392b,#8c2a22)!important;border-color:#e0584a!important;color:#fff!important}

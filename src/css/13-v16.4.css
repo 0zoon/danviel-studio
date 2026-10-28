@@ -1,0 +1,9 @@
+/* v16.4: help title with the DANVIEL wordmark */
+#help .htitle16{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:0 0 6px}
+#help .hword{height:46px;width:auto;color:var(--fg,#f3eee4)}
+#help .hword .hwg polygon{fill:#e8a93a}
+#help .hst{font:700 14px/1 Unbounded,Inter,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#e8a93a;padding-bottom:6px}
+:root[data-theme="light"] #help .hword{color:#16171b}
+
+.vshow2{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:8px}.vshow2 .vsl{font-size:12px;color:var(--muted)}
+
