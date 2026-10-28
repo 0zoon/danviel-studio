@@ -591,8 +591,8 @@ function spectrumFrames(L, R, sr, fps){
 let BGC = {k:"", c:null};
 function bgCached(){ const ST = vStyle(), k = VID.aspect + "|" + VID.style + "|" + (ST.bg||"") + (ST.tint||"") + "|" + (VID.coverUrl || (VID.cover ? "c" : "")) + "|" + (VID.cover ? VID.cover.width : 0);
   if(BGC.k !== k || !BGC.c){ BGC = {k, c: makeBg(...ASPECTS[VID.aspect])}; } return BGC.c; }
-function vidState(dur, bands, fps){
-  const off = ($("onlyAB").checked && AB.a!==null) ? AB.a/rate : 0;
+function vidState(dur, bands, fps, offO){
+  const off = offO !== undefined ? offO : ($("onlyAB").checked && AB.a!==null) ? AB.a/rate : 0;
   const lines = lyrSungEnds(parseLyrics($("lText").value, LYR.dur || dur)).map(l=>({...l, t:l.t-off, end:l.end-off, send:(l.send ?? l.end)-off})).filter(l=>l.end>0);
   return {pal: vStyle().pal || VID.pal || DEFAULT_PAL, bg: bgCached(), title: $("vTitle").value || $("fname").value, artist: $("vArtist").value, lyrOn: $("vLyr").checked, brand: $("vBrand").checked, brandTxt: $("vBrandTxt").value.trim(), lines, dur, tp: VID.tp, showViz: $("vShowViz").checked, showCover: $("vShowCover").checked, showTitle: $("vShowTitle").checked, full: !!VID.full, sweep: $("vLyrSweep") ? $("vLyrSweep").checked : true,
           bandsAt: t => bands ? bands[Math.min(bands.length-1, Math.max(0, Math.round(t*fps)))] : null};
@@ -612,10 +612,12 @@ function drawPreview(live){
   const [W, H] = ASPECTS[VID.aspect], cv = $("vPrev"), sc = 0.5;
   if(cv.width !== W*sc || cv.height !== H*sc){ cv.width = W*sc; cv.height = H*sc; }
   const g = cv.getContext("2d"); g.setTransform(sc,0,0,sc,0,0);
-  const sec = $("onlyAB").checked && AB.a!==null && AB.b!==null, off = sec ? AB.a/rate : 0;
-  const dur = sec ? (AB.b-AB.a)/rate : (duration ? duration/rate : 60), now = (live ? currentTime() : offset)/rate;
+  const pos = live ? currentTime() : offset;
+  // section only: the preview shows the clip, but when the playhead is outside the section it follows the song (instead of freezing on the clip's last frame)
+  const sec = $("onlyAB").checked && AB.a!==null && AB.b!==null && pos >= AB.a - 0.05 && pos <= AB.b + 0.05, off = sec ? AB.a/rate : 0;
+  const dur = sec ? (AB.b-AB.a)/rate : (duration ? duration/rate : 60), now = pos/rate;
   const t = Math.max(0, Math.min(dur, now - off)), lb = live ? liveBands() : null;
-  const S = vidState(dur, null, 30); S.dur = dur; if(lb) S.bandsAt = () => lb;
+  const S = vidState(dur, null, 30, off); S.dur = dur; if(lb) S.bandsAt = () => lb;
   if(VID.bgv && !VID.exporting) bgvSync(!!live, t);
   drawFrame(g, W, H, t, S); VID.lastTbox = S.tbox || null;
   VID.lastVbox = S.showViz !== false && S.vbox ? S.vbox : null; VID.lastLbox = S.lbox && S.lyrOn && S.lines.length ? S.lbox : null; VID.lastCbox = S.cbox || null;

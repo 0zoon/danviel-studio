@@ -22,3 +22,5 @@ retime = function(fn){
   if(o > 0 && n > 0 && Math.abs(n/o - 1) > 1e-4) lyrRescale(o, n);
 };
 window.__dbgFrame = (g, W, H, t) => { const S = vidState(duration ? duration/rate : 60, null, 30); S.dur = duration ? duration/rate : 60; drawFrame(g, W, H, t, S); };   // test hook
+/* v17: in "everything open" the section / hook box sat far above the video; it belongs right above it (in compact mode it already was) */
+try{ const sb = $("secBox"), vs = $("vidsec"); if(sb && vs && sb.nextElementSibling !== vs) vs.before(sb); }catch(e){}

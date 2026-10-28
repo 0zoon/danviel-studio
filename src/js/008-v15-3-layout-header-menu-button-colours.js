@@ -228,7 +228,7 @@ function vcSum(){
   const hasCover = !$("vCoverClr").hidden;
   set("vcCov", hasCover ? "Cover-Bild gesetzt" : "Noch kein Bild · Cover-Prompt aus den Lyrics möglich", hasCover);
   const asp = document.querySelector("#vAspect button[aria-pressed='true']"), sty = document.querySelector("#vStyle button[aria-pressed='true']");
-  set("vcVid", [asp && asp.textContent, sty && sty.textContent, $("vLyr").checked ? "Lyrics an" : "Lyrics aus"].filter(Boolean).join(" · "), null);
+  set("vcVid", [asp && asp.textContent, sty && sty.textContent, $("vLyr").checked ? (window.__T||(y=>y))("Lyrics an") : (window.__T||(y=>y))("Lyrics aus")].filter(Boolean).join(" · "), null);
 }
 function collSum(){
   const S = (sel, txt) => { const e = document.querySelector(sel); if(e) e.dataset.sum = T_(txt); };

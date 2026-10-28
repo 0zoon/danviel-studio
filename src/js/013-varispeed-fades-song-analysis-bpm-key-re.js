@@ -601,7 +601,11 @@ $("quickClip").onclick = async ()=>{
     if(AB.a === null) return;
     const b9 = document.querySelector('#vAspect button[data-v="v"]'); if(b9) b9.click();
     const vs = $("vidsec"); if(vs.classList.contains("collapsed")){ const t = vs.querySelector(".ctog"); if(t) t.click(); }
-    vs.scrollIntoView({behavior:"smooth", block:"start"});
+    // v17: show the hook section first (zoom, move, pick another part), the video panel follows right below it,
+    // and the player jumps to the hook so you hear what the clip will be
+    const sb = $("secBox"); if(sb.classList.contains("collapsed")){ const t = sb.querySelector(".ctog"); if(t) t.click(); }
+    const was = playing; if(was) stop(); offset = AB.a; $("cur").textContent = fmtT(offset/rate); if(duration) $("seek").value = Math.round(offset/duration*1000); if(was) play(); else { drawWaves(); drawSec(); previewSoon(); }
+    sb.scrollIntoView({behavior:"smooth", block:"start"});
     const mk = $("vMake"); mk.classList.remove("pulse"); void mk.offsetWidth; mk.classList.add("pulse"); setTimeout(()=>mk.classList.remove("pulse"), 4200);
     setStatus(`Clip bereit: Hook ab ${fmtT(AB.a/rate)}, ${Math.round((AB.b-AB.a)/rate)} s, Format 9:16. Jetzt „Video erstellen (MP4)“ klicken.`);
   } finally { $("quickClip").disabled = !tracks.length; }
