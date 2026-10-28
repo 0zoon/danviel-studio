@@ -119,10 +119,11 @@
       const s = Math.min(bw/W, bh/H), dpr = Math.min(2, devicePixelRatio || 1), cw = Math.round(W*s*dpr), ch = Math.round(H*s*dpr);
       if(cv.width !== cw || cv.height !== ch){ cv.width = cw; cv.height = ch; cv.style.width = Math.round(W*s) + "px"; cv.style.height = Math.round(H*s) + "px"; }
       const g = cv.getContext("2d"); g.setTransform(cw/W, 0, 0, ch/H, 0, 0);
-      const sec = $("onlyAB").checked && AB.a!==null && AB.b!==null, off = sec ? AB.a/rate : 0;
-      const dur = sec ? (AB.b-AB.a)/rate : (duration ? duration/rate : 60), now = (live ? currentTime() : offset)/rate;
+      const pos = live ? currentTime() : offset;   // v17: outside the section the monitor follows the song too (same rule as the big preview)
+      const sec = $("onlyAB").checked && AB.a!==null && AB.b!==null && pos >= AB.a - 0.05 && pos <= AB.b + 0.05, off = sec ? AB.a/rate : 0;
+      const dur = sec ? (AB.b-AB.a)/rate : (duration ? duration/rate : 60), now = pos/rate;
       const t = Math.max(0, Math.min(dur, now - off)), lb = live ? liveBands() : null;
-      const S = vidState(dur, null, 30); S.dur = dur; if(lb) S.bandsAt = () => lb;
+      const S = vidState(dur, null, 30, off); S.dur = dur; if(lb) S.bandsAt = () => lb;
       drawFrame(g, W, H, t, S);
     }catch(e){}
     mon.querySelectorAll(".mvbar button[data-a]").forEach(b => b.setAttribute("aria-pressed", b.dataset.a === VID.aspect));
