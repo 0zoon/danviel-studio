@@ -450,6 +450,8 @@ function secEnvelope(){
   let mx = 0; env.forEach(v=>{ if(v>mx) mx=v; }); if(mx>0) for(let i=0;i<nb;i++) env[i] /= mx;
   SEC.env = env; SEC.envKey = key; return env;
 }
+/* v17: the section waveform was blank after switching to step 4 (it was hidden while drawn) — redraw whenever it gets a size */
+setTimeout(()=>{ try{ new ResizeObserver(()=>drawSec()).observe($("secCv")); }catch(e){} }, 0);
 function drawSec(){
   const cv = $("secCv"); if(!cv) return;
   const w = cv.clientWidth, h = cv.clientHeight, dpr = devicePixelRatio||1;

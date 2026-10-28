@@ -783,6 +783,13 @@ PAT.append([r"^Clip bereit: Hook ab (.+?), (\d+) s, Format 9:16\. Jetzt „Video
 EXACT.update({
 "· Alle Rechte vorbehalten ·": "· All rights reserved ·",
 "Lizenzen": "Licenses",
+"Nur ein Hauch Hall": "Just a touch of reverb",
+"Kein zusätzlicher Hall, die Stimme bleibt wie im Stem. Empfohlen für Suno-Stems, die schon Hall drauf haben": "No extra reverb, the voice stays as in the stem. Recommended for Suno stems that already have reverb",
+"R&B: warm und weich, etwas mehr Raum (Hall) auf Stimme und Harmonien, Drums etwas zurück": "R&B: warm and soft, a bit more space (reverb) on vocals and harmonies, drums a bit back",
+"Rückgängig (Strg+Z)": "Undo (Ctrl+Z)",
+"Wiederholen (Strg+Y)": "Redo (Ctrl+Y)",
+"Spur bauen aufklappen": "Expand build tracks",
+"BPM · Länge": "BPM · length",
 "Song zum Zerlegen wählen": "Choose a song to split",
 "Audiodateien wählen": "Choose audio files",
 "Spur für das Pack": "Track for the pack",
