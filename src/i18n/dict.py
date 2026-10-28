@@ -783,6 +783,7 @@ PAT.append([r"^Clip bereit: Hook ab (.+?), (\d+) s, Format 9:16\. Jetzt „Video
 EXACT.update({
 "· Alle Rechte vorbehalten ·": "· All rights reserved ·",
 "Lizenzen": "Licenses",
+"Datenschutz & Impressum": "Privacy & legal notice",
 })
 
 EXACT.update({

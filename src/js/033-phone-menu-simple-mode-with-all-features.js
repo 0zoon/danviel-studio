@@ -29,10 +29,11 @@ document.querySelectorAll("dialog").forEach(d=>{
   d.addEventListener("click", e=>{ if(e.target !== d) return; const r = d.getBoundingClientRect();
     if(e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) shut(); });
 });
-$("help").addEventListener("close", ()=>{ try{ localStorage.setItem("stemmixer:seen", "16.5"); }catch(e){} });
-$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", "16.5"); }catch(e){} };
+const SEEN_V = (CREDIT.match(/v([\d.]+)/) || [])[1] || "x"; /* help opens once per new version */
+$("help").addEventListener("close", ()=>{ try{ localStorage.setItem("stemmixer:seen", SEEN_V); }catch(e){} });
+$("helpClose").onclick = ()=>{ try{ $("help").close(); }catch(e){ $("help").removeAttribute("open"); } try{ localStorage.setItem("stemmixer:seen", SEEN_V); }catch(e){} };
 // first start of this version: show the short guide once
-try{ if(localStorage.getItem("stemmixer:seen") !== "16.5") setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
+try{ if(localStorage.getItem("stemmixer:seen") !== SEEN_V) setTimeout(()=>$("helpBtn").click(), 400); }catch(e){}
 $("splitBtn").onclick = ()=>$("splitFile").click();
 // Download the model ourselves so we can show MB progress, and keep it in the browser cache for next time
 async function fetchModel(url){

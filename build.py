@@ -27,6 +27,9 @@ def img(m):
     return '<img class="himg" data-h="%s" data-l="%s" alt="" loading="lazy" src="%s">'%(m.group(1),m.group(2),src)
 s=re.sub(r'<img class="himg" data-h="(\w+)" data-l="(\w+)" alt=""(?: loading="lazy")? src="[^"]*">',img,s)
 full='<!doctype html>\n<html lang="en">\n'+s
+if "--check" in sys.argv:
+    same = open(os.path.join(R,"index.html"),encoding="utf-8").read()==full
+    print("index.html is up to date" if same else "index.html is OUT OF DATE: run python3 build.py"); sys.exit(0 if same else 1)
 open(os.path.join(R,"index.html"),"w",encoding="utf-8").write(full)
-for out in sys.argv[1:]: open(out,"w",encoding="utf-8").write(full)
+for out in [a for a in sys.argv[1:] if not a.startswith("--")]: open(out,"w",encoding="utf-8").write(full)
 print("built index.html", len(full))

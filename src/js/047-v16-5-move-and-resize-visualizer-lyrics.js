@@ -40,5 +40,6 @@ vFullUi(); try{ new MutationObserver(()=>vFullUi()).observe($("vCoverClr"), {att
 
 window.__vid = () => VID;
 /* the plate always shows the major version from CREDIT (v16 -> v17 automatically) */
-try{ const mv = (CREDIT.match(/v(\d+)/) || [])[1]; const by = document.querySelector(".brand .by"); if(mv && by) by.textContent = "Studio · v" + mv; }catch(e){}
+try{ const mv = (CREDIT.match(/v(\d+)/) || [])[1]; const by = document.querySelector(".brand .by"); if(mv && by) by.textContent = "Studio · v" + mv;
+  const fb = document.querySelector("footer .credit b"); if(fb) fb.textContent = CREDIT.replace(/^DANVIEL Studio /, ""); }catch(e){}
 
