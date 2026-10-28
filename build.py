@@ -29,7 +29,11 @@ s=re.sub(r'<img class="himg" data-h="(\w+)" data-l="(\w+)" alt=""(?: loading="la
 full='<!doctype html>\n<html lang="en">\n'+s
 if "--check" in sys.argv:
     same = open(os.path.join(R,"index.html"),encoding="utf-8").read()==full
-    print("index.html is up to date" if same else "index.html is OUT OF DATE: run python3 build.py"); sys.exit(0 if same else 1)
+    if not same:
+        old=open(os.path.join(R,"index.html"),encoding="utf-8").read(); i=next((k for k in range(min(len(old),len(full))) if old[k]!=full[k]),min(len(old),len(full)))
+        print("::error::index.html is out of date (run python3 build.py). First difference at %d: %r vs %r"%(i,old[i-40:i+40],full[i-40:i+40]))
+    else: print("index.html is up to date")
+    sys.exit(0 if same else 1)
 open(os.path.join(R,"index.html"),"w",encoding="utf-8").write(full)
 for out in [a for a in sys.argv[1:] if not a.startswith("--")]: open(out,"w",encoding="utf-8").write(full)
 print("built index.html", len(full))
