@@ -211,7 +211,7 @@ $("genre2").onclick = e=>$("genre").onclick(e);
 document.querySelectorAll("#genre button[data-g], #genre2 button[data-g]").forEach(b=>{ const g = GENRES[b.dataset.g]; if(g && !b.title) b.title = `${g.name}: ${g.why}`; });
 $("genre").onclick = async e=>{
   const gb = e.target.closest && e.target.closest("[data-g]"), g = gb && gb.dataset.g; if(!g) return;
-  GENRE = g; genreUi(); saveSoon();
+  GENRE = g; if(g !== "auto" && GENRES[g]) GENRE_USED = g; genreUi(); saveSoon();
   if(tracks.length && AUTO_ON && !$("automix").disabled) await runAutoMix();   // only re-mix when Auto-Mix is switched on
 };
 async function autoBalance(){
@@ -287,12 +287,13 @@ async function runAutoMix(){
   setStatus(`Auto-Mix fertig (${GP.name}): Lautstärken, Panorama, EQ, Effekte, Sidechain und Mastering (${M.target} LUFS) sind auf ${GP.name} abgestimmt. Drück Play.`);
 }
 // Mastering per genre: loudness, width, brightness/warmth and the tonal target
+const GENRE_BASS = {trap:20, edm:10, house:10, drill:15, afro:10, latin:15, amapiano:20, phonk:25, dnb:10, techno:10, psy:10};
 function genreMaster(GP){
   const m = GP.master; M.intensity = m.intensity; M.style = "bal"; applyPreset();
   M.width = m.width; M.air = Math.round((M.air + m.air)*4)/4; M.warm = Math.round((M.warm + m.warm)*4)/4;
   if(m.glue) M.glue = m.glue; if(m.sat) M.sat = m.sat;
   if(MIX_HISS) M.air = Math.min(M.air, 0);   // hiss: don't lift the very top, it would bring the noise back up
-  M.bass = ({trap:20, edm:10, house:10, drill:15, afro:10, latin:15, amapiano:20, phonk:25, dnb:10, techno:10, psy:10})[GENRE_USED] || 0; M.level = m.level ?? 50; if(m.mb != null) M.mb = m.mb;   // gentle: more is one click away syncBassLevel();
+  M.bass = (GP.bassBoost != null ? GP.bassBoost : GENRE_BASS[GENRE_USED]) || 0; M.level = m.level ?? 50; if(m.mb != null) M.mb = m.mb;   // gentle: more is one click away syncBassLevel();
   M.preset = m.intensity; M.tone = true; mixSpec = null;
   if(!M.on) setMasterOn(true); else applyMaster();
   syncKnobs(); scheduleAnalysis();

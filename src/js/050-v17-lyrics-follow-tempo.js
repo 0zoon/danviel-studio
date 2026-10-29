@@ -24,3 +24,13 @@ retime = function(fn){
 window.__dbgFrame = (g, W, H, t) => { const S = vidState(duration ? duration/rate : 60, null, 30); S.dur = duration ? duration/rate : 60; drawFrame(g, W, H, t, S); };   // test hook
 /* v17: in "everything open" the section / hook box sat far above the video; it belongs right above it (in compact mode it already was) */
 try{ const sb = $("secBox"), vs = $("vidsec"); if(sb && vs && sb.nextElementSibling !== vs) vs.before(sb); }catch(e){}
+/* v17: title position and size belong to one format. Moving the title in 16:9 no longer moves it in 9:16 or 1:1:
+   each format keeps its own (pos, align, free spot, sizes); a format you never touched starts at the normal layout */
+const TP_LAY = ["pos", "align", "free", "size", "asize"], TP_DEF = {pos: "auto", align: "auto", free: null, size: 100, asize: 0};
+VID.tpA = VID.tpA || {};
+const tpPick = tp => JSON.parse(JSON.stringify(Object.fromEntries(TP_LAY.map(k=>[k, tp ? tp[k] ?? TP_DEF[k] : TP_DEF[k]]))));
+window.__tpFor = asp => asp === VID.aspect ? VID.tp : {...VID.tp, ...(VID.tpA[asp] ? JSON.parse(JSON.stringify(VID.tpA[asp])) : TP_DEF)};
+{ const _asp17 = $("vAspect").onclick;
+  $("vAspect").onclick = e => { const v = e.target.dataset && e.target.dataset.v; if(v && v !== VID.aspect && VID.tp){ VID.tpA[VID.aspect] = tpPick(VID.tp); Object.assign(VID.tp, VID.tpA[v] ? JSON.parse(JSON.stringify(VID.tpA[v])) : TP_DEF); try{ vtSync(); }catch(err){} } return _asp17(e); }; }
+{ const _gp = getProject; getProject = function(){ const p = _gp.apply(this, arguments); try{ if(p.video) p.video.tpA = {...VID.tpA, [VID.aspect]: tpPick(VID.tp)}; }catch(e){} return p; };
+  const _ap = applyProject; applyProject = function(pj){ const r = _ap.apply(this, arguments); try{ const a = pj && pj.video && pj.video.tpA; VID.tpA = a && typeof a === "object" ? a : {}; }catch(e){} return r; }; }

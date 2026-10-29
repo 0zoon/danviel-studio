@@ -29,6 +29,7 @@ Real song, real workflow: stems split with the built-in AI, lyrics taken over fr
 - **No connection to Google or font services:** all fonts and the MP3 encoder are hosted right here, better for privacy and faster
 - **Works offline:** open it once on the website and it starts without internet too, fonts included
 - **Choose the sample rate** for the export (original, 44.1 kHz or 48 kHz) with the true peak held, and **dither on 16-bit WAV**
+- **Own Auto-Mix genres:** build your own from any genre, or save your fine-tuned Auto-Mix as a genre, export and import as .json
 - **Video preview with the keyboard:** Tab in, N picks cover, title, lyrics or visualizer, arrows move, + / − resize. Better labels for screen readers
 - [Privacy & legal notice](https://0zoon.github.io/danviel-studio/privacy.html), source code in modules and an automatic test on every update
 

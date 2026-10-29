@@ -581,7 +581,7 @@ async function finalAudio(){
 async function renderVideoBlob(L, R, sr, aspect, job){
   const sec = $("vidsec"), keep = [];
   VID.lockStyle = JSON.parse(JSON.stringify(VSTYLES[VID.style] || VSTYLES.classic));
-  const tp0 = VID.tp, bx0 = VID.boxes, full0 = VID.full; VID.tp = JSON.parse(JSON.stringify(VID.tp || {})); VID.boxes = JSON.parse(JSON.stringify(VID.boxes || {}));
+  const tp0 = VID.tp, bx0 = VID.boxes, full0 = VID.full; VID.tp = JSON.parse(JSON.stringify((window.__tpFor ? window.__tpFor(aspect) : VID.tp) || {}));   // the title layout of the format being rendered VID.boxes = JSON.parse(JSON.stringify(VID.boxes || {}));
   sec.querySelectorAll("input, select, textarea, button").forEach(el=>{ if(el.id === "vCancel" || el.disabled) return; keep.push(el); el.disabled = true; });
   sec.classList.add("vlock"); let note = $("vLockNote");
   if(!note){ note = document.createElement("div"); note.id = "vLockNote"; note.className = "vlocknote"; note.setAttribute("role", "status"); }

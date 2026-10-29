@@ -423,8 +423,10 @@ function drawFrame(g, W, H, t, S){
     g.fillStyle = "rgba(255,255,255,.08)"; g.beginPath(); g.moveTo(0,0); g.arc(0,0,r*0.97,-0.5,-0.2); g.closePath(); g.fill();
     g.fillStyle = S.pal.accent; g.beginPath(); g.arc(0,0,r*0.34,0,7); g.fill();
     g.fillStyle = VC.bg; g.beginPath(); g.arc(0,0,r*0.035,0,7); g.fill();
-    g.fillStyle = "rgba(14,17,21,.85)"; g.font = `800 ${Math.round(r*0.1)}px "Big Shoulders Display", Impact, sans-serif`; g.textAlign = "center"; g.textBaseline = "middle";
-    fillName(g, (S.artist||"").toUpperCase(), 0, -r*0.14, true);
+    g.fillStyle = "rgba(14,17,21,.85)"; g.textAlign = "center"; g.textBaseline = "middle";
+    { let fz = r*0.1; const nm = (S.artist||"").toUpperCase(); g.font = `800 ${Math.round(fz)}px "Big Shoulders Display", Impact, sans-serif`;
+      while(nameWidth(g, nm) > r*0.58 && fz > r*0.035){ fz *= 0.9; g.font = `800 ${Math.round(fz)}px "Big Shoulders Display", Impact, sans-serif`; }   // v17: long names shrink to fit the label
+      fillName(g, nm, 0, -r*0.14, true); }
     g.restore();
   }
   }
@@ -555,14 +557,28 @@ const WM = (()=>{ try{ return {
   d: new Path2D("M0 0H44A50 50 0 0 1 44 100H0Z M16 16V84H44A34 34 0 0 0 44 16Z"),
   g: new Path2D("M112 100L141 0L159 0L188 100L170 100L150 30L130 100Z M206 100L206 0L224 0L264 66L264 0L282 0L282 100L264 100L224 34L224 100Z M300 0L318 0L338 70L358 0L376 0L347 100L329 100Z"),
   w: new Path2D("M394 0H410V100H394Z M428 0H492V16H444V42H486V58H444V84H492V100H428Z M510 0H526V84H570V100H510Z") }; }catch(e){ return null; } })();
+function nameWidth(g, txt){ const s = String(txt||"").replace(/[\u200B-\u200D\u2060\uFEFF]/g, ""), px = parseFloat((g.font.match(/([\d.]+)px/) || [0, 40])[1]) || 40;
+  return s.split(/(danviel)/i).reduce((a, p)=>a + (/^danviel$/i.test(p) && WM ? 570*px*0.74/100 : g.measureText(p).width), 0); }
 function fillName(g, txt, x, y, onLight){
-  const s = String(txt||"");
-  if(s.trim().toUpperCase() !== "DANVIEL" || !WM){ g.fillText(s, x, y); return; }
-  const px = parseFloat((g.font.match(/([\d.]+)px/) || [0, 40])[1]) || 40, h = px*0.74, sc = h/100, w = 570*sc, al = g.textAlign;
-  const x0 = al === "center" ? x - w/2 : (al === "right" || al === "end") ? x - w : x;
-  g.save(); g.translate(x0, y - h); g.scale(sc, sc);
-  g.fillStyle = onLight ? "#16171b" : "#f3eee4"; g.fill(WM.d, "evenodd"); g.fill(WM.w);
-  g.fillStyle = onLight ? "#8a5a06" : "#e8a93a"; g.fill(WM.g); g.restore();
+  // v17: DANVIEL is drawn in the logo look wherever it appears in the artist line: any spelling (Danviel, danviel),
+  // with invisible characters from copy & paste removed, and also inside "DANVIEL x Kane" / "DANVIEL feat. ..."
+  const s = String(txt||"").replace(/[\u200B-\u200D\u2060\uFEFF]/g, "");
+  const parts = s.split(/(danviel)/i);
+  if(parts.length < 3 || !WM){ g.fillText(s, x, y); return; }
+  const px = parseFloat((g.font.match(/([\d.]+)px/) || [0, 40])[1]) || 40, h = px*0.74, sc = h/100, ww = 570*sc, al = g.textAlign;
+  const wOf = p => /^danviel$/i.test(p) ? ww : g.measureText(p).width;
+  const tot = parts.reduce((a, p)=>a + wOf(p), 0);
+  let cx = al === "center" ? x - tot/2 : (al === "right" || al === "end") ? x - tot : x;
+  g.save(); g.textAlign = "left";
+  for(const p of parts){
+    if(!p) continue;
+    if(/^danviel$/i.test(p)){ g.save(); g.translate(cx, y - h); g.scale(sc, sc);
+      g.fillStyle = onLight ? "#16171b" : "#f3eee4"; g.fill(WM.d, "evenodd"); g.fill(WM.w);
+      g.fillStyle = onLight ? "#8a5a06" : "#e8a93a"; g.fill(WM.g); g.restore(); }
+    else g.fillText(p, cx, y);
+    cx += wOf(p);
+  }
+  g.restore();
 }
 try{ document.fonts && Promise.all(['400 90px "Herr Von Muellerhoff"','600 20px "Unbounded"'].map(f=>document.fonts.load(f))).then(()=>{ try{ previewSoon(); }catch(e){} }); }catch(e){}
 const DAN_LOGO = new Image();

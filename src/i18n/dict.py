@@ -783,6 +783,11 @@ PAT.append([r"^Clip bereit: Hook ab (.+?), (\d+) s, Format 9:16\. Jetzt „Video
 EXACT.update({
 "· Alle Rechte vorbehalten ·": "· All rights reserved ·",
 "Lizenzen": "Licenses",
+"Eine Genre-Datei (.json) laden, z. B. von einem Kollegen. Du kannst sie auch einfach ins Fenster ziehen": "Load a genre file (.json), e.g. from a friend. You can also just drop it into the window",
+"Erst Auto-Mix, dann von Hand nachdrehen: speichert deine Änderungen als neues Genre": "Auto-Mix first, then fine-tune by hand: saves your changes as a new genre",
+"Ein eigenes Genre für den Auto-Mix bauen: startet von einem vorhandenen Genre, du änderst nur, was anders sein soll": "Build your own genre for Auto-Mix: it starts from an existing genre, you only change what should be different",
+"Aus meinem Mix": "From my mix",
+"+ Eigenes Genre": "+ Own genre",
 "Nur ein Hauch Hall": "Just a touch of reverb",
 "Kein zusätzlicher Hall, die Stimme bleibt wie im Stem. Empfohlen für Suno-Stems, die schon Hall drauf haben": "No extra reverb, the voice stays as in the stem. Recommended for Suno stems that already have reverb",
 "R&B: warm und weich, etwas mehr Raum (Hall) auf Stimme und Harmonien, Drums etwas zurück": "R&B: warm and soft, a bit more space (reverb) on vocals and harmonies, drums a bit back",

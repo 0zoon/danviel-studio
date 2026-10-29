@@ -2,6 +2,7 @@
 async function handleFiles(list){
   const files = [...list];
   if(!files.length) return;
+  if(files.every(f=>/\.json$/i.test(f.name)) && window.__genTry && await window.__genTry(files)) return;   // v17: own genre files
   stop(); setStatus("Lade Dateien …"); setProg(0);
   const items = [], midis = [], infos = []; let projJson = null, projCover = null; const ZIPSEEN = []; PROJ_EXTRAS = [];
   for(const f of files){
